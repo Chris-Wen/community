@@ -1,0 +1,87 @@
+@mixin center($width, $height) {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+@mixin border-radius ($radius) {
+    border-radius: $radius;
+}
+
+@mixin extend-click {
+    position: relative;
+    &:before {
+        content: '';
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        right: -10px;
+        bottom: -10px;
+    }
+}
+
+@mixin box-sizing {
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+}
+
+@mixin no-wrap {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+@mixin text-justify ($line) {
+    line-height: $line;
+    text-align: justify;
+}
+
+@mixin color-grad-btn {
+    text-align: center;
+    color:white; 
+    background: -webkit-gradient(linear, left top, right top, from(#FFC50C), to(#FF6516)); 
+    background: linear-gradient(to right, #FFC50C, #FF6516);
+}
+
+@mixin flex-around {
+	display:-ms-flexbox;
+	display:-webkit-box;
+	display:flex;
+	-ms-justify-content: space-around;
+	-ms-flex-pack: distribute;
+	    justify-content: space-around;
+	-webkit-box-orient:horizontal;
+	-webkit-box-direction:normal;
+	    -ms-flex-flow:row wrap;
+	        flex-flow:row wrap;
+}
+
+@mixin flex-between {
+	display:-ms-flexbox;
+	display:-webkit-box;
+	display:flex;
+	-ms-flex-pack:justify;
+	-webkit-box-pack:justify;
+	        justify-content:space-between;
+	-webkit-box-orient:horizontal;
+	-webkit-box-direction:normal;
+	    -ms-flex-flow:row wrap;
+	        flex-flow:row wrap;
+}
+
+@mixin flex-colum {
+    display: flex;
+    flex-direction: column;
+}
+
+@mixin flex-center {
+    display: flex;
+    align-items: center;
+}
+
+@mixin color-background {
+    background-color: $text-color-w;
+}
