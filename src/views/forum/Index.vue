@@ -120,7 +120,7 @@ export default {
         @include flex-between;
         line-height: 70px;
         >p { 
-            font-size: 15px; /*no*/
+            font-size: $font-size-normal; /*no*/
             font-weight: 500;
             &.active {
                 color: $text-color-orange;

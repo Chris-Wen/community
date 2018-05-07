@@ -49,7 +49,7 @@ header{
 	height:100px;
 	overflow: hidden;
 	line-height:100px;
-	font-size: 16px;	/*no*/
+	font-size: 18px;	/*no*/
 	font-weight: bold;
 	text-align: center;
 	color:white;

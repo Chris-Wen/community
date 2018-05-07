@@ -19,31 +19,37 @@
                 <li> 
                     <div class="img"><img src="../../common/images/fiction/fiction.jpg" alt=""></div>
                     <div>
-                        <h2>《斗破苍穹》</h2>
+                        <p>《斗破苍穹》</p>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas odio maxime eveniet eligendi </p>
                     </div>
                 </li>
                 <li> 
                     <div class="img"><img src="../../common/images/fiction/fiction.jpg" alt=""></div>
                     <div>
-                        <h2>《斗破苍穹》</h2>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas odio maxime eveniet eligendi </p>
+                        <p>《斗破苍穹斗破苍穹斗破苍穹斗破苍穹斗破苍穹斗破苍穹》</p>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas odio maxime eveniet eligendi Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas odio maxime eveniet eligendi</p>
                     </div>
                 </li>
             </ul>
         </div>
         <ul class="list">
-            <li style="height: 100px;">
-                具体内容
+            <li>
+                <span class="status">连载中</span>
+                <div>
+                    <p>《斗破苍》</p>
+                    <p>一个个个个个打的技术监督局发哦激动I就爱的风景</p>
+                    <p> <span>作者：EZ</span> <span>字数：121313213212</span> </p>
+                </div>
+                
             </li>
-            <li style="height: 100px;">
-                具体内容
-            </li>
-            <li style="height: 100px;">
-                具体内容
-            </li>
-            <li style="height: 100px;">
-                具体内容
+            <li>
+                <span class="status">连载中</span>
+                <div>
+                    <p>《我的世界》</p>
+                    <p>我的世界，去哦诶积分卡机爱的减肥骄傲的看看片；看； 啊放假啊记得付款了姐姐夸奖啊垃</p>
+                    <p> <span>作者：我是谁我在哪</span> <span>字数：121313213212</span> </p>
+                </div>
+                
             </li>
         </ul>
     </div>
@@ -81,7 +87,7 @@ export default {
     width: 100%;
     height: auto;
     position: relative;
-    font-size: $font-size-small;
+    font-size: $font-size-small; /*no*/
     padding-top: 295px; 
     @include  color-background;
     .fixed {
@@ -132,18 +138,69 @@ export default {
                 @include flex-center;
                 &:first-child{  padding-top: 50px; margin-bottom: 35px }
                 .img {
-                    width: 120px;
+                        width: 120px;
+                        height: 140px;
+                        margin-right: 35px;
+                        img { width: auto; height: 140px; @include border-radius(.5em); }
+                    }
+                div {
+                    width: 100%;
                     height: 140px;
-                    margin-right: 35px;
-                    img { width: auto; height: 140px; @include border-radius(1em); }
+                    @include box-sizing;
+                    p {
+                        @include text-justify(1.2em);
+                        max-height: 3.4em;
+                        overflow: hidden;
+                        &:first-child { 
+                            max-width: 370px; 
+                            font-weight: 600; 
+                            margin: 10px 0 20px; 
+                            @include no-wrap; 
+                        }
+                    }
                 }
+                
             }
         }    
     }
     .list {
         padding: 0 70px;
         li {
-            border-bottom: 1px solid $text-color-dark;
+            width: 100%;
+            height: 130px;
+            position: relative;
+            color: $text-color-l;
+            border-bottom: 1px solid $border-color-d;
+            @include box-sizing;
+            &:last-child { border: 0 }
+            div {
+                width: 80%;
+                height: 100%;
+                padding-top: 20px;
+                @include box-sizing;
+                p {
+                    @include no-wrap;
+                    font-size: 12px; /*no*/
+                    &:first-child { 
+                        font-weight: 600; 
+                        color: black ;
+                       line-height: 1.5em;
+                    }
+                    &:last-child { 
+                        margin: 20px 0; 
+                        span {
+                            display: inline-block;
+                            width: 45%;
+                            vertical-align: middle;
+                            &:first-child { width: 50%; @include no-wrap }
+                        }
+                    }
+                }
+            }
+            .status {
+                float: right;
+                line-height: 130px;
+            }
         }
     }
 }
