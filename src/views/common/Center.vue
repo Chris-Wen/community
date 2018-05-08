@@ -13,6 +13,7 @@
                     <p>签到</p> 
             </router-link>
             <router-link  tag="li" to="/"> 
+                    <i class="badge">{{1}}</i>
                     <img style="margin-top: 15px;" class="spe-icon" src="../../common/images/icons/icon-msg.png" /> 
                     <p>消息</p>
             </router-link>
@@ -140,6 +141,16 @@ export default {
             width: 25%;
             text-align: center;
             position: relative;
+            .badge {
+                padding: 0 .3em;
+                line-height: 1.3em;
+                position: absolute;
+                @include border-radius(1em);
+                background: red;
+                color: #fff;
+                top: 0;
+                left: 105px;
+            }
             img {
                 width: auto;
                 height: 42px;

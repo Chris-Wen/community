@@ -85,3 +85,10 @@
 @mixin color-background {
     background-color: $text-color-w;
 }
+
+@mixin background-image-center {
+    background-size: contain;
+    // background-origin:content; 
+    background-repeat: no-repeat;
+    background-position: center center;
+}

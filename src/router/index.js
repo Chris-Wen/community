@@ -8,7 +8,6 @@ import { shopRoutes } from './shopRoutes.js'
 import { fictionRoutes } from './fictionRoutes.js'
 import { forumRoutes } from './forumRoutes.js'
 
-
 Vue.use(Router)
 
 

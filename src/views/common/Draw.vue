@@ -41,7 +41,8 @@ export default {
             Toast({
                     message: '正在抽奖中',
                     position: 'middle',
-                    duration: 8000*10
+                    duration: 2000,
+                    className: 'popup'
                 });
             let deg = 0;
             console.log(this.isRotating)
@@ -135,4 +136,7 @@ export default {
         a{ text-decoration: underline; color: #fff; padding: 10px 30px;}
     } 
 }
+
+
+
 </style>

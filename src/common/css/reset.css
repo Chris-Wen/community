@@ -65,5 +65,7 @@ body {
 
 
 
-
-
+.popup span {
+    margin: .5em 1em;
+    font-size: 14px; /*no*/
+}
