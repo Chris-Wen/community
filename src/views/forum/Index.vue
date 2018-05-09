@@ -132,7 +132,7 @@ export default {
         height: 142px;
         width: 100%;
         @include box-sizing;
-        border-top: 1px solid $text-color-orange;
+        border-top: 1px solid $text-color-orange; /*no*/
         padding: 20px 40px 10px;
         &:first-child { border: 0; }
         p { 

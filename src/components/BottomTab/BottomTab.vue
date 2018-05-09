@@ -1,5 +1,5 @@
 <template>
-    <div class="footer">
+    <div v-if="showBottomTab ? false : true" class="footer">
         <router-link tag="li" to="/">
             <i @click=" setIconShowIndex(1) " :class="{ active:  (index==undefined) || (getIconShowIndex() == 1) }"></i>
             <img src="../../common/images/icons/1-1.png"> 
@@ -29,11 +29,13 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
 	name: 'MFooter',
 	data(){
 		return{
-            index: sessionStorage.getItem("bottomTap")
+            index: sessionStorage.getItem("bottomTap"),
         }
     },
     methods: {
@@ -43,7 +45,11 @@ export default {
         },
         getIconShowIndex() {
             return window.sessionStorage.getItem("bottomTap")
-        }
+        },
+        
+    },
+    computed: {
+         ...mapState({ showBottomTab: state => state.bottomTab.showBottomTab })
     }
 }
 </script>

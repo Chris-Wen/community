@@ -16,6 +16,7 @@ const  state = {
 		icon: '',  			//icon 
 		link: ''			//跳转目标页
 	},
+	bottomTab: { showBottomTab: '' },
 	userInfo: {
 		uname: sessionStorage.getItem('zdkjuname'),
 		score: sessionStorage.getItem('zdkjscore'),

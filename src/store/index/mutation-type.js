@@ -4,6 +4,8 @@ export const handleTitle = (state,payload) => {
     state.titleGroup.showIcon = payload.showIcon;
     state.titleGroup.icon   = payload.icon;
     state.titleGroup.link   = payload.link;
+    //底部tab栏显示隐藏
+    state.bottomTab.showBottomTab = payload.showBottomTab
 }
 
 export const login = (state, payload) => {

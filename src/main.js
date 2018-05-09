@@ -13,9 +13,10 @@ import 'lib-flexible'
 
 Vue.use(Vuex)
 
+
+
 import './common/css/reset.css'
 fastclick.attach(document.body)
-
 
 Vue.prototype.preSrc = 'http://221.123.178.232/smallgamesdk/Public/Uploads/'
 /* eslint-disable no-new */
