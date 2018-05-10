@@ -91,3 +91,9 @@
     background-repeat: no-repeat;
     background-position: center center;
 }
+
+@mixin text-align-justify ($size){
+    width: $size + em;
+    text-align:justify;  
+    text-align-last:justify;  
+}

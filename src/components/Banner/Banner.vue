@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import BScorll from 'better-scroll'
+import BScroll from 'better-scroll'
 import {addClass} from 'common/js/dom'
 
 export default {
@@ -41,6 +41,10 @@ export default {
             this._setSliderWidth()
             this._initDots()
             this._initSlider()
+
+            if (this.autoPlay) {
+                this._play()
+            }
         }, 20);
     },
     methods: {
@@ -75,6 +79,15 @@ export default {
         },
         _initDots() {
             this.dots = new Array(this.children.length)
+        },
+        _play() {
+            let pageIndex = this.currentPageIndex + 1
+            if (this.loop) {
+                pageIndex += 1
+            }
+            this.timer = setTimeout(() => {
+                this.slider.goToPage(pageIndex, 0, 400)
+            },this.interval)
         }
     }
 

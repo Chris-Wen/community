@@ -4,7 +4,7 @@
 		<div class="select-box">
 			<span @click="showMenu()">调整排序&nbsp;&nbsp;<i class="fa fa-angle-down fa-lg"></i></span>
 		</div>
-		<ul class="pop-options" data-pop="options" v-show="isOption">
+		<ul class="pop-options" v-show="isOption">
             <li v-for="(value,key) in ruleList" :key="key"  @click="changeRule( key+1 )">
                 {{value}}
                 <i v-bind:class="{'fa fa-check fa-1x icon-check' : (rule==key+1) }"></i>
@@ -13,19 +13,21 @@
 
         <!-- 数据循环部分 -->
         <ul class="goods-list">
-			<router-link tag="li" v-for="(value,key) in this.$store.state.listPage.list" :key='key'  :to="'/details/'+key" :event="['mousedown', 'touchstart']">
-				<dl class="goods-item flex-between" >
+			<router-link tag="li" v-for="(value,key) in list" :key='key'  :to="'/shop/details/'+key" :event="['mousedown', 'touchstart']">
+				<dl>
 					<dt> <img :src=" preSrc + value.logo " alt=""></dt>
 					<dd class="goods-cont">
-						<h3>{{value.sname}}</h3>
-						<p class="score"> 
-                            <span><i></i>积分 </span> <span class="goods-score">{{value.score}}</span>
-                            <i v-if=" value.price && parseInt(value.price)>0 ">+</i>
-                            <span  v-if=" value.price && parseInt(value.price)>0 " class="goods-price">
-                                <b>￥</b> {{value.price}}
-                            </span>
-                        </p>
-						<p>市场参考价：{{value.realprice}}元 </p>
+						<em>{{value.sname}}</em>
+                        <div>
+                            <p class="score"> 
+                                <span><i></i>积分 </span> <span class="goods-score">{{value.score}}</span>
+                                <i v-if=" value.price && parseInt(value.price)>0 ">+</i>
+                                <span  v-if=" value.price && parseInt(value.price)>0 " class="goods-price">
+                                    <i>￥</i>{{value.price}}
+                                </span>
+                            </p>
+                            <p>市场参考价：{{value.realprice}}元 </p>
+                        </div>
 					</dd>
 				</dl>
 			</router-link>
@@ -49,7 +51,27 @@ export default {
             page:1,         //分页，当前页码
             num: 20,        //每次请求显示数据量
             totalPage:'',
-            // list:[],
+            list1:[
+                {id: "10", sname: "王者荣耀手机手柄王者荣耀手机手柄王者荣耀手机手柄王者荣耀手机手柄", logo: "20180110204525329.jpg", num: "100", price: "1300", score: "3000", realprice: "123"},
+                {id: "14", sname: "王者荣耀手机手柄", logo: "20180110204525329.jpg", num: "100", price: "0", score: "3000", realprice: "123"},
+            ],
+            list:[
+                {id: "10", sname: "王者荣耀手机手柄", logo: "20180110204525329.jpg", num: "100", price: "1300", score: "3000", realprice: "123"},
+                {id: "14", sname: "王者荣耀手机手柄", logo: "20180110204525329.jpg", num: "100", price: "1", score: "3000", realprice: "123"},
+                {id: "18", sname: "王者荣耀手机手柄", logo: "20180110204525329.jpg", num: "100", price: "1", score: "3000", realprice: "13"},
+                {id: "22", sname: "王者荣耀手机手柄", logo: "20180110204525329.jpg", num: "100", price: "1", score: "3000", realprice: "123"},
+                {id: "26", sname: "王者荣耀手机手柄", logo: "20180110204525329.jpg", num: "100", price: "1", score: "3000", realprice: "13"},
+                {id: "30", sname: "王者荣耀手机手柄", logo: "20180110204525329.jpg", num: "100", price: "1", score: "3000", realprice: "123"},
+                {id: "34", sname: "王者荣耀手机手柄", logo: "20180110204525329.jpg", num: "100", price: "1", score: "3000", realprice: "1"},
+                {id: "38", sname: "王者荣耀手机手柄", logo: "20180110204525329.jpg", num: "100", price: "1", score: "3000", realprice: "13"},
+                {id: "42", sname: "王者荣耀手机手柄", logo: "20180110204525329.jpg", num: "100", price: "1", score: "3000", realprice: "23"},
+                {id: "46", sname: "王者荣耀手机手柄", logo: "20180110204525329.jpg", num: "100", price: "1", score: "3000", realprice: "123"},
+                {id: "50", sname: "王者荣耀手机手柄", logo: "20180110204525329.jpg", num: "100", price: "1", score: "3000", realprice: "23"},
+                {id: "54", sname: "王者荣耀手机手柄", logo: "20180110204525329.jpg", num: "100", price: "1", score: "3000", realprice: "113"},
+                {id: "58", sname: "王者荣耀手机手柄", logo: "20180110204525329.jpg", num: "100", price: "1", score: "3000", realprice: "1223"},
+                {id: "62", sname: "王者荣耀手机手柄", logo: "20180110204525329.jpg", num: "100", price: "1", score: "3000", realprice: "1223"},
+                {id: "66", sname: "王者荣耀手机手柄", logo: "20180110204525329.jpg", num: "100", price: "1", score: "3000", realprice: "122"}
+            ],
             isOption: false,
             check:'fa fa-check icon-check',
             ruleList:['积分由低到高','价格由低到高','价格由高到低','积分由高到低'],
@@ -112,73 +134,112 @@ export default {
 @import "../../common/css/index.scss";
 
 .list {
+    font-size: $font-size-small; /*no*/
     .mask{
-        z-index: 10;   
         position: absolute;      
         width: 100%;
         height: 100%;
-        background-color: white;
+        @include color-background;
         opacity: .1; 
     }
     .select-box{ 
-        width: 100%; height: 100px; line-height: 100px; text-align: right; vertical-align: middle ; 
-        font-size:33px;
-        span{ padding: .25rem 1rem .25rem 0; color: #8d8d8d }
+        height: 70px; 
+        line-height: 70px; 
+        text-align: right;  
+        font-size: $font-size-normal; /*no*/
+        color: $text-color-l; 
+        span{ padding: 10px 60px 10px 30px }
     }
     .pop-options{
         background-color: #fff; 
-        color: #8d8d8d; 
-        width: 400px; 
+        color: $text-color-l; 
+        width: 55%; 
+        min-width: 315px;
+        max-width: 500px;
         position: absolute;
-        top: 200px; 
+        top: 170px; 
         right: 30px; 
-        z-index: 60; 
+        z-index: 10; 
         border-top:0; 
-        text-align: left;  
-        box-shadow:-3px 0 10px #888, 3px 0 10px #888, 0 -3px 0px white, 3px 0 10px #888;
+        box-shadow: -3px 0 10px #b2b2b2, 3px 0 10px #b2b2b2, 0 -3px 0px white, 3px 0 10px #b2b2b2;
         li{ 
-            height: 1rem; line-height: 1rem;  border-bottom: 1px solid #999; padding-left: 90px;
-            .icon-check{ color: orange; float: right; margin: 20px 40px 0 0; font-size: 35px}
+            height: 50px; 
+            line-height: 50px;  
+            border-bottom: 3px solid $border-color-d; 
+            padding-left: 90px;
+            .icon-check{ 
+                color: orange; 
+                float: right; 
+                margin: 10px 30px 0 0; 
+            }
+            &:last-child{ border:0 }
         }
-        li:last-child{ border:0 }
     }
     .goods-list{ 
-        width: 100%; box-sizing: border-box;
         li{ 
-            background-color: #fff; 
+            @include color-background;
             margin-bottom: 8px; 
-            padding: 10px 60px;
-            dl.goods-item{ 
-                align-items: center; 
-                text-align: left;
+            padding: 20px 60px;
+            height: 110px;
+            dl { 
                 width: 100% ;
+                height: 110px;
+                @include box-sizing;
+                display: flex;
                 dt{ 
-                    display: inline-block; width: 25%; min-height: 2.5rem; 
-                    img{ width: 1.8rem; margin-top: .3rem; border-radius: 10px }
+                    width: 120px; 
+                    height: 110px; 
+                    margin-right: 40px;
+                    img { 
+                        height: 100px; 
+                        width: auto; 
+                        @include border-radius(0.5em);
+                    }
                 }
-                dd.goods-cont{ 
-                    display: inline-block; width: 65%; 
-                    h3{ width: 100%; overflow: hidden;text-overflow: ellipsis; white-space: nowrap;  }
-                    .score{ 
-                        font-size: 35px; color:red; margin: 15px 0;
-                        span:first-child{
-                            font-size: 20px;color: #ff901c; margin-right: 5px
-                            i{
-                                display: inline-block;
-                                background: url('../../common/images/shop/icons/icon_zd.jpg') no-repeat;
-                                background-size: 28px 28px;
-                                width: 30px;
-                                height: 30px;
-                                margin-bottom: -.08rem;
+                dd { 
+                    height: 100%;
+                    @include flex-colum;
+                    justify-content: space-between;
+                    width: 70%; 
+                    @include box-sizing;
+                    em { 
+                        @include no-wrap; 
+                        font-size: $font-size-normal; /*no*/  
+                        font-weight: 800;
+                    }
+                    div p { 
+                        &.score {
+                            //  margin: 15px 0;
+                            color: red;
+                            span:first-child {
+                                color: $text-color-orange; 
+                                margin-right: 5px;
+                                i {
+                                    display: inline-block;
+                                    width: 23px;
+                                    height: 23px;
+                                    background: url('../../common/images/shop/icons/icon_zd.jpg') no-repeat;
+                                    @include background-image-center;                               
+                                    margin-right: 5px;
+                                }
+                            }
+                            span.goods-score, .goods-price{ 
+                                margin-right: 5px; 
+                                color: $text-color-orange;
+                                font-size: $font-size-large; /*no*/ 
+                                font-weight: 600;
+                            }
+                            .goods-price{ 
+                                color: red;
+                                i { font-size: $font-size-small; /*no*/ }
                             }
                         }
-                        .goods-score{ margin-right: 5px; color: #ff901c }
-                        .goods-price{ 
-                            color: red;
-                            b{ font-size: 25px }
+                        &:last-child { 
+                            color: $text-color-dark; 
+                            font-size: $font-size-min; /*no*/ 
+                            margin-top: 8px;
                         }
                     }
-                    p:last-child{ color: #666; font-size: 28px }
                 }
             }
         }

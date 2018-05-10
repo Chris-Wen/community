@@ -1,6 +1,7 @@
 <template>
     <div class="login">
-        <!-- <p style="display: none;">visible</p> -->
+        <i class="decoration1"></i>
+        <i class="decoration2"></i>
         <form @submit.prevent>
             <ul>
                 <li>
@@ -10,7 +11,7 @@
                     <em>密 码：</em><input type="password" placeholder="请输入密码" />
                 </li>
             </ul>
-            <button @click="handleLogin">登录</button>
+            <button @click="handleLogin">登 录</button>
         </form>
         <ul>
             <router-link tag="li" to="/register">注册账号</router-link>
@@ -36,7 +37,7 @@ export default {
     data() {
         return { 
             titleInfo: {
-                title: '登录',
+                title: '登 录',
                 showIcon: false,
                 showBottomTab: true,    /*true 即为不显示底部tab栏*/ 
             },
@@ -71,8 +72,7 @@ export default {
     width: 100%;
     height: 100%;
     padding-top: 80px;
-    position: relative;
-    padding-bottom: 20px;
+    position: absolute;
     @include color-background;
     form {
         text-align: center;
@@ -101,12 +101,14 @@ export default {
         }
         button {
             margin: 50px 0;
-            width: 30%;
+            width: 40%;
             @include color-grad-btn; 
             outline: none;
             border: 0;
             height: 60px;
             line-height: 60px;
+            font-size: $font-size-normal; /*no*/
+            font-weight: 600;
         }
     }
     >ul {
@@ -154,16 +156,32 @@ export default {
             }
         }
     }
-
     .state {
-        position: absolute;
-        margin: 0 auto;
-        left: 0;
-        right: 0;
-        bottom: 50px;
+        margin-top: 80px;
         color: $text-color-dark;
         text-align: center;
-        // font-size: 
+    }
+    .decoration1, .decoration2 {
+        position: absolute;
+        display: inline-block;
+    }
+    .decoration1 {
+        width: 0; 
+        height: 0; 
+        border-left: 25px solid transparent; 
+        border-right: 25px solid transparent; 
+        border-bottom: 50px solid #ffebbc; 
+        top: 50%;
+        right: 10%;
+        transform: rotate(30deg);
+    }
+    .decoration2 {
+        width: 35px;
+        height: 35px;
+        @include border-radius(50%);
+        border: 8px solid #ffebbc;
+        top: 45%;
+        left: 22%;
     }
 }
 </style>
