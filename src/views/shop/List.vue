@@ -216,10 +216,9 @@ export default {
                                 margin-right: 5px;
                                 i {
                                     display: inline-block;
-                                    width: 23px;
+                                    width: 23px;    
                                     height: 23px;
-                                    background: url('../../common/images/shop/icons/icon_zd.jpg') no-repeat;
-                                    @include background-image-center;                               
+                                    @include background-image(url('../../common/images/icons/icon_zd.jpg'));                             
                                     margin-right: 5px;
                                 }
                             }

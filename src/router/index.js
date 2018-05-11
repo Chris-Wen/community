@@ -17,7 +17,7 @@ export default new Router({
   routes: [ 
     {
       path: '/',
-      component: Draw
+      redirect: '/draw'
     },
     {
       path: '/draw',

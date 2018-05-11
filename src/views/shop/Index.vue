@@ -8,10 +8,10 @@
                 <p> <span>我的积分</span> <i>{{this.$store.state.userInfo.score || '***'}}</i></p>  
             </div>
             <ul class="score-bar">
-                <router-link tag="li" to="/points">  <i></i>  <p>赚积分</p>    </router-link >
-                <router-link tag="li" to="/draw">    <i></i>  <p>积分抽奖</p>  </router-link >
-                <router-link tag="li" to="/order">    <i></i> <p>我的订单</p>  </router-link >
-                <router-link tag="li" to="/address">  <i></i> <p>地址管理</p>  </router-link >
+                <router-link tag="li" to="points">  <i></i>  <p>赚积分</p>    </router-link >
+                <router-link tag="li" to="draw">    <i></i>  <p>积分抽奖</p>  </router-link >
+                <router-link tag="li" to="order">    <i></i> <p>我的订单</p>  </router-link >
+                <router-link tag="li" to="address">  <i></i> <p>地址管理</p>  </router-link >
             </ul>
         </div>
         <!-- 热卖 -->
@@ -24,15 +24,15 @@
         <div class="link-card">
             <div class="card-list">
                 <ul class="score-goods">
-                    <router-link tag="li" :to="{ path: '/shop/list', query: { type: 1 }}">
+                    <router-link tag="li" :to="{ path: 'shop/list', query: { type: 1 }}">
                          <i ></i>
                         <p>5000分以下</p>
                     </router-link>
-                    <router-link tag="li" :to="{ path: '/shop/list', query: { type: 2 }}">
+                    <router-link tag="li" :to="{ path: 'shop/list', query: { type: 2 }}">
                          <i ></i>
                         <p>5000-8000分</p>
                     </router-link>
-                    <router-link tag="li" :to="{ path: '/shop/list', query: { type: 3 }}">
+                    <router-link tag="li" :to="{ path: 'shop/list', query: { type: 3 }}">
                          <i ></i>
                         <p>8000分以上</p>
                     </router-link>
