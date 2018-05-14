@@ -48,7 +48,7 @@ export default {
                 title: '商品详情',
                 showIcon: true,
                 icon: 'fa fa-shopping-cart fa-lg',
-                link: 'shop/cart'
+                link: '/shop/cart'
             },
             details: {
                 pic: '',

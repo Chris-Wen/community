@@ -13,8 +13,7 @@ import 'lib-flexible'
 
 Vue.use(Vuex)
 
-
-
+import './common/css/self-icons.css'
 import './common/css/reset.css'
 fastclick.attach(document.body)
 

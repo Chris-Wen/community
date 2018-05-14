@@ -3,7 +3,7 @@
 		{{ title }}
 		<div class="icon">
 			<a href="javascript:history.go(-1);" >
-				<i class="fa fa-angle-left fa-2x"></i>
+				<i class="self-icon-angle-left fa-2x"></i>
 			</a>
 			<router-link :to="link" v-if="showIcon" >
 				<i :class="[icon]"></i>
@@ -67,6 +67,7 @@ header{
 			padding:0 30px;
 			float: right;
 			i { 
+				font-weight: 800;
 				color:white; 
 				vertical-align: middle 
 			}

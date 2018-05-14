@@ -13,7 +13,7 @@
 
         <!-- 数据循环部分 -->
         <ul class="goods-list">
-			<router-link tag="li" v-for="(value,key) in list" :key='key'  :to="'/shop/details/'+key" :event="['mousedown', 'touchstart']">
+			<router-link tag="li" v-for="(value,key) in list" :key='key'  :to="'/shop/details/'+key" :event="['click']">
 				<dl>
 					<dt> <img :src=" preSrc + value.logo " alt=""></dt>
 					<dd class="goods-cont">

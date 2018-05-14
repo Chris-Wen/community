@@ -1,0 +1,190 @@
+/**项目中用到的个别小logo**/
+.zd-icon-score { background-image: url('../images/icons/icon_zd.jpg'); display: inline-block; vertical-align: -3.5%; }
+
+/**self font awesome**/
+@font-face {
+  font-family: 'self-icons';
+  src:  url('../fonts/self-icons.eot?t963dv');
+  src:  url('../fonts/self-icons.eot?t963dv#iefix') format('embedded-opentype'),
+    url('../fonts/self-icons.ttf?t963dv') format('truetype'),
+    url('../fonts/self-icons.woff?t963dv') format('woff'),
+    url('../fonts/self-icons.svg?t963dv#self-icons') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="self-icon-"], [class*=" self-icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  display: inline-block;
+  font-family: 'self-icons' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.fa-lg {
+  font-size: 1.33333333em;
+  line-height: 0.75em;
+  vertical-align: -15%;
+}
+.fa-2x {
+  font-size: 2em;
+}
+.fa-3x {
+  font-size: 3em;
+}
+
+
+.self-icon-plus:before {
+  content: "\f067";
+}
+.self-icon-minus:before {
+  content: "\f068";
+}
+.self-icon-search:before {
+  content: "\f002";
+}
+.self-icon-star:before {
+  content: "\f005";
+}
+.self-icon-star-o:before {
+  content: "\f006";
+}
+.self-icon-user:before {
+  content: "\f007";
+}
+.self-icon-check:before {
+  content: "\f00c";
+}
+.self-icon-close:before {
+  content: "\f00d";
+}
+.self-icon-trash-o:before {
+  content: "\f014";
+}
+.self-icon-home:before {
+  content: "\f015";
+}
+.self-icon-play-circle-o:before {
+  content: "\f01d";
+}
+.self-icon-repeat:before {
+  content: "\f01e";
+}
+.self-icon-refresh:before {
+  content: "\f021";
+}
+.self-icon-headphones:before {
+  content: "\f025";
+}
+.self-icon-align-justify:before {
+  content: "\f039";
+}
+.self-icon-list:before {
+  content: "\f03a";
+}
+.self-icon-image:before {
+  content: "\f03e";
+}
+.self-icon-photo:before {
+  content: "\f03e";
+}
+.self-icon-picture-o:before {
+  content: "\f03e";
+}
+.self-icon-pencil2:before {
+  content: "\f040";
+}
+.self-icon-map-marker:before {
+  content: "\f041";
+}
+.self-icon-check-circle:before {
+  content: "\f058";
+}
+.self-icon-eye:before {
+  content: "\f06e";
+}
+.self-icon-eye-slash:before {
+  content: "\f070";
+}
+.self-icon-bars:before {
+  content: "\f0c9";
+}
+.self-icon-navicon:before {
+  content: "\f0c9";
+}
+.self-icon-reorder:before {
+  content: "\f0c9";
+}
+.self-icon-angle-left:before {
+  content: "\f104";
+}
+.self-icon-angle-right:before {
+  content: "\f105";
+}
+.self-icon-angle-up:before {
+  content: "\f106";
+}
+.self-icon-angle-down:before {
+  content: "\f107";
+}
+.self-icon-circle-o:before {
+  content: "\f10c";
+}
+.self-icon-smile-o:before {
+  content: "\f118";
+}
+.self-icon-frown-o:before {
+  content: "\f119";
+}
+.self-icon-meh-o:before {
+  content: "\f11a";
+}
+.self-icon-thumbs-up:before {
+  content: "\f164";
+}
+.self-icon-thumbs-down:before {
+  content: "\f165";
+}
+.self-icon-database:before {
+  content: "\f1c0";
+}
+.self-icon-venus:before {
+  content: "\f221";
+}
+.self-icon-mars:before {
+  content: "\f222";
+}
+.self-icon-user-circle:before {
+  content: "\f2bd";
+}
+.self-icon-user-circle-o:before {
+  content: "\f2be";
+}
+.self-icon-home2:before {
+  content: "\e900";
+}
+.self-icon-home3:before {
+  content: "\e902";
+}
+.self-icon-pencil:before {
+  content: "\e905";
+}
+.self-icon-clock:before {
+  content: "\e94e";
+}
+.self-icon-bubbles2:before {
+  content: "\e96d";
+}
+.self-icon-star-empty:before {
+  content: "\e9d7";
+}
+.self-icon-star-half:before {
+  content: "\e9d8";
+}
