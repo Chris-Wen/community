@@ -1,71 +1,44 @@
 <template>
     <div class="cart">
-        <div class="content" v-if="isData">
+        <div class="content" v-if="data">
             <ul class="list">
-                <li >
+                <li v-for="(item, index) in data" :key="index">
                     <div class="item">
                         <div class="check-box">
-                            <div @click="1">
-                                <i :class="[0 ? 'self-icon-check-circle' : 'check']"></i>
+                            <div @click.stop="handlePlanPay($event, index)">
+                                <i name="checkbox" class="check"></i>
                             </div>
 							 <router-link tag="div" to="">
                                  <img src="../../common/images/shop/hold/hotsale1.jpg" >
                              </router-link>
 						</div>
 						<div class="goods-cont">
-							<p>商品标题商品标题商</p>
+							<p>{{item.title}}</p>
 							<p class="price"> 
-								<i class="zd-icon-score"></i>积分 
-								<span class="item-score">{{9999}}</span>
-								<span v-if="0" class="item-price">+ ￥ <i>{{888}}</i> </span> 
+								<em class="zd-icon-score"></em>积分 
+								<span class="item-score">{{item.score}}</span>
+								<span v-if="item.price" class="item-price">+ ￥ <i>{{item.price}}</i> </span> 
 							</p>
 							<p>参考价：1233.00元 </p>
 							<div class="btn-group">
-								<a href="javascript:;" class="btn" @click="num<99 ? num++ : '' ">+</a>
-								<span> {{num}} </span>
-								<a href="javascript:;" class="btn" @click="num>0 ? num-- : '' ">-</a>
+								<a href="javascript:;" class="btn" @click="add($event, index)">+</a>
+								<input type="number" max="99" min="0" v-model="item.number" readonly/>
+								<a href="javascript:;" class="btn" @click="reduce($event, index)">-</a>
 							</div>
 						</div>    
                     </div>                    
                 </li>
-                <li >
-                    <div class="item">
-                        <div class="check-box">
-                            <div @click="1">
-                                <i :class="[0 ? 'self-icon-check-circle' : 'check']"></i>
-                            </div>
-							 <router-link tag="div" to="">
-                                 <img src="../../common/images/shop/hold/hotsale1.jpg" >
-                             </router-link>
-						</div>
-						<div class="goods-cont">
-							<p>商品标题商品标题商</p>
-							<p class="price"> 
-								<i class="zd-icon-score"></i>积分 
-								<span class="item-score">{{9999}}</span>
-								<span class="item-price">+ ￥ <i>{{888}}</i> </span> 
-							</p>
-							<p>参考价：1233.00元 </p>
-							<div class="btn-group">
-								<a href="javascript:;" class="btn" @click="num<99 ? num++ : '' ">+</a>
-								<span> {{num}} </span>
-								<a href="javascript:;" class="btn" @click="num>0 ? num-- : '' ">-</a>
-							</div>
-						</div>    
-                    </div>                    
-                </li>
-
             </ul>
             <div class="bottom">
-                <div class="select-all" @click="isAllSelected = !isAllSelected  ">
+                <div class="select-all" @click="selectAll">
 					<i :class="[isAllSelected ? 'self-icon-check-circle' : 'check']"></i>
 					&nbsp;全选 
 				</div>
 				<div class="cart-total">
 				    <div>合计:</div> 
                     <div>
-                        <p> <span >10000</span> 积分</p>
-					    <p><span >44.00</span> 元</p>
+                        <p> <span >{{totalScore}}</span> 积分</p>
+					    <p><span >{{totalPrice}}</span> 元</p>
                     </div>
 				</div>
 				<div class="settlement" @click="submit">
@@ -83,6 +56,8 @@
 </template>
 
 <script>
+import { removeArrayelement } from 'common/js/tools'
+import { toggleClass } from 'common/js/dom'
 import { mapMutations, mapActions } from 'vuex'
 
 export default {
@@ -95,14 +70,63 @@ export default {
                 link: '/',
                 showBottomTab: true
             },
-            isData: true,
-            isAllSelected: false,
-            num: 1
+            data: [
+                {id: 1, price: 123, number: 1, score: 1000 , title: '银杏叶片'},
+                {id: 2, price: 10, number: 98, score: 2000 , title: '伊利股份'},
+                {id: 3, price: 1.5, number: 3, score: 888 , title: '栀子金花丸'}
+            ],       
+            isAllSelected: false,       //是否全部选中
+            num: {},                    //商品数量
+            totalScore: 0,
+            totalPrice: 0,
+            needRecalculate: false,     //商品数量加减后是否需要重新计算总值
+            planToPayData: [] 
         }
     },
     methods: {
         ...mapActions(['handleTitle']),
-        submit() { console.log("跳转页面结算") } 
+        submit() { console.log("跳转页面结算") } ,
+        add(event, index) {
+            console.log(this.data)
+            this.data[index].number = this.data[index].number + 1;
+            this.needRecalculate ?  this.dataCalc() : ''
+        },
+        reduce(event, index) {
+            this.data[index].number = this.data[index].number - 1;
+            this.needRecalculate ?  this.dataCalc() : ''
+        },
+        dataCalc() {        //总价、总积分 计算
+            this.totalPrice = this.totalScore = 0;
+            this.planToPayData.forEach(element => {
+                this.totalPrice += element.price * element.number
+                this.totalScore += element.score * element.number
+            })
+        },
+        handlePlanPay(event, index) {
+            let el = event.currentTarget.children[0]
+            if ( this.planToPayData.indexOf(this.data[index]) == -1 ) {
+                toggleClass(el, 'check', 'self-icon-check-circle')
+                this.planToPayData.push(this.data[index])
+            } else {
+                toggleClass(el, 'self-icon-check-circle', 'check')
+                removeArrayelement(this.planToPayData, this.data[index])
+            }            
+            //购物车数据全部选中
+            this.isAllSelected = this.planToPayData.length === this.data.length
+            this.dataCalc()
+        },
+        selectAll() {               //底部选中按钮function
+            this.isAllSelected = !this.isAllSelected
+            //arr.concat()  arr.slice(0) 数组深拷贝  es6 [...arr]
+            this.planToPayData = this.isAllSelected ? this.data.concat() : []
+            this.dataCalc()
+            //样式修改
+            let newClass = this.isAllSelected ? 'self-icon-check-circle' : 'check'
+            document.getElementsByName("checkbox").forEach(element => {
+                element.className = newClass
+            })
+
+        }
     },
     mounted() {
         this.handleTitle({
@@ -112,6 +136,12 @@ export default {
             link:   this.titleInfo.link,
             showBottomTab: this.titleInfo.showBottomTab
         })
+    },
+    watch: {
+        planToPayData: function(old, newValue) {
+            this.needRecalculate = old === newValue
+            console.log(needRecalculate)
+        }
     }
 }
 </script>
@@ -126,6 +156,7 @@ export default {
     @include border-radius(50%);
     display: inline-block;
     width: 25px; height: 25px;
+    vertical-align: -5%;
 }
 .cart {
     height: 100%;
@@ -156,25 +187,31 @@ export default {
             }
             .item {
                 width: 100%;
+                height: 100%;
                 position: relative;
-                @include flex-center;
+                // @include flex-center;
+                display: flex;
                 .check-box {
                     width: 30%;
                     min-width: 180px;
                     height: 100%;
+                    line-height: 150px;
                     padding-right: 50px;
                     @include flex-between; 
+                    align-items: center;
                     i { color: $text-color-orange; font-size: 1.5em; }
                     div {
                         text-align: center;
-                        line-height: 150px; 
+                        height: 100%;
                         &:first-child { width: 80px; }
                         &:last-child { img { width: 100px; height: 100px; @include border-radius(0.5em); } }
                     }
                 }
                 .goods-cont {
                     max-width: 65%;
-                    height: 100%;
+                    height: 150px;
+                    padding: 25px 0;    
+                    @include box-sizing;
                     >p {
                         @include no-wrap;
                         &:first-child { 
@@ -183,7 +220,7 @@ export default {
                             font-size: $font-size-normal; /*no*/
                         }
                         &.price {
-                            margin: 10px 0 5px; 
+                            margin: 15px 0 5px; 
                             color: $text-color-orange;
                             .zd-icon-score { 
                                 width: 23px;
@@ -213,6 +250,13 @@ export default {
                             border: 1px solid $border-color-d; /*no*/
                             vertical-align: 4px;
                         }
+                        input{ 
+                            text-align:center;  
+                            border: 1px solid $border-color-d; /*no*/
+                            height: 35px;
+                            line-height: 35px;
+                            width: 3em;
+                        } 
                         .btn {
                             font-size: $font-size-large;  /*no*/
                             display: inline-block;
