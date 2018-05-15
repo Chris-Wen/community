@@ -1,6 +1,12 @@
 <template>
     <div class="shop-index">
-        <banner class="banner" />
+        <slider class="banner">
+            <div v-for="(item, index) in recommends" :key="index">
+              <a :href="item.linkUrl">
+                <img class="needsclick" @load="loadImage" :src="item.picUrl">
+              </a>
+            </div>
+        </slider>
         <!-- 积分 -->
         <div class="score">
             <div class="title">
@@ -17,7 +23,9 @@
         <!-- 热卖 -->
         <div class="hot-sale">
             <p> <span> ❤ </span>  猜你喜欢</p>
-            <div>  </div>
+            <div> 
+                <!-- <img src="../../common/images/shop/hold/baner1.jpg" alt="">     -->
+            </div>
         </div>
         <!-- 商品推荐 -->
         <i class="pic-background recommend"></i>
@@ -25,7 +33,7 @@
             <div class="card-list">
                 <ul class="score-goods">
                     <router-link tag="li" :to="{ path: 'shop/list', query: { type: 1 }}">
-                         <i ></i>
+                         <i     ></i>
                         <p>5000分以下</p>
                     </router-link>
                     <router-link tag="li" :to="{ path: 'shop/list', query: { type: 2 }}">
@@ -94,7 +102,7 @@
 
 <script>
 import { mapMutations, mapActions } from 'vuex'
-import Banner from '../../components/Banner/Banner'
+import Slider from '../../base/Slider/Slider'
 
 export default {
     data() {
@@ -102,12 +110,24 @@ export default {
             titleInfo: {
                 title: '积分商城',
                 showIcon: false,
-            }
+            },
+            recommends: [
+                {linkUrl: '#1', picUrl: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109173040544.jpg'},
+                {linkUrl: '#2', picUrl: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109173040544.jpg'},
+                {linkUrl: '#4', picUrl: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109173040544.jpg'},
+                {linkUrl: '#3', picUrl: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109173040544.jpg'}
+            ]
         }
     },
-    components:{ Banner },
+    components:{ Slider },
     methods: {
-        ...mapActions([ 'handleTitle']) 
+        ...mapActions([ 'handleTitle']),
+        loadImage() {
+            // if (!this.checkloaded) {
+            //     this.checkloaded = true
+            //     this.$refs.scroll.refresh()
+            // }
+        }
     },
     mounted() {
         this.handleTitle({
@@ -127,6 +147,7 @@ export default {
     .banner { 
         width: 100%; 
         height: 240px;
+        >div{ height: 240px; }
     }
     .dotted { 
         width: 100%;

@@ -72,7 +72,7 @@ export default {
             },
             data: [
                 {id: 1, price: 123, number: 1, score: 1000 , title: '银杏叶片'},
-                {id: 2, price: 10, number: 98, score: 2000 , title: '伊利股份'},
+                {id: 2, price: 9.99, number: 19, score: 2000 , title: '伊利股份'},
                 {id: 3, price: 1.5, number: 3, score: 888 , title: '栀子金花丸'}
             ],       
             isAllSelected: false,       //是否全部选中
@@ -87,20 +87,24 @@ export default {
         ...mapActions(['handleTitle']),
         submit() { console.log("跳转页面结算") } ,
         add(event, index) {
-            console.log(this.data)
+            if (this.data[index].number>=99) return; 
             this.data[index].number = this.data[index].number + 1;
-            this.needRecalculate ?  this.dataCalc() : ''
+            this.dataCalc()
         },
         reduce(event, index) {
+            if (this.data[index].number<=1) return; 
             this.data[index].number = this.data[index].number - 1;
-            this.needRecalculate ?  this.dataCalc() : ''
+            this.dataCalc() 
         },
         dataCalc() {        //总价、总积分 计算
             this.totalPrice = this.totalScore = 0;
+            let [price, score] = [0, 0]
             this.planToPayData.forEach(element => {
-                this.totalPrice += element.price * element.number
-                this.totalScore += element.score * element.number
+                price += element.price * element.number
+                score += element.score * element.number
             })
+            this.totalPrice = price ? price.toFixed(2) : 0
+            this.totalScore = score
         },
         handlePlanPay(event, index) {
             let el = event.currentTarget.children[0]
@@ -138,10 +142,7 @@ export default {
         })
     },
     watch: {
-        planToPayData: function(old, newValue) {
-            this.needRecalculate = old === newValue
-            console.log(needRecalculate)
-        }
+
     }
 }
 </script>
