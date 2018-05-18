@@ -1,16 +1,20 @@
 <template>
     <div class="fiction-index">
         <div class="fixed">
-            <ul class="banner">
-                <router-link to="/">
-                    <img src="" alt="">
-                </router-link>
+            <ul class="banner" v-if="recommends.length">
+               <slider>
+                    <div v-for="(item, index) in recommends" :key="index">
+                        <a :href="item.linkUrl">
+                            <img class="needsclick" @load="loadImage" :src="item.picUrl">
+                        </a>
+                    </div>
+                </slider>
             </ul>
             <p class="tab">
-                <span :class="{active: index==1}" @click="index=1">原创</span>
-                <span :class="{active: index==2}" @click="index=2">同人</span>
-                <span :class="{active: index==3}" @click="index=3">完结</span>
-                <span :class="{active: index==4}" @click="index=4">排行</span>
+                <span :class="{active: tabIndex==1}" @click="tabIndex=1">原创</span>
+                <span :class="{active: tabIndex==2}" @click="tabIndex=2">同人</span>
+                <span :class="{active: tabIndex==3}" @click="tabIndex=3">完结</span>
+                <span :class="{active: tabIndex==4}" @click="tabIndex=4">排行</span>
             </p>
         </div>
         <div class="recommend">
@@ -57,19 +61,29 @@
 
 <script>
 import { mapMutations, mapActions } from 'vuex'
+import Slider from '../../base/Slider/Slider'
 
 export default {
+    components: { Slider },
     data() {
         return {
             titleInfo: {
                 title: '掌动小说',
                 showIcon: false
             },
-            index: 1,
+            tabIndex: 1,
+            recommends: [
+                {linkUrl: '#1', picUrl: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109173040544.jpg'},
+                {linkUrl: '#2', picUrl: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109173040544.jpg'},
+                {linkUrl: '#2', picUrl: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109173040544.jpg'}
+            ],
         }
     },
     methods: {
-        ...mapActions([ 'handleTitle']) 
+        ...mapActions([ 'handleTitle']),
+        loadImage() {
+
+        } 
     },
     mounted() {
         this.handleTitle({
@@ -101,6 +115,9 @@ export default {
         .banner {
             width: 100%;
             height: 200px;
+            @include box-sizing;
+            overflow: hidden;
+            >div{ height: 200px; }
         }
         .tab {
             height: 74px;
@@ -109,6 +126,7 @@ export default {
             @include flex-around;
             font-size: $font-size-normal; /*no*/
             .active { color: $text-color-orange-d; font-weight: 600  }
+            span { padding: 0 1em }
         }
     }
     .recommend {

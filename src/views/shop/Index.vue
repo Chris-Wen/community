@@ -1,12 +1,15 @@
 <template>
     <div class="shop-index">
-        <slider class="banner">
-            <div v-for="(item, index) in recommends" :key="index">
-              <a :href="item.linkUrl">
-                <img class="needsclick" @load="loadImage" :src="item.picUrl">
-              </a>
-            </div>
-        </slider>
+        <!-- 顶部轮播图 -->
+        <div v-if="recommends.length" class="banner">
+            <slider>
+                <div v-for="(item, index) in recommends" :key="index">
+                    <a :href="item.linkUrl">
+                        <img class="needsclick" @load="loadImage" :src="item.picUrl">
+                    </a>
+                </div>
+            </slider>
+        </div>
         <!-- 积分 -->
         <div class="score">
             <div class="title">
@@ -20,11 +23,23 @@
                 <router-link tag="li" to="address">  <i></i> <p>地址管理</p>  </router-link >
             </ul>
         </div>
-        <!-- 热卖 -->
+        <!-- 商品推荐位 -->
         <div class="hot-sale">
             <p> <span> ❤ </span>  猜你喜欢</p>
-            <div> 
-                <!-- <img src="../../common/images/shop/hold/baner1.jpg" alt="">     -->
+            <div v-if="hotSales.length" class="sale-items"> 
+                <slider :showDots="isDosShow">
+                    <div v-for="(item, index) in hotSales" :key="index">
+                        <router-link tag="div" to="/" class="item">
+                            <div><img :src="preSrc + item.logo " /> </div>
+                            <div >
+                                <h3>{{item.sname}}</h3>
+                                <p class="recom_price">市场参考价：{{item.price}}元</p>
+                                <p class="recom_score"><i>{{item.score}}</i> 积分<span> + ￥ <i>{{item.score}}</i></span> </p>
+                            </div>
+                            <a href="javascript:;" >兑换</a>
+                        </router-link>
+                    </div>
+                </slider>
             </div>
         </div>
         <!-- 商品推荐 -->
@@ -114,8 +129,14 @@ export default {
             recommends: [
                 {linkUrl: '#1', picUrl: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109173040544.jpg'},
                 {linkUrl: '#2', picUrl: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109173040544.jpg'},
-                {linkUrl: '#4', picUrl: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109173040544.jpg'},
-                {linkUrl: '#3', picUrl: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109173040544.jpg'}
+                {linkUrl: '#2', picUrl: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109173040544.jpg'},
+            ],
+            isDosShow: false,
+            hotSales: [
+                {id: "2", sname: "宏基台式一体机电脑", logo: "20180109172324641.jpg", price: "6999", score: "8888"},
+                {id: "3", sname: "神舟游戏本笔记本电脑", logo: "20180109172503958.jpg", price: "5000", score: "8888"},
+                // {id: "4", sname: "戴尔台式一体机电脑", logo: "20180109172657362.jpg", price: "8999", score: "8888"},
+                // {id: "3", sname: "神舟游戏本笔记本电脑", logo: "20180109172503958.jpg", price: "5000", score: "8888"}
             ]
         }
     },
@@ -225,7 +246,7 @@ export default {
             
         }
     }
-    //热卖
+    //热卖 商品推荐位
     .hot-sale {
         width: 100%;
         height: 210px;
@@ -239,6 +260,22 @@ export default {
                 color: $text-color-orange; 
                 font-size: $font-size-small; /*no*/
                 padding: 0 5px;
+            }
+        }
+        .sale-items {
+            margin-top: 8px;
+            border: 1px solid #ccc;  /*no*/
+            width: 100%;
+            height: 140px;
+            @include box-sizing;
+            overflow: hidden;
+            .item {
+                width: 460px;
+                height: 100%;
+                border: 1px solid #ff0000;
+                @include border-radius(1em);
+                @include color-background;
+                margin-right: 8px;
             }
         }
     }
