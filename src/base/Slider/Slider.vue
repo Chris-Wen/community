@@ -32,6 +32,10 @@ export default {
             type: Boolean,
             default: true
         },
+        isFullScreenSlider: {
+            type: Boolean,
+            default: true
+        },
         data: [],
     },
     data() {
@@ -41,30 +45,33 @@ export default {
         }
     },
     mounted() {
-        setTimeout(() => {
-            this._setSliderWidth()
-            this.showDots ? this._initDots() : ''
-            this._initSlider()
+        if (this.$refs.sliderGroup.children.length >1) {
+            setTimeout(() => {
+                this._setSliderWidth()
+                this.showDots ? this._initDots() : ''
+                this._initSlider()
 
-            this.autoPlay ? this._play() : ''
-        }, 20)
+                this.autoPlay ? this._play() : ''
+            }, 20)
 
-        window.addEventListener('resize', () => {
-            if (!this.slider) return;
-            this._setSliderWidth(true)
-            this.slider.refresh()
-        })
+            window.addEventListener('resize', () => {
+                if (!this.slider) return;
+                this._setSliderWidth(true)
+                this.slider.refresh()
+            })
+        }
     },
     methods: {
         _setSliderWidth(isResize) {
             this.children = this.$refs.sliderGroup.children
 
             let width = 0
-            let sliderWidth = this.$refs.slider.clientWidth
+            let sliderWidth = this.$refs.slider.clientWidth 
             for (let i = 0; i < this.children.length; i++) {
                 let child = this.children[i]
-                addClass(child, 'slider-item')
 
+                addClass(child, 'slider-item')
+                
                 child.style.width = sliderWidth + 'px'
                 width += sliderWidth
             }
@@ -80,15 +87,12 @@ export default {
                 snap: {
                     loop: this.loop,
                     threshold: 0.3,
-                    speed: 400
+                    speed: 600
                 }
             })
 
             this.slider.on('scrollEnd', () => {
                 let pageIndex = this.slider.getCurrentPage().pageX
-                // if (this.loop) {
-                //     pageIndex -= 1
-                // }
                 this.currentPageIndex = pageIndex
 
                 if (this.autoPlay) {
@@ -120,28 +124,14 @@ export default {
 @import "../../common/css/index.scss";
 
 .slider {
-    min-height: 1px;
     height: auto;
     position: relative;
     .slider-group {
         position: relative;
         overflow: hidden;
         white-space: nowrap;
-        .slider-item {
-            float: left;
-            @include box-sizing;
-            overflow: hidden;
-            text-align:center;
-            a {
-                display: block;
-                width: 100%;
-                overflow: hidden;
-            }
-            img {
-                display: block;
-                width: 100%;
-            }
-        }
+        img { width: 100% }
+        .slider-item { float: left }
     }
     .dots {
         position: absolute;

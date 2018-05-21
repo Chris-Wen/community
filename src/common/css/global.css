@@ -1,0 +1,21 @@
+.item-title {
+    color: black; 
+    font-weight: 800;
+    font-size: 16px; /*no*/
+    line-height: 1.2em;
+}
+.item-score-price {
+    margin: 10px 0 5px; 
+    color: #ff8313;
+}
+
+.item-score-price .zd-icon-score { 
+    width: 23px;
+    height: 23px;
+    margin-right: 5px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+.item-score-price .item-score, .item-price i { font-size: 1.4em }
+.item-score-price .item-price { color: red }

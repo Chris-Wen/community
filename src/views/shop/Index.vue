@@ -2,7 +2,7 @@
     <div class="shop-index">
         <!-- 顶部轮播图 -->
         <div v-if="recommends.length" class="banner">
-            <slider>
+            <slider >
                 <div v-for="(item, index) in recommends" :key="index">
                     <a :href="item.linkUrl">
                         <img class="needsclick" @load="loadImage" :src="item.picUrl">
@@ -27,19 +27,21 @@
         <div class="hot-sale">
             <p> <span> ❤ </span>  猜你喜欢</p>
             <div v-if="hotSales.length" class="sale-items"> 
-                <slider :showDots="isDosShow">
-                    <div v-for="(item, index) in hotSales" :key="index">
-                        <router-link tag="div" to="/" class="item">
-                            <div><img :src="preSrc + item.logo " /> </div>
-                            <div >
-                                <h3>{{item.sname}}</h3>
-                                <p class="recom_price">市场参考价：{{item.price}}元</p>
-                                <p class="recom_score"><i>{{item.score}}</i> 积分<span> + ￥ <i>{{item.score}}</i></span> </p>
+                <div>
+                    <slider :autoPlay="true" :showDots="false" :isFullScreenSlider="false" >
+                        <router-link tag="div" to="/"  v-for="(item, index) in hotSales" :key="index" >
+                            <div class="item">
+                                <div><img :src="preSrc + item.logo " /> </div>
+                                <div>
+                                    <p>{{item.sname}}</p>
+                                    <p class="recom_price">市场参考价：{{item.price}}元</p>
+                                    <p class="recom_score"><i>{{item.score}}</i> 积分<span v-if="item.price"> + ￥<i>{{item.price}}</i></span> </p>
+                                    <i>兑换</i>
+                                </div>
                             </div>
-                            <a href="javascript:;" >兑换</a>
                         </router-link>
-                    </div>
-                </slider>
+                    </slider>
+                </div>
             </div>
         </div>
         <!-- 商品推荐 -->
@@ -131,12 +133,11 @@ export default {
                 {linkUrl: '#2', picUrl: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109173040544.jpg'},
                 {linkUrl: '#2', picUrl: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109173040544.jpg'},
             ],
-            isDosShow: false,
             hotSales: [
-                {id: "2", sname: "宏基台式一体机电脑", logo: "20180109172324641.jpg", price: "6999", score: "8888"},
+                {id: "4", sname: "戴尔台式  一体机电脑", logo: "20180109172657362.jpg", price: "8999", score: "8888"},
                 {id: "3", sname: "神舟游戏本笔记本电脑", logo: "20180109172503958.jpg", price: "5000", score: "8888"},
-                // {id: "4", sname: "戴尔台式一体机电脑", logo: "20180109172657362.jpg", price: "8999", score: "8888"},
-                // {id: "3", sname: "神舟游戏本笔记本电脑", logo: "20180109172503958.jpg", price: "5000", score: "8888"}
+                {id: "2", sname: "宏基台式一体机电脑", logo: "20180109172324641.jpg", price: "6999", score: "8888"},
+                {id: "3", sname: "神舟游戏本笔记本电脑", logo: "20180109172503958.jpg", price: "5000", score: "8888"}
             ]
         }
     },
@@ -168,6 +169,7 @@ export default {
     .banner { 
         width: 100%; 
         height: 240px;
+        overflow: hidden;
         >div{ height: 240px; }
     }
     .dotted { 
@@ -256,6 +258,7 @@ export default {
             font-size: $font-size-normal; /*no*/
             color: black;
             font-weight: 800;
+            margin-bottom: 8px;
             span { 
                 color: $text-color-orange; 
                 font-size: $font-size-small; /*no*/
@@ -263,20 +266,71 @@ export default {
             }
         }
         .sale-items {
-            margin-top: 8px;
-            border: 1px solid #ccc;  /*no*/
             width: 100%;
             height: 140px;
-            @include box-sizing;
             overflow: hidden;
-            .item {
-                width: 460px;
-                height: 100%;
-                border: 1px solid #ff0000;
-                @include border-radius(1em);
-                @include color-background;
-                margin-right: 8px;
+            >div {
+                width: 78%;
+                @include box-sizing;
+               .item {
+                    position: relative;
+                    border-right: 10px solid #ebebeb;
+                    @include border-radius(1em);
+                    @include color-background;
+                    @include flex-center;
+                    div {
+                        @include box-sizing;
+                        &:first-child {
+                            line-height: 140px;
+                            width: 30.43%;
+                            text-align: center;
+                            img { 
+                                height: 100px; 
+                                @include border-radius(1em);
+                            }
+                        } 
+                        &:nth-child(2) {
+                            padding: 25px 0;
+                            max-width: 60%;
+                            >p {
+                                &:first-child {
+                                    font-size: $font-size-small; /*no*/
+                                    font-weight: 800;
+                                    @include no-wrap;
+                                }
+                                &:nth-child(2) {
+                                    color: $text-color-l;
+                                    font-size: $font-size-min; /*no*/
+                                    margin: 5px 0 15px;
+                                    transform: scale(0.9);
+                                    margin-left: -5%;
+                                }
+                                &:nth-child(3) {
+                                    color: $text-color-orange;
+                                    span:nth-child(2) { color: red } 
+                                }
+                            }
+                            >i {
+                                text-align: center;
+                                display: block;
+                                width: 22%;
+                                max-width: 150px;
+                                height: 1.6em;
+                                line-height: 1.6em;
+                                position: absolute;
+                                margin: auto;
+                                top: 0;
+                                bottom: 0;
+                                right: 15px;
+                                color: #fff;
+                                background: $text-color-orange;
+                                @include border-radius(1em);
+                            }
+                        }
+                    }
+                } 
             }
+            
         }
     }
     //背景图（推荐，分类）

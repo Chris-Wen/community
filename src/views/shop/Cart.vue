@@ -219,9 +219,10 @@ export default {
                             color: black; 
                             font-weight: 800;
                             font-size: $font-size-normal; /*no*/
+                            line-height: 1.2em;
                         }
                         &.price {
-                            margin: 15px 0 5px; 
+                            margin: 10px 0 5px; 
                             color: $text-color-orange;
                             .zd-icon-score { 
                                 width: 23px;
