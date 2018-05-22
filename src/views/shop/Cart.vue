@@ -2,31 +2,33 @@
     <div class="cart">
         <div class="content" v-if="data">
             <ul class="list">
-                <li v-for="(item, index) in data" :key="index">
-                    <div class="item">
-                        <div class="check-box">
-                            <div @click.stop="handlePlanPay($event, index)">
-                                <i name="checkbox" class="check"></i>
+                <li v-for="(item, index) in data" :key="index" @touchstart="touchStart" @touchend="touchEnd">
+                    <slider-delete @handleDelete="deleteItem" :index="index">
+                        <div class="item">
+                            <div class="check-box">
+                                <div @click.stop="handlePlanPay($event, index)">
+                                    <i name="checkbox" class="check"></i>
+                                </div>
+                                <router-link tag="div" to="">
+                                    <img src="../../common/images/shop/hold/hotsale1.jpg" >
+                                </router-link>
                             </div>
-							 <router-link tag="div" to="">
-                                 <img src="../../common/images/shop/hold/hotsale1.jpg" >
-                             </router-link>
-						</div>
-						<div class="goods-cont">
-							<p>{{item.title}}</p>
-							<p class="price"> 
-								<em class="zd-icon-score"></em>积分 
-								<span class="item-score">{{item.score}}</span>
-								<span v-if="item.price" class="item-price">+ ￥ <i>{{item.price}}</i> </span> 
-							</p>
-							<p>参考价：1233.00元 </p>
-							<div class="btn-group">
-								<a href="javascript:;" class="btn" @click="add($event, index)">+</a>
-								<input type="number" max="99" min="0" v-model="item.number" readonly/>
-								<a href="javascript:;" class="btn" @click="reduce($event, index)">-</a>
-							</div>
-						</div>    
-                    </div>                    
+                            <div class="goods-cont">
+                                <p>{{item.title}}</p>
+                                <p class="price"> 
+                                    <em class="zd-icon-score"></em>积分 
+                                    <span class="item-score">{{item.score}}</span>
+                                    <span v-if="item.price" class="item-price">+ ￥ <i>{{item.price}}</i> </span> 
+                                </p>
+                                <p>参考价：1233.00元 </p>
+                                <div class="btn-group">
+                                    <a href="javascript:;" class="btn" @click="add($event, index)">+</a>
+                                    <input type="number" max="99" min="0" v-model="item.number" readonly/>
+                                    <a href="javascript:;" class="btn" @click="reduce($event, index)">-</a>
+                                </div>
+                            </div>    
+                        </div> 
+                    </slider-delete>                   
                 </li>
             </ul>
             <div class="bottom">
@@ -56,11 +58,13 @@
 </template>
 
 <script>
+import SliderDelete from 'base/SliderDelete/SliderDelete'
 import { removeArrayelement } from 'common/js/tools'
-import { toggleClass } from 'common/js/dom'
+import { toggleClass, removeClass, hasClass } from 'common/js/dom'
 import { mapMutations, mapActions } from 'vuex'
 
 export default {
+    components: { SliderDelete },
     data() {
         return {
             titleInfo: {
@@ -70,10 +74,18 @@ export default {
                 link: '/',
                 showBottomTab: true
             },
+            sliderDeleteParams: {
+                lastTouch: '',
+                targetTouch: ''
+            },
             data: [
                 {id: 1, price: 123, number: 1, score: 1000 , title: '银杏叶片'},
                 {id: 2, price: 9.99, number: 19, score: 2000 , title: '伊利股份'},
-                {id: 3, price: 1.5, number: 3, score: 888 , title: '栀子金花丸'}
+                {id: 3, price: 1.5, number: 3, score: 888 , title: '栀子金花丸'},
+                {id: 1, price: 123, number: 1, score: 1000 , title: '银杏叶片'},
+                {id: 2, price: 9.99, number: 19, score: 2000 , title: '伊利股份'},
+                {id: 2, price: 9.99, number: 19, score: 2000 , title: '伊利股份'},
+                {id: 3, price: 1.5, number: 3, score: 888 , title: '栀子金花丸'},
             ],       
             isAllSelected: false,       //是否全部选中
             num: {},                    //商品数量
@@ -129,7 +141,54 @@ export default {
             document.getElementsByName("checkbox").forEach(element => {
                 element.className = newClass
             })
+        },
 
+        // 左滑删除一系列操作
+        deleteItem(index){
+            let checkbox = document.getElementsByName("checkbox"),   checked = [];
+            for (let i=index+1; i<checkbox.length; i++) {
+                if (checkbox[i]) {
+                    if (hasClass(checkbox[i], 'self-icon-check-circle')) {
+                        checked.push(i)
+                    }
+                    checkbox[i].className = 'check'
+                }
+            }
+            let deleteItem = this.data.splice(index, 1)
+            //删除准备付款数据中对应数据
+            for (let i=0; i<this.planToPayData.length; i++) {
+                if (deleteItem[0]===this.planToPayData[i]) {
+                    this.planToPayData.splice(i, 1);
+                    break; 
+                }
+            }
+            //####          api执行删除操作  参数： data[index].id
+            //判断改变组件状态 （是否选中为准备付款） 样式修改
+            if (checked.length>0) {
+                for (let i=0; i<checked.length; i++) {
+                    let j = checked[i] - 1;
+                    checkbox[j] ? checkbox[j].className = 'self-icon-check-circle' : '' 
+                }
+            } else {
+                for (let i=index; i<checkbox.length; i++) {
+                    checkbox[i].className = 'check'
+                }
+            }
+            
+            this.isAllSelected = this.data.length !==0  && this.data.length  == this.planToPayData.length
+            this.dataCalc()
+        },
+        touchStart(ev) {
+            ev = ev || event;
+            this.sliderDeleteParams.lastTouch = this.sliderDeleteParams.targetTouch;
+            this.sliderDeleteParams.targetTouch = ev.currentTarget;
+        },
+        touchEnd(ev) {
+            ev = ev || event;
+            //若上一个左滑项与当前触摸项不是同一个。上一个左滑项右滑，不再显示删除按钮
+            if ( this.sliderDeleteParams.lastTouch && (this.sliderDeleteParams.lastTouch !== this.sliderDeleteParams.targetTouch)) { 
+                removeClass(this.sliderDeleteParams.lastTouch.children[0].children[0], 'left-slider')
+            }   
         }
     },
     mounted() {
@@ -190,7 +249,6 @@ export default {
                 width: 100%;
                 height: 100%;
                 position: relative;
-                // @include flex-center;
                 display: flex;
                 .check-box {
                     width: 30%;
@@ -240,7 +298,7 @@ export default {
                     }
                     .btn-group {
                         position: absolute;
-                        bottom: 10px;
+                        top: 100px;
                         right: 20px;
                         text-align: center;
                         span {

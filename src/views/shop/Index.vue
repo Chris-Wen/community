@@ -2,7 +2,7 @@
     <div class="shop-index">
         <!-- 顶部轮播图 -->
         <div v-if="recommends.length" class="banner">
-            <slider >
+            <slider>
                 <div v-for="(item, index) in recommends" :key="index">
                     <a :href="item.linkUrl">
                         <img class="needsclick" @load="loadImage" :src="item.picUrl">
@@ -17,7 +17,7 @@
                 <p> <span>我的积分</span> <i>{{this.$store.state.userInfo.score || '***'}}</i></p>  
             </div>
             <ul class="score-bar">
-                <router-link tag="li" to="points">  <i></i>  <p>赚积分</p>    </router-link >
+                <router-link tag="li" to="/shop/strategy">  <i></i>  <p>赚积分</p>    </router-link >
                 <router-link tag="li" to="draw">    <i></i>  <p>积分抽奖</p>  </router-link >
                 <router-link tag="li" to="order">    <i></i> <p>我的订单</p>  </router-link >
                 <router-link tag="li" to="address">  <i></i> <p>地址管理</p>  </router-link >
