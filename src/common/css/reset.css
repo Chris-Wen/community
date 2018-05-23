@@ -81,6 +81,14 @@ body {
     line-height: 1 ;
 }
 
+/* 特别处理 */
+h1 { 
+    font-size: 16px; /*no*/ 
+    font-weight: 800;
+    line-height: 1.2em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 
 
 .popup span {

@@ -5,7 +5,7 @@
                 <!-- 插槽中放具体项目中需要内容         -->   
                 <slot></slot> <!-- 根据需要可命名插槽 -->
             </div>
-            <div class="remove" ref="remove" @click.stop="deleteItem(index)"><p>删除</p> </div>
+            <div class="remove" ref="remove" @click.stop="deleteItem"><p>删除</p> </div>
         </div>
     </div>
 </template>
@@ -15,7 +15,6 @@ import { hasClass } from 'common/js/dom'
 
 export default {
     name: 'SliderDelete',
-    props: { index: { type: Number } },
     data() {
         return {
             start: {X:0, Y:0},          //触摸位置
@@ -57,8 +56,8 @@ export default {
                     }
                 }
             },    
-        deleteItem(index) {
-            this.$emit('handleDelete', index)
+        deleteItem() {
+            this.$emit('handleDelete')
         }  
     }
      
@@ -76,7 +75,7 @@ export default {
     overflow: hidden;
     @include box-sizing;
     .slider{
-        width: 130%;
+        width: 125%;
         height:auto;
         display: flex;
         align-items: stretch;
@@ -89,7 +88,7 @@ export default {
         }
         .remove{
             display: inline-block;
-            width: 30%;
+            width: 25%;
             background:red;
             color: #fff;
             text-align: center;
@@ -102,7 +101,7 @@ export default {
         }
     }
     .left-slider {
-        margin-left: -30%;
+        margin-left: -25%;
     }
 }
 </style>

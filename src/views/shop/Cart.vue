@@ -3,7 +3,7 @@
         <div class="content" v-if="data">
             <ul class="list">
                 <li v-for="(item, index) in data" :key="index" @touchstart="touchStart" @touchend="touchEnd">
-                    <slider-delete @handleDelete="deleteItem" :index="index">
+                    <slider-delete @handleDelete="deleteItem(index)">
                         <div class="item">
                             <div class="check-box">
                                 <div @click.stop="handlePlanPay($event, index)">

@@ -18,9 +18,9 @@
             </div>
             <ul class="score-bar">
                 <router-link tag="li" to="/shop/strategy">  <i></i>  <p>赚积分</p>    </router-link >
-                <router-link tag="li" to="draw">    <i></i>  <p>积分抽奖</p>  </router-link >
+                <router-link tag="li" to="/">    <i></i>  <p>积分抽奖</p>  </router-link >
                 <router-link tag="li" to="order">    <i></i> <p>我的订单</p>  </router-link >
-                <router-link tag="li" to="address">  <i></i> <p>地址管理</p>  </router-link >
+                <router-link tag="li" to="/shop/address">  <i></i> <p>地址管理</p>  </router-link >
             </ul>
         </div>
         <!-- 商品推荐位 -->
