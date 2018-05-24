@@ -25,7 +25,7 @@
             <img src="../../common/images/icons/5-1.png"> 
             <p> 我的 </p>
         </router-link>
-    </div>
+    </div>  
 </template>
 
 <script>

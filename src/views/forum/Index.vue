@@ -1,12 +1,13 @@
 <template>
     <div class="forum-index">
         <div class="top-tab">
-            <p :class="{active: showIndex==1}"  @click="showIndex = 1">交流讨论</p>
-            <p :class="{active: showIndex==2}"  @click="showIndex = 2">社区活动</p>
-            <p :class="{active: showIndex==3}"  @click="showIndex = 3">掌动爆料站</p>
-            <p :class="{active: showIndex==4}"  @click="showIndex = 4">新游推荐</p>
+            <p :class="{active: showIndex==1}"  @click="showIndex = 1"> <router-link to="/forum/news">交流讨论</router-link> </p>
+            <p :class="{active: showIndex==2}"  @click="showIndex = 2"><router-link to="/forum/news">社区活动</router-link></p>
+            <p :class="{active: showIndex==3}"  @click="showIndex = 3"><router-link to="/forum/news">掌动爆料站</router-link> </p>
+            <p :class="{active: showIndex==4}"  @click="showIndex = 4"><router-link to="/forum/news">新游推荐</router-link></p>
         </div>
-        <ul class="recommend">
+        <router-view></router-view>
+        <!-- <ul class="recommend">
             <li>
                 <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
                 <div>
@@ -74,7 +75,7 @@
                     <span ><i></i> 4-26</span>
                 </div>
             </li>
-        </ul>
+        </ul> -->
     </div>
 </template>
 
@@ -122,8 +123,9 @@ export default {
         >p { 
             font-size: $font-size-normal; /*no*/
             font-weight: 500;
+            a, a:visited { color: black }
             &.active {
-                color: $text-color-orange;
+                a { color: $text-color-orange; }
                 font-weight: 800;
             }
         }

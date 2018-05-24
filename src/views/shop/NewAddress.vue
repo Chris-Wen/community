@@ -2,40 +2,29 @@
     <div class="new-address">
         <ul>
             <li>
-                <p><label for="name">收货人</label>：<input id="name" type="text"></p>  
+                <p><label for="name">收货人</label>：<input id="name" type="text" placeholder="请输入姓名"></p>  
             </li>
             <li>
-                <p><label for="phone">联系方式</label>：<input id="phone" type="text"></p>
+                <p><label for="phone">联系方式</label>：<input v-model.lazy="phone" id="phone" type="text" placeholder="请输入11位手机号"></p>
             </li>
             <li class="selection">
                 <span>所在地区</span>：
-                <select name="province">
-                    <option value="1">请选择省份市级</option>
-                    <option value="1">请选择省份市级</option>
-                    <option value="1">请选择省份市级</option>
-                    <option value="1">请选择省份市级</option>
-                    <option value="1">请选择省份市级</option>
-                    <option value="1">请选择省份市级</option>
-                    <option value="1">请选择省份市级</option>
-                    <option value="1">请选择省份市级</option>
-                    <option value="1">请选择省份市级</option>
-                    <option value="1">请选择省份市级</option>
-                    <option value="1">请选择省份市级</option>
-                    <option value="1">请选择省份市级</option>
+                <select name="province" v-model="selected.province" id="province">
+                    <option v-for="(val, index) in database.province" :value="index" :key="index">{{val}}</option>
                 </select>
-                <select name="city">
-                    <option value="1">请选择</option>
+                <select name="city" v-model="selected.city" id="city">
+                    <option v-for="(val, index) in database.city" :value="index" :key="index">{{val}}</option>
                 </select>
-                <select name="area">
-                    <option value="1"></option>
+                <select name="area" v-model="selected.area" id="area">
+                    <option v-for="(val, index) in database.area" :value="index" :key="index">{{val}}</option>
                 </select>
             </li>
             <li>
-                <label for="address">详细地址</label>：<textarea id="address" rows="4"></textarea>
+                <label for="address">详细地址</label>：<textarea id="address" rows="4" placeholder="请填写详细地址（如门牌号/楼层号，限100字）"></textarea>
             </li>
         </ul>
 
-        <p class="save">保存并使用</p>
+        <p class="save" @click="submit">保存并使用</p>
     </div>    
 </template>
 
@@ -43,6 +32,7 @@
 import { mapMutations, mapActions } from 'vuex'
 import SliderDelete from 'base/SliderDelete/SliderDelete'
 import { removeClass } from 'common/js/dom'
+import { addressDatabase } from 'common/js/address_database'
 
 export default {
     components: { SliderDelete },
@@ -59,7 +49,18 @@ export default {
             sliderDeleteParams: {
                 lastTouch: '',
                 targetTouch: ''
-            }
+            },
+            selected: {
+                province: 110000,
+                city: 110100,
+                area: 110101
+            },
+            database: {
+                province: '',
+                city:　'',
+                area: ''
+            },
+            phone: ''
         }
     },
     methods: {
@@ -70,6 +71,14 @@ export default {
         setDefaultAddress(aid) {
             
         },
+        _initAddressOption() {
+            this.database.province = addressDatabase['100000']
+            this.database.city = addressDatabase['110000']
+            this.database.area = addressDatabase['110100']
+        },
+        submit() {
+            console.log('submit')
+        }
     },
     mounted() {
         this.handleTitle({
@@ -77,6 +86,30 @@ export default {
             showIcon: this.titleInfo.showIcon,
             showBottomTab: this.titleInfo.showBottomTab
         })
+
+        this._initAddressOption()
+    },
+    watch: {
+        'selected.province': function(newVal, oldVal) {
+            let city = addressDatabase[newVal] || { "0": '暂无数据' }
+            this.database.city = city
+
+            this.selected.city = Object.keys(city)[0]
+            if (this.selected.city==0) { this.selected.area = 0 }
+        },
+        'selected.city': function(newVal) {
+            let area = addressDatabase[newVal] || { "0": '暂无数据' }
+            this.database.area = area
+
+            this.selected.area = Object.keys(area)[0]  
+
+        },
+        phone: function(newVal) {
+            let reg = /^1[3-9]\d{9}$/
+            if (!newVal.match(reg)) {
+                console.log('弹窗手机号格式错误')
+            }
+        }
     }
 }
 </script>
