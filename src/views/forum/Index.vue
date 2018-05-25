@@ -1,81 +1,16 @@
 <template>
     <div class="forum-index">
         <div class="top-tab">
-            <p :class="{active: showIndex==1}"  @click="showIndex = 1"> <router-link to="/forum/news">交流讨论</router-link> </p>
-            <p :class="{active: showIndex==2}"  @click="showIndex = 2"><router-link to="/forum/news">社区活动</router-link></p>
+            <p :class="{active: showIndex==1}"  @click="showIndex = 1"> <router-link to="/forum">交流讨论</router-link> </p>
+            <p :class="{active: showIndex==2}"  @click="showIndex = 2"><router-link to="/forum/activity">社区活动</router-link></p>
             <p :class="{active: showIndex==3}"  @click="showIndex = 3"><router-link to="/forum/news">掌动爆料站</router-link> </p>
-            <p :class="{active: showIndex==4}"  @click="showIndex = 4"><router-link to="/forum/news">新游推荐</router-link></p>
+            <p :class="{active: showIndex==4}"  @click="showIndex = 4"><router-link to="/forum/game">新游推荐</router-link></p>
         </div>
-        <router-view></router-view>
-        <!-- <ul class="recommend">
-            <li>
-                <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
-                <div>
-                    <span><i></i> 用户id</span>
-                    <span ><i></i> 999</span>
-                    <span ><i></i> 4-26</span>
-                </div>
-            </li>
-            <li>
-                <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
-                <div>
-                    <span><i></i> 用户id</span>
-                    <span><i></i> 999</span>
-                    <span><i></i> 4-26</span>
-                </div>
-            </li>
-        </ul>
-        <p class="part"> 用户帖子 </p>
-        <ul class="article">
-            <li>
-                <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
-                <div>
-                    <span><i></i> 用户id</span>
-                    <span ><i></i> 999</span>
-                    <span ><i></i> 4-26</span>
-                </div>
-            </li>
-            <li>
-                <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
-                <div>
-                    <span><i></i> 用户id</span>
-                    <span ><i></i> 999</span>
-                    <span ><i></i> 4-26</span>
-                </div>
-            </li>
-            <li>
-                <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
-                <div>
-                    <span><i></i> 用户id</span>
-                    <span ><i></i> 999</span>
-                    <span ><i></i> 4-26</span>
-                </div>
-            </li>
-            <li>
-                <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
-                <div>
-                    <span><i></i> 用户id</span>
-                    <span ><i></i> 999</span>
-                    <span ><i></i> 4-26</span>
-                </div>
-            </li>
-            <li>
-                <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
-                <div>
-                    <span><i></i> 用户id</span>
-                    <span ><i></i> 999</span>
-                    <span ><i></i> 4-26</span>
-                </div>
-            </li>
-            <li>
-                <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
-                <div>
-                    <span><i></i> 用户id</span>
-                    <span ><i></i> 999</span>
-                    <span ><i></i> 4-26</span>
-                </div>
-            </li>
-        </ul> -->
+        <div class="view">
+            <transition name="slide-fade">
+                <router-view></router-view>
+            </transition>
+        </div>
     </div>
 </template>
 
@@ -112,14 +47,16 @@ export default {
     font-size: $font-size-small; /*no*/
     .top-tab {
         position: fixed;
+        z-index: 10;
         top: 100px;
         width: 100%;
         height: 70px;
-        @include box-sizing;
+        line-height: 70px;
         background-color: $bg-color-d;
         padding: 0 50px;
+        border-bottom: 1px solid $text-color-orange;  /*no*/
+        @include box-sizing;
         @include flex-between;
-        line-height: 70px;
         >p { 
             font-size: $font-size-normal; /*no*/
             font-weight: 500;
@@ -130,69 +67,18 @@ export default {
             }
         }
     }
-    ul li {
-        height: 142px;
-        width: 100%;
-        @include box-sizing;
-        border-top: 1px solid $text-color-orange; /*no*/
-        padding: 20px 40px 10px;
-        &:first-child { border: 0; }
-        p { 
-            height: 2.1em;
-            overflow: hidden;
-            @include text-justify(1.2em);
-            margin-bottom: 30px;
-        }
-        div {
-            span { 
-                &:not(:first-child) { float: right }
-                &:last-child { margin-right: 15px; }
-                i {
-                    display: inline-block;
-                    vertical-align: middle;
-                    margin-right: 8px;
-                    width: 26px;
-                    height: 26px;
-                    background-position: center;
-                    background-repeat: no-repeat;
-                }
-                &:first-child i {
-                    background-image: url("../../common/images/icons/icon-user.jpg");
-                    background-size: 18px 26px;
-                    margin-top: -5px;                    
-                }
-                &:nth-child(2) i {
-                    background-image: url("../../common/images/icons/icon-comment.jpg");
-                    background-size: 26px 26px;
-                }
-                &:nth-child(3) i {
-                    background-image: url("../../common/images/icons/icon-time.jpg");
-                    background-size: 26px 26px;
-                }
-             }
-        }
-    }
-    .recommend {
+    .view { 
         margin-top: 73px;
-        @include color-background;
-        border-top: 1px solid $text-color-orange-d;
-        border-bottom: 1px solid $text-color-orange-d;
-        p { color: red }
-        li:last-child { 
-            p { font-weight: 600; }
+        .slide-fade-enter-active {
+            transition: all .3s ease;
         }
-    }
-    .part {
-        width: 100%;
-        height: 40px;
-        line-height: 40px;
-        text-indent: 2em;
-        font-size: $font-size-small; /*no*/
-        color: $text-color-orange-d;
-        background-color: $bg-color-d;
-    }
-    .article {
-        @include color-background;
+        .slide-fade-leave-active {
+            transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+        }
+        .slide-fade-enter, .slide-fade-leave-to {
+            transform: translateX(10px);
+            opacity: 0;
+        } 
     }
 }
 

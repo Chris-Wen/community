@@ -97,19 +97,3 @@ input:-ms-input-placeholder,
 textarea:-ms-input-placeholder{  /* Internet Explorer 10-11 */ 
     color:#ccc;
 }
-
-
-/* 特别处理 */
-h1 { 
-    font-size: 16px; /*no*/ 
-    font-weight: 800;
-    line-height: 1.2em;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-
-.popup span {
-    margin: .5em 1em;
-    font-size: 14px; /*no*/
-}

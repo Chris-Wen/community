@@ -15,6 +15,7 @@ Vue.use(Vuex)
 
 import './common/css/self-icons.css'
 import './common/css/reset.css'
+import './common/css/global.css'
 fastclick.attach(document.body)
 
 Vue.prototype.preSrc = 'http://221.123.178.232/smallgamesdk/Public/Uploads/'

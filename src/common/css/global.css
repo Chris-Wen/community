@@ -1,3 +1,36 @@
+/* 特别处理 */
+h1,h2 { 
+    text-align: justify;
+    font-weight: 800;
+    line-height: 1.2em;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+h1 { font-size: 16px; /*no*/}
+h2 { font-size: 14px;  /*no*/}
+
+/* flex布局 */
+.flex-between {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+}
+
+
+.popup span {
+    margin: .5em 1em;
+    font-size: 14px; /*no*/
+}
+
+
+.dotted { 
+    width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+
+
 .item-title {
     color: black; 
     font-weight: 800;
