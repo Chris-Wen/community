@@ -5,22 +5,22 @@
             <p class="dotted">{{'....'.repeat(40)}}</p>
         </div>
         <ul class="new-game">
-            <li>
+            <router-link tag="li" to="/forum/game_info">
                 <h1>{{'游戏名称'}}</h1>
                 <img src="http://221.123.178.232/smallgamesdk/Public/Uploads/20180109173040544.jpg" >
                 <div>
                     <span><i>★</i> {{5.5}}</span>
                     <p>{{"游戏介绍游戏介绍游戏介绍游戏介绍游戏介绍游戏介绍游戏介绍"}}</p>
                 </div>
-            </li>
-            <li>
+            </router-link>
+            <router-link tag="li" to="/forum/game_info">
                 <h1>{{'游戏名称'}}</h1>
                 <img src="http://221.123.178.232/smallgamesdk/Public/Uploads/20180109173040544.jpg">
                 <div>
                     <span><i>★</i> {{5.5}}</span>
                     <p>{{"游戏介绍游戏介绍游戏介绍游戏介绍游戏介绍游戏介绍游戏介绍"}}</p>
                 </div>
-            </li>
+            </router-link>
         </ul>
         <div class="part game-part">
             <p class="mark"><i>热门游戏</i></p>
@@ -29,24 +29,24 @@
 
         <ul class="top-game flex-between">
             <li>
-                <img src="" alt="">
+                <img src="http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172503958.jpg" alt="">
                 <h2>游戏名称</h2>
-                <p>  <span>★</span>5.5</p>
+                <p>类别  <span><i>★</i> 5.5</span></p>
             </li>
             <li>
-                <img src="" alt="">
+                <img src="http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172503958.jpg" alt="">
                 <h2>游戏名称</h2>
-                <p>  <span>★</span>5.5</p>
+                <p>类别  <span><i>★</i> 5.5</span></p>
             </li>
             <li>
-                <img src="" alt="">
+                <img src="http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172503958.jpg" alt="">
                 <h2>游戏名称</h2>
-                <p>  <span>★</span>5.5</p>
+                <p>类别  <span><i>★</i> 5.5</span></p>
             </li>
             <li>
-                <img src="" alt="">
+                <img src="http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172503958.jpg" alt="">
                 <h2>游戏名称</h2>
-                <p>  <span>★</span>5.5</p>
+                <p>类别  <span><i>★</i> 5.5</span></p>
             </li>
         </ul>
 
@@ -127,6 +127,19 @@ export default {
             margin-bottom: 20px;
             text-align: center;
             h2 { text-align: center }
+            >img { 
+                height: 180px; width: 180px;
+                @include border-radius(1em); 
+                margin: 20px 0 10px 0; 
+            }
+            >p:last-child {
+                text-align: left;
+                margin-top: 10px;
+                padding: 0 1em;
+                span { float: right; }
+                color: $text-color-l;
+                font-size: $font-size-min;  /*no*/
+            }
         }
     }
 }

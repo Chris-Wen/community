@@ -2,9 +2,9 @@
     <div class="news">
         <div class="top-news">
             <p class="mark"><i>游民资讯</i></p>
-            <p class="dotted">{{'....'.repeat(40)}}</p>
+            <p class="dotted">{{'......'.repeat(30)}}</p>
             <ul>
-                <li>
+                <router-link tag="li" to="/forum/article">
                     <div class="info">
                         <h2>{{"游民资讯游民资讯游民资讯游民资讯游民资讯游民资讯游民资讯"}}</h2>
                         <div>
@@ -13,8 +13,8 @@
                         </div>
                     </div>
                     <div class="img"><img src="../../common/images/fiction/BANNER.jpg" alt=""></div>
-                </li>
-                <li>
+                </router-link>
+                <router-link tag="li" to="/forum/article">
                     <div class="info">
                         <h2>{{"游民资讯游民资讯"}}</h2>
                         <div>
@@ -23,12 +23,12 @@
                         </div>
                     </div>
                     <div class="img"><img src="../../common/images/fiction/BANNER.jpg" alt=""></div>
-                </li>
+                </router-link>
             </ul>
         </div>
         <div class="game-news">
             <p class="mark"><i>泛游戏</i></p>
-            <p class="dotted">{{'....'.repeat(40)}}</p>
+            <p class="dotted">{{'......'.repeat(30)}}</p>
             <ul>
                 <li>
                     <div class="info">

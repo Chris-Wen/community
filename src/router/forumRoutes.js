@@ -3,6 +3,8 @@ import ForumNews from '@/views/forum/News'
 import ForumTopiclist from '@/views/forum/Topiclist'
 import ForumActivities from '@/views/forum/Activities'
 import GameIntro from '@/views/forum/Game'
+import GameInfo from '@/views/forum/GameInfo'
+import ForumArticle from '@/views/forum/Article'
 
 
 export const forumRoutes = [
@@ -26,5 +28,13 @@ export const forumRoutes = [
                 component: GameIntro
             }
         ]
+    },
+    {
+        path: '/forum/game_info',
+        component: GameInfo
+    },
+    {
+        path: '/forum/article',
+        component: ForumArticle
     }
 ]
