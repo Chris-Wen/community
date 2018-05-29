@@ -9,6 +9,7 @@ import Register from '@/views/common/Register'
 import { shopRoutes } from './shopRoutes.js'
 import { fictionRoutes } from './fictionRoutes.js'
 import { forumRoutes } from './forumRoutes.js'
+import { centerRoutes } from './centerRoutes.js'
 
 Vue.use(Router)
 
@@ -37,6 +38,7 @@ export default new Router({
     },
     ...shopRoutes,
     ...fictionRoutes,
-    ...forumRoutes
+    ...forumRoutes,
+    ...centerRoutes
   ]
 })

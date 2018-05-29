@@ -4,6 +4,7 @@
             <div class="prize" ref="turnplate"></div>
             <div class="btn-draw"  @click="startRotate"></div>
         </div>
+        <p style="font-size: 16px; color: red; font-weight: 800">抽奖次数： {{lotteryTicket}}</p>
         <div class="rule">
             <p>抽奖规则</p>
             <p>规则1:每天抽奖次数最多为5次</p>
@@ -27,6 +28,19 @@ export default {
                 title:  '掌动社区——快乐生活是我们的追求！',
                 showIcon:   false
             },
+            lotteryTicket: 5,   //抽奖次数
+            prize_list: [
+                {
+                    img: '',            //奖品图片
+                    name: '奖品1',      //奖品名称
+                    isPrize: 1          //是否为奖品
+                },
+                {   img: '',  name: '奖品2',   isPrize: 1  },
+                {   img: '',  name: '奖品3',   isPrize: 1  },
+                {   img: '',  name: '奖品4',   isPrize: 1  },
+                {   img: '',  name: '奖品5',   isPrize: 1  },
+                {   img: '',  name: '未中奖',   isPrize: 0 }
+            ],
             isRotating: false
         }
     },
@@ -34,27 +48,48 @@ export default {
     methods: {
         ...mapActions([ 'handleTitle']),
         startRotate() {
-            if (this.isRotating) { 
-                console.log(123);
-                return 
-            }
+            if (this.isRotating) {  console.log('正在抽奖中'); return;  }
+            if (this.lotteryTicket==0) { console.log('您今天没有抽奖次数了'); return; }
             Toast({
                     message: '正在抽奖中',
                     position: 'middle',
-                    duration: 2000,
+                    duration: 1000,
                     className: 'popup'
                 });
-            let deg = 0;
-            console.log(this.isRotating)
-            var timer = setInterval(()=>{
-                this.isRotating = true;
-                deg += 20;                
-                this.$refs.turnplate.style = `transform:rotate(${deg}deg)`
-            },30);
+            this.lotteryTicket --;
+            this.isRotating = true;
+            this.$refs.turnplate.style = 0;
+            
+            let deg, index = Math.random(1);
+            switch (true) {
+                case 0<= index < 1/6:   deg = 0; 
+                        break;
+                case 1/6<= index < 2/6: deg = 1;
+                        break;
+                case 2/6<= index < 3/6: deg = 2;
+                        break;
+                case 3/6<= index < 4/6: deg = 3;
+                        break;
+                case 4/6<= index < 5/6: deg = 4;
+                        break;
+                case 5/6<= index <= 1:  deg = 5;
+                        break;
+            }
+
+            let final_rotate_deg = 60*deg;
+            let random = Math.random(1) > 0.5 ? 1 : -1;
+            let random_deg = random * Math.floor( Math.random(1)*25 );
+            // console.log(random_deg)
+            let total_rotate_deg = 360*5 + final_rotate_deg + random_deg;
+
+            setTimeout(()=>{              
+                this.$refs.turnplate.style = `transform: rotate(${total_rotate_deg}deg); transition: all 5s ease`
+            }, 30);
             setTimeout(() => {
-                clearInterval(timer);
                 this.isRotating = false;
-            }, 4000);
+
+
+            }, 5500);
         } 
     },
     mounted() {     

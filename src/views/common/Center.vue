@@ -12,7 +12,7 @@
                     <img src="../../common/images/icons/icon-sign.png" />
                     <p>签到</p> 
             </router-link>
-            <router-link  tag="li" to="/"> 
+            <router-link  tag="li" to="/center/msg"> 
                     <i class="badge">{{1}}</i>
                     <img style="margin-top: 15px;" class="spe-icon" src="../../common/images/icons/icon-msg.png" /> 
                     <p>消息</p>
@@ -35,7 +35,7 @@
             </router-link>
             <router-link  tag="li" to="/"> 
                     <img style="margin-top: 15px;" class="spe-icon" src="../../common/images/icons/icon-img.png" /> 
-                    <p>相册</p>
+                    <p>仓库</p>
             </router-link>
             <router-link  tag="li" to="/"> 
                     <img src="../../common/images/icons/icon-set.png" /> 
