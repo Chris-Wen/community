@@ -17,7 +17,7 @@
                     <img style="margin-top: 15px;" class="spe-icon" src="../../common/images/icons/icon-msg.png" /> 
                     <p>消息</p>
             </router-link>
-            <router-link  tag="li" to="/"> 
+            <router-link  tag="li" to="/center/friend"> 
                     <img src="../../common/images/icons/icon-friend.png" /> 
                     <p>好友</p>
             </router-link>
@@ -25,7 +25,7 @@
                     <img src="../../common/images/icons/icon-charge.png" /> 
                     <p>充值</p>
             </router-link>
-            <router-link  tag="li" to="/"> 
+            <router-link  tag="li" to="/center/mark"> 
                     <img src="../../common/images/icons/icon-article.png" /> 
                     <p>帖子</p>
             </router-link>
@@ -45,7 +45,7 @@
                     <img  class="spe-icon"  src="../../common/images/icons/icon-draw.png" /> 
                     <p>我的抽奖</p>
             </router-link>
-            <router-link  tag="li" to="/"> 
+            <router-link  tag="li" to="/center/account"> 
                     <img   class="spe-icon"  src="../../common/images/icons/icon-change.png" /> 
                     <p>切换账号</p>
             </router-link>
