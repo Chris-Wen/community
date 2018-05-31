@@ -102,3 +102,9 @@
     background-image: $icon;
     @include background-image-center;
 }
+
+@mixin big-background-image($url) {
+    background-image: $url;
+    background-size: contain;
+    background-repeat: repeat-x;
+}

@@ -8,7 +8,7 @@
             </div>
         </div>
         <ul class="icon-group">
-            <router-link  tag="li" to="/"> 
+            <router-link  tag="li" to="/center/record"> 
                     <img src="../../common/images/icons/icon-sign.png" />
                     <p>签到</p> 
             </router-link>
