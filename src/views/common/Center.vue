@@ -21,7 +21,7 @@
                     <img src="../../common/images/icons/icon-friend.png" /> 
                     <p>好友</p>
             </router-link>
-            <router-link  tag="li" to="/"> 
+            <router-link  tag="li" to="/center/recharge"> 
                     <img src="../../common/images/icons/icon-charge.png" /> 
                     <p>充值</p>
             </router-link>
@@ -33,7 +33,7 @@
                     <img class="spe-icon" src="../../common/images/icons/icon-collect.png" /> 
                     <p>收藏</p>
             </router-link>
-            <router-link  tag="li" to="/"> 
+            <router-link  tag="li" to="/center/repository"> 
                     <img style="margin-top: 15px;" class="spe-icon" src="../../common/images/icons/icon-img.png" /> 
                     <p>仓库</p>
             </router-link>
@@ -106,7 +106,7 @@ export default {
         height: 200px;
         padding: 0 60px;
         @include box-sizing;
-        @include color-background;
+        @include big-background-image(url('../../common/images/global/bg-center.png'));
         @include flex-center;
         div {
             height: 125px;

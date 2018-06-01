@@ -54,11 +54,11 @@ export default {
                 this.autoPlay ? this._play() : ''
             }, 20)
 
-            window.addEventListener('resize', () => {
-                if (!this.slider) return;
-                this._setSliderWidth(true)
-                this.slider.refresh()
-            })
+            // window.addEventListener('resize', () => {
+            //     if (!this.slider) return;
+            //     this._setSliderWidth(true)
+            //     this.slider.refresh()
+            // })
         }
     },
     methods: {

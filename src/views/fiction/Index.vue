@@ -11,32 +11,33 @@
                 </slider>
             </ul>
             <p class="tab">
-                <span :class="{active: tabIndex==1}" @click="tabIndex=1">原创</span>
-                <span :class="{active: tabIndex==2}" @click="tabIndex=2">同人</span>
-                <span :class="{active: tabIndex==3}" @click="tabIndex=3">完结</span>
-                <span :class="{active: tabIndex==4}" @click="tabIndex=4">排行</span>
+                <router-link tag="div" to="/fiction"> <span :class="{active: tabIndex==1}" @click="tabIndex=1">原创</span> </router-link>
+                <router-link tag="div" to="/fiction/relative"> <span :class="{active: tabIndex==2}" @click="tabIndex=2">同人</span> </router-link>
+                <router-link tag="div" to="/fiction"> <span :class="{active: tabIndex==3}" @click="tabIndex=3">完结</span> </router-link>
+                <router-link tag="div" to="/fiction"> <span :class="{active: tabIndex==4}" @click="tabIndex=4">排行</span> </router-link>
             </p>
         </div>
-        <div class="recommend">
+        <div class="view">
+            <transition name="slide-fade">
+                <router-view></router-view>
+            </transition>
+        </div>
+        <!-- <div class="recommend">
             <i class="recommend-img"></i>
-            <ul>
-                <li> 
+            <ul :class="{'unfold': isUnfold }">
+                <li v-for="(item, index) in data" :key="index"> 
                     <div class="img"><img src="../../common/images/fiction/fiction.jpg" alt=""></div>
                     <div>
                         <p>《斗破苍穹》</p>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas odio maxime eveniet eligendi </p>
                     </div>
                 </li>
-                <li> 
-                    <div class="img"><img src="../../common/images/fiction/fiction.jpg" alt=""></div>
-                    <div>
-                        <p>《斗破苍穹斗破苍穹斗破苍穹斗破苍穹斗破苍穹斗破苍穹》</p>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas odio maxime eveniet eligendi Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas odio maxime eveniet eligendi</p>
-                    </div>
-                </li>
             </ul>
-        </div>
-        <ul class="list">
+            <div v-if="!isUnfold" class="more" @click="isUnfold = true">
+                    更多<i class="self-icon-angle-right fa-lg"></i>
+            </div>
+        </div> -->
+        <!-- <ul class="list">
             <li>
                 <span class="status">连载中</span>
                 <div>
@@ -55,7 +56,7 @@
                 </div>
                 
             </li>
-        </ul>
+        </ul> -->
     </div>
 </template>
 
@@ -77,6 +78,8 @@ export default {
                 {linkUrl: '#2', picUrl: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109173040544.jpg'},
                 {linkUrl: '#2', picUrl: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109173040544.jpg'}
             ],
+            data: [1,2,3,4, 5],
+            isUnfold: false
         }
     },
     methods: {
@@ -129,97 +132,58 @@ export default {
             span { padding: 0 1em }
         }
     }
-    .recommend {
-        width: 100%;
-        height: 395px;
-        padding: 0 70px;
-        position: relative;
-        @include box-sizing;
-        background-color: $bg-color-d;
-        .recommend-img{
-            display: inline-block;
-            width: 110px;
-            height: 33px;
-            background-image: url("../../common/images/fiction/recommend.png");
-            background-size: 105px 33px;
-            background-repeat: no-repeat;
-            background-position: center;
-            position: absolute;
-            top: 0;
-            right: 70px;
+    .view { 
+        // margin-top: 73px;
+        .slide-fade-enter-active {
+            transition: all .3s ease;
         }
-        ul {
-            width: 100%;
-            height: 100%;
-            li {    
-                width: 100%;
-                @include flex-center;
-                &:first-child{  padding-top: 50px; margin-bottom: 35px }
-                .img {
-                        width: 120px;
-                        height: 140px;
-                        margin-right: 35px;
-                        img { width: auto; height: 140px; @include border-radius(.5em); }
-                    }
-                div {
-                    width: 100%;
-                    height: 140px;
-                    @include box-sizing;
-                    p {
-                        @include text-justify(1.2em);
-                        max-height: 3.4em;
-                        overflow: hidden;
-                        &:first-child { 
-                            max-width: 370px; 
-                            font-weight: 600; 
-                            margin: 10px 0 20px; 
-                            @include no-wrap; 
-                        }
-                    }
-                }
-                
-            }
-        }    
-    }
-    .list {
-        padding: 0 70px;
-        li {
-            width: 100%;
-            height: 130px;
-            position: relative;
-            color: $text-color-l;
-            border-bottom: 1px solid $border-color-d;
-            @include box-sizing;
-            &:last-child { border: 0 }
-            div {
-                width: 80%;
-                height: 100%;
-                padding-top: 20px;
-                @include box-sizing;
-                p {
-                    @include no-wrap;
-                    font-size: 12px; /*no*/
-                    &:first-child { 
-                        font-weight: 600; 
-                        color: black ;
-                       line-height: 1.5em;
-                    }
-                    &:last-child { 
-                        margin: 20px 0; 
-                        span {
-                            display: inline-block;
-                            width: 45%;
-                            vertical-align: middle;
-                            &:first-child { width: 50%; @include no-wrap }
-                        }
-                    }
-                }
-            }
-            .status {
-                float: right;
-                line-height: 130px;
-            }
+        .slide-fade-leave-active {
+            transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
         }
+        .slide-fade-enter, .slide-fade-leave-to {
+            transform: translateX(10px);
+            opacity: 0;
+        } 
     }
+    // .list {
+    //     padding: 0 70px;
+    //     li {
+    //         width: 100%;
+    //         height: 130px;
+    //         position: relative;
+    //         color: $text-color-l;
+    //         border-bottom: 1px solid $border-color-d;
+    //         @include box-sizing;
+    //         &:last-child { border: 0 }
+    //         div {
+    //             width: 80%;
+    //             height: 100%;
+    //             padding-top: 20px;
+    //             @include box-sizing;
+    //             p {
+    //                 @include no-wrap;
+    //                 font-size: 12px; /*no*/
+    //                 &:first-child { 
+    //                     font-weight: 600; 
+    //                     color: black ;
+    //                    line-height: 1.5em;
+    //                 }
+    //                 &:last-child { 
+    //                     margin: 20px 0; 
+    //                     span {
+    //                         display: inline-block;
+    //                         width: 45%;
+    //                         vertical-align: middle;
+    //                         &:first-child { width: 50%; @include no-wrap }
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //         .status {
+    //             float: right;
+    //             line-height: 130px;
+    //         }
+    //     }
+    // }
 }
 </style>
