@@ -1,5 +1,16 @@
 <template>
     <div class="repository">
+        <self-toast v-if="showToast" 
+            leftBtn="丢弃" rightBtn="立即使用" 
+            :showCloseBtn="true" 
+            @handleClick="_handleClick"
+            @cancle="showToast = false" >
+            <div class="toast-slot"> 
+                <img :src="toastSlot.pic">
+                <h1>{{toastSlot.name}}</h1>
+                <p v-html="toastSlot.intro"></p>
+            </div>
+        </self-toast>
         <div class="top">
             <div><img src="../../../common/images/global/user.jpg" ></div>
             <div>
@@ -9,9 +20,9 @@
         </div>
         <div class="stuff">
             <ul :class="{'unfold': isUnfold }">
-                <li v-for="(item, index) in data" :key="index">
+                <li v-for="(item, index) in data" :key="index" @click="toastShow(item)">
                     <img src="../../../common/images/global/repository.jpg" alt="">
-                    <div>{{123}}</div>
+                    <div>{{999}}</div>
                 </li>
             </ul>
             <div class="more" @click="isUnfold = !isUnfold">
@@ -30,8 +41,10 @@
 
 <script>
 import { mapMutations, mapActions } from 'vuex'
-
+import SelfToast from 'base/Toast/Toast'
+ 
 export default {
+    components: { SelfToast },
     data() {
         return {
             titleInfo: {
@@ -43,13 +56,33 @@ export default {
             attent: 0,
             fans: 0,
             isUnfold: false,
-            data: [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+            data: [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+            showToast:　false,
+            toastSlot: {
+                pic: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
+                name: '物品名称',
+                intro: '物品介绍物品介绍物品介绍物品介绍物品介绍'
+            }
+            
         }
     },
     methods: {
         ...mapActions([ 'handleTitle']),
         unfold () {
 
+        },
+        _handleClick(index) {
+            if (index) {
+                console.log('立即使用操作')
+            } else {
+                console.log('丢弃操作')
+            }
+            setTimeout(() => {
+                    this.showToast = false
+                }, 800)
+        },
+        toastShow() {
+            this.showToast = true
         }
     },
     mounted() {
@@ -67,6 +100,7 @@ export default {
 .repository {
     width: 100%;
     height: auto;
+    font-size: $font-size-normal;  /*no*/
     .top {
         width: 100%;
         height: 200px;
@@ -103,7 +137,7 @@ export default {
         ul {
             display: flex;
             flex-flow: row wrap;
-            padding: 0 35px 0 60px;
+            padding: 0 45px;
             max-height: 210px;
             overflow: hidden;
             transition: all .5s linear;
@@ -114,14 +148,14 @@ export default {
             li {
                 position: relative;
                 margin-bottom: 25px;
-                margin-right: 25px;
+                text-align: center;
+                width: 20%;
                 img {
                     width: 80px;
                     height: 80px;
                     @include border-radius(0.5em);
                 }
                 div {
-                    text-align: center;
                     width: 3em;
                     transform: scale(0.90);
                     font-size: $font-size-min;  /*no*/

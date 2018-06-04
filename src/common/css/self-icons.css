@@ -65,11 +65,20 @@
 .self-icon-close:before {
   content: "\f00d";
 }
+.self-icon-cog:before {
+  content: "\f013";
+}
+.self-icon-gear:before {
+  content: "\f013";
+}
 .self-icon-trash-o:before {
   content: "\f014";
 }
 .self-icon-home:before {
   content: "\f015";
+}
+.self-icon-clock-o:before {
+  content: "\f017";
 }
 .self-icon-play-circle-o:before {
   content: "\f01d";
@@ -104,6 +113,9 @@
 .self-icon-map-marker:before {
   content: "\f041";
 }
+.self-icon-times-circle:before {
+  content: "\f057";
+}
 .self-icon-check-circle:before {
   content: "\f058";
 }
@@ -121,6 +133,27 @@
 }
 .self-icon-reorder:before {
   content: "\f0c9";
+}
+.self-icon-caret-down:before {
+  content: "\f0d7";
+}
+.self-icon-caret-up:before {
+  content: "\f0d8";
+}
+.self-icon-caret-left:before {
+  content: "\f0d9";
+}
+.self-icon-caret-right:before {
+  content: "\f0da";
+}
+.self-icon-comment-o:before {
+  content: "\f0e5";
+}
+.self-icon-bolt:before {
+  content: "\f0e7";
+}
+.self-icon-flash:before {
+  content: "\f0e7";
 }
 .self-icon-angle-left:before {
   content: "\f104";
@@ -145,6 +178,12 @@
 }
 .self-icon-meh-o:before {
   content: "\f11a";
+}
+.self-icon-ellipsis-h:before {
+  content: "\f141";
+}
+.self-icon-ellipsis-v:before {
+  content: "\f142";
 }
 .self-icon-thumbs-up:before {
   content: "\f164";
@@ -182,9 +221,18 @@
 .self-icon-bubbles2:before {
   content: "\e96d";
 }
+.self-icon-bubble2:before {
+  content: "\e96e";
+}
+.self-icon-spinner11:before {
+  content: "\e984";
+}
 .self-icon-star-empty:before {
   content: "\e9d7";
 }
 .self-icon-star-half:before {
   content: "\e9d8";
+}
+.self-icon-star-full:before {
+  content: "\e9d9";
 }

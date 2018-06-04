@@ -1,9 +1,7 @@
 <template>
     <div class="friend-info">
         <div class="top">
-            <div>
-                <img src="../../../../common/images/global/bg-center1.jpg" alt="">    
-            </div>
+            <div></div>
             <div class="info">
                 <img src="http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg" alt="">
                 <h1>昵称昵称昵称昵称昵称昵称昵称</h1>
@@ -20,7 +18,7 @@
                         <p>[分区] 内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容</p>
                         <div>
                             来自<i>{{'社区活动'}}</i>板块
-                            <span><i class="self-icon-bubbles2"></i> {{120}}</span>
+                            <span><i class="self-icon-comment-o"></i> {{120}}</span>
                             <span><i class="self-icon-eye"></i> {{111}}</span>
                         </div>
                     </li>
@@ -28,7 +26,7 @@
                         <p>[分区] 内容内容内容内容内容内容内容内容内容内容内容内</p>
                         <div>
                             来自<em>{{'社区活动'}}</em>板块
-                            <span><i class="self-icon-bubbles2"></i> {{120}}</span>
+                            <span><i class="self-icon-comment-o"></i> {{120}}</span>
                             <span><i class="self-icon-eye"></i> {{111}}</span>
                         </div>
                     </li>
@@ -60,7 +58,7 @@ export default {
         text-align: center;
         >div:first-child { 
             width: 100%; height: 200px; max-height: 200px;
-            img { height: 200px; }
+            @include big-background-image(url('../../../../common/images/global/bg-center1.jpg'))
         }
         .info {
             position: relative;

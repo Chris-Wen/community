@@ -20,48 +20,48 @@
                 <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
                 <div>
                     <span><i></i> 用户id</span>
-                    <span ><i></i> 999</span>
-                    <span ><i></i> 4-26</span>
+                    <span ><i class="self-icon-comment-o"></i> 999</span>
+                    <span ><i class="self-icon-clock"></i> 4-26</span>
                 </div>
             </li>
             <li>
                 <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
                 <div>
                     <span><i></i> 用户id</span>
-                    <span ><i></i> 999</span>
-                    <span ><i></i> 4-26</span>
+                    <span ><i class="self-icon-comment-o"></i> 999</span>
+                    <span ><i class="self-icon-clock"></i> 4-26</span>
                 </div>
             </li>
             <li>
                 <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
                 <div>
                     <span><i></i> 用户id</span>
-                    <span ><i></i> 999</span>
-                    <span ><i></i> 4-26</span>
+                    <span ><i class="self-icon-comment-o"></i> 999</span>
+                    <span ><i class="self-icon-clock"></i> 4-26</span>
                 </div>
             </li>
             <li>
                 <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
                 <div>
                     <span><i></i> 用户id</span>
-                    <span ><i></i> 999</span>
-                    <span ><i></i> 4-26</span>
+                    <span ><i class="self-icon-comment-o"></i> 999</span>
+                    <span ><i class="self-icon-clock"></i> 4-26</span>
                 </div>
             </li>
             <li>
                 <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
                 <div>
                     <span><i></i> 用户id</span>
-                    <span ><i></i> 999</span>
-                    <span ><i></i> 4-26</span>
+                    <span ><i class="self-icon-comment-o"></i> 999</span>
+                    <span ><i class="self-icon-clock"></i> 4-26</span>
                 </div>
             </li>
             <li>
                 <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
                 <div>
                     <span><i></i> 用户id</span>
-                    <span ><i></i> 999</span>
-                    <span ><i></i> 4-26</span>
+                    <span ><i class="self-icon-comment-o"></i> 999</span>
+                    <span ><i class="self-icon-clock"></i> 4-26</span>
                 </div>
             </li>
         </ul>
@@ -98,25 +98,18 @@ export default {
                 &:last-child { margin-right: 15px; }
                 i {
                     display: inline-block;
-                    vertical-align: middle;
                     margin-right: 8px;
-                    width: 26px;
-                    height: 26px;
                     background-position: center;
                     background-repeat: no-repeat;
+                    color: $text-color-orange;
+                    line-height: 28px;
                 }
                 &:first-child i {
-                    background-image: url("../../common/images/icons/icon-user.jpg");
-                    background-size: 18px 26px;
-                    margin-top: -5px;                    
-                }
-                &:nth-child(2) i {
-                    background-image: url("../../common/images/icons/icon-comment.jpg");
-                    background-size: 26px 26px;
-                }
-                &:nth-child(3) i {
-                    background-image: url("../../common/images/icons/icon-time.jpg");
-                    background-size: 26px 26px;
+                    width: 28px;
+                    height: 28px;
+                    @include background-image(url("../../common/images/icons/icon-user.jpg"));
+                    margin-top: -3px;    
+                    vertical-align: bottom;              
                 }
              }
         }

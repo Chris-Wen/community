@@ -1,5 +1,17 @@
 <template>
     <div class="draw">
+        <self-toast v-if="toastParams.showToast" 
+            leftBtn="存入仓库" 
+            rightBtn="申请邮寄" 
+            :showCloseBtn="false" 
+            @handleClick="_handleClick" >
+            <div class="toast-slot"> 
+                <img :src="toastSlot.pic">
+                <h1>{{toastSlot.name}}</h1>
+                <p v-html="toastSlot.intro"></p>
+            </div>
+        </self-toast>
+
         <div class="turnplate">
             <div class="prize" ref="turnplate"></div>
             <div class="btn-draw"  @click="startRotate"></div>
@@ -20,6 +32,7 @@
 <script>
 import { mapMutations, mapActions } from 'vuex'
 import { Toast } from 'mint-ui' 
+import SelfToast from 'base/Toast/Toast'
 
 export default {
     data() {
@@ -41,10 +54,17 @@ export default {
                 {   img: '',  name: '奖品5',   isPrize: 1  },
                 {   img: '',  name: '未中奖',   isPrize: 0 }
             ],
-            isRotating: false
+            isRotating: false,
+            toastParams: {
+                showToast:　false,
+            },
+            toastSlot: {
+                pic: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
+                name: '物品名称'
+            }
         }
     },
-    components: { Toast },
+    components: { Toast, SelfToast },
     methods: {
         ...mapActions([ 'handleTitle']),
         startRotate() {
@@ -88,9 +108,19 @@ export default {
             setTimeout(() => {
                 this.isRotating = false;
 
-
+                this.toastParams.showToast = true
             }, 5500);
-        } 
+        },
+        _handleClick(index) {
+            if (index) {
+                console.log('确定操作')
+            } else {
+                console.log('暂存操作')
+            }
+            setTimeout(() => {
+                this.toastParams.showToast = false
+            }, 800);
+        }, 
     },
     mounted() {     
         this.handleTitle({
@@ -105,12 +135,10 @@ export default {
 @import "../../common/css/index.scss";
 
 .draw {
-    min-height: 1108px;
     background-image: url('../../common/images/global/bg-draw.png') ;
     background-size: 100% 1108px;
     background-repeat: y; 
-    padding-top: 110px;
-    margin-top: -55px;
+    padding: 55px 0;
     color: $text-color-w;
     @include box-sizing;
     .turnplate {

@@ -8,6 +8,8 @@ h1,h2 {
 }
 h1 { font-size: 16px; /*no*/}
 h2 { font-size: 14px;  /*no*/}
+.self-icon-bubble2 { transform: rotateY(180deg) }
+.self-icon-comment-o { transform: rotateY(180deg) }
 
 /* flex布局 */
 .flex-between {
@@ -27,10 +29,10 @@ h2 { font-size: 14px;  /*no*/}
 }
 /* mint-ui  reset*/
 .popup span {
-    /* margin: .5em 1em; */
-    /* height: 1.2em;
-    line-height: 1.2em; */
-    /* font-size: 14px; no */
+    margin: .3em 1em;
+    height: 1.2em;
+    line-height: 1.2em;
+    font-size: 14px; /*no*/
 }
 
 
@@ -46,8 +48,18 @@ h2 { font-size: 14px;  /*no*/}
     background: -webkit-gradient(linear, left top, right top, from(#FFC50C), to(#FF6516)); 
     background: linear-gradient(to right, #FFC50C, #FF6516);
 }
+.toast-slot { text-align: center; }
+.toast-slot>h1 { text-align: center; color: #ff8313;}
+.toast-slot>p { font-size: 14px;  /*no*/  margin-top: 15px;  }
 
-
+.mask {
+    background: rgba(0, 0, 0, .5);
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    padding-top: 50%;
+}
 
 /* 商城板块专用 */
 .item-title {
