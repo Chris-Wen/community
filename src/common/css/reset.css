@@ -41,11 +41,16 @@ table {
 }
 
 /* custom */
-a,a:link,a:visited,a:active {
-    color: #7e8c8d;
+a {
+    /* color: #7e8c8d; */
     text-decoration: none;
     -webkit-backface-visibility: hidden;
 }
+/* a,a:link,a:visited,a:active {
+    color: #7e8c8d;
+    text-decoration: none;
+    -webkit-backface-visibility: hidden;
+} */
 
 li{ list-style: none; }
 ::-webkit-scrollbar {

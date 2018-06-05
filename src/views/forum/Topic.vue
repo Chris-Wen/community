@@ -1,143 +1,343 @@
 <template>
-    <div class="topiclist">
-        <ul class="recommend">
-            <li>
-                <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
+    <div class="topic">
+        <!-- 编辑器 -->
+        <reply-editor v-show="showEditor" :type="editorType" />
+        <!-- 右上icon及下拉菜单 -->
+        <div class="nav">
+            <i class="self-icon-comment-o fa-2x"></i>
+            <i @click="navDropDown = !navDropDown" class="self-icon-more_vert fa-2x"></i>
+        </div>
+        <div v-if="navDropDown" class="mask" @click.stop="navDropDown = false">
+            <ul class="drop-down">
+                <li v-if="topic.isStored" >已收藏</li>
+                <li v-else >收藏</li>
+                <li>转发</li>
+                <li>倒序查看</li>
+            </ul>
+        </div>
+        <!-- 页面内容、帖子主题 -->
+        <div class="theme">
+            <p class="title">{{topic.title}}</p>
+            <div class="theme-top">
+                <div> <router-link to="/center/friend/info"> <img :src="topic.avatar"></router-link> </div>
                 <div>
-                    <span><i></i> 用户id</span>
-                    <span ><i class="self-icon-comment-o"></i> 999</span>
-                    <span ><i class="self-icon-clock"></i> 4-26</span>
+                    <div class="more" @click=" showTopDrop = !showTopDrop ">
+                        <i class="self-icon-more_horiz fa-lg"></i>
+                    </div>
+                    <p>{{topic.name}}</p>
+                    <p>{{topic.time}}</p>
                 </div>
-            </li>
-            <li>
-                <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
-                <div>
-                    <span><i></i> 用户id</span>
-                    <span><i class="self-icon-comment-o"></i> 999</span>
-                    <span><i class="self-icon-clock"></i> 4-26</span>
-                </div>
-            </li>
-        </ul>
-        <p class="part"> 用户帖子 </p>
-        <ul class="article">
-            <li>
-                <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
-                <div>
-                    <span><i></i> 用户id</span>
-                    <span ><i class="self-icon-comment-o"></i> 999</span>
-                    <span ><i class="self-icon-clock"></i> 4-26</span>
-                </div>
-            </li>
-            <li>
-                <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
-                <div>
-                    <span><i></i> 用户id</span>
-                    <span ><i class="self-icon-comment-o"></i> 999</span>
-                    <span ><i class="self-icon-clock"></i> 4-26</span>
-                </div>
-            </li>
-            <li>
-                <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
-                <div>
-                    <span><i></i> 用户id</span>
-                    <span ><i class="self-icon-comment-o"></i> 999</span>
-                    <span ><i class="self-icon-clock"></i> 4-26</span>
-                </div>
-            </li>
-            <li>
-                <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
-                <div>
-                    <span><i></i> 用户id</span>
-                    <span ><i class="self-icon-comment-o"></i> 999</span>
-                    <span ><i class="self-icon-clock"></i> 4-26</span>
-                </div>
-            </li>
-            <li>
-                <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
-                <div>
-                    <span><i></i> 用户id</span>
-                    <span ><i class="self-icon-comment-o"></i> 999</span>
-                    <span ><i class="self-icon-clock"></i> 4-26</span>
-                </div>
-            </li>
-            <li>
-                <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
-                <div>
-                    <span><i></i> 用户id</span>
-                    <span ><i class="self-icon-comment-o"></i> 999</span>
-                    <span ><i class="self-icon-clock"></i> 4-26</span>
-                </div>
-            </li>
-        </ul>
+            </div>
+            <div>
+                <drop-down v-show="showTopDrop" 
+                    :userId="userId" :itemId="topic.topicId" 
+                    :itemUserId="topic.id" :isStored="topic.isStored" 
+                    @store="_store" @reply="_reply"
+                />
+                <div class="content" v-html="topic.content"></div>
+            </div>
+        </div>
+        <!-- 评论 -->
+        <div class="list">
+            <ul>
+                <li v-for="(item, index) in commentList" :key="index">
+                    <div class="item">
+                        <div> <router-link to="/center/friend/info"> <img :src="item.avatar"></router-link> </div>
+                        <div>
+                            <div>
+                                <div class="more" @click="showMenu(index)">
+                                    <i class="self-icon-more_horiz fa-lg"></i>
+                                </div>
+                                <p>{{item.name}}</p>
+                                <p>{{item.time}}</p>
+                            </div>
+                            <div class="content-box">
+                                <drop-down v-show="indexShow == index" :userId="userId" :itemId="item.listId" :itemUserId="item.id" :isStored="item.isStored"></drop-down>
+                                <div class="content">
+                                    <div v-html="item.content"></div>
+                                    <ul class="reply" v-if="item.total>0">
+                                        <li v-for="(val, key) in item.reply" :key="key">
+                                            <router-link to="/center/friend/info">{{val.name}}</router-link>:
+                                            <span >回复<router-link to="/center/friend/info"> {{val.name}}</router-link>：</span>
+                                            {{val.content}}
+                                        </li>
+                                        <li class="bottom" v-if="item.total>=3">还有{{ item.total-2 }}条评论 <span class="self-icon-caret-up"></span> </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <ol>
+                <li></li>
+            </ol>
+        </div>
     </div>
 </template>
 
 <script>
+import { mapMutations, mapActions } from 'vuex'
+import  DropDown from 'components/ForumDropDown/ForumDropDown'
+import ReplyEditor from 'components/ReplyEditor/ReplyEditor'
+
 export default {
-    
+    components: { DropDown, ReplyEditor },
+    data() {
+        return {
+            titleInfo: {
+                title: '帖子详情',
+                showIcon: false
+            },
+            userId: 123,
+
+            showEditor: true,
+            editorType: '',
+
+            navDropDown: false,
+            showTopDrop: false,
+            indexShow: -1,
+            topic: {
+                topicId: 1,
+                id: 123,
+                isStored: true,
+                title:　'帖子主题帖子主题帖子主题帖子主题帖子主题帖子主题帖子主题',
+                name:　'我是谁',
+                time: '2017-11-12',
+                avatar: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
+                content:　`有人说三代火影很弱，没什么招牌忍术，不要跟我说尸鬼封禁，那是旋涡一族的术。<br> 三代作为影，他没有血继限界，可以说他是靠怒力上位的。<br> 他的查克拉量应该很大，招牌术就是猿魔、手里剑影分身、一次放五种遁术、火龙岩弹。<br> 可以说三代强在查克拉量和战斗经验上。毕竟看到初代和二代不慌的能有几个。<br> 三代牛的还是活得长，得有七八十岁吧。<br>`
+            },
+            commentList: [
+                {
+                    id: 123,
+                    listId: 1001,
+                    name:　'我是谁',
+                    time: '5-12 12:30',
+                    isStored: true,
+                    avatar: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
+                    content:　`有人说三代火影很弱，没什么招牌忍术，不要跟我说尸鬼封禁，那是旋涡一族的术。`,
+                    total: 13,  /**总回复数量*/
+                    reply: [
+                        {
+                            id: 1,
+                            name:　'我在哪',
+                            time: '5-12 12:30',
+                            avatar: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
+                            content:　`没什么招牌忍术`,
+                            to: ''
+                        },
+                        {
+                            id: 23,
+                            name:　'我是谁',
+                            time: '5-12 12:30',
+                            avatar: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
+                            content:　`怎么可能，会所有忍术不是盖的。猿魔也是啊`,
+                            to: { id: 1, name: '我在哪' }
+                        }
+                    ]
+                },
+                {
+                    id: 123,
+                    listId: 1002,
+                    isStored: false,
+                    name:　'我是谁',
+                    time: '5-12 16:40',
+                    avatar: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
+                    content:　`三代火影很弱，没什么招牌忍术`,
+                    total: 0,  /**总回复数量*/
+                },
+                {
+                    id: 123,
+                    listId: 1003,
+                    isStored: false,
+                    name:　'谁',
+                    time: '5-12 12:30',
+                    avatar: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
+                    content:　`有人说三代火影很弱，没什么招牌忍术，不要跟我说尸鬼封禁，那是旋涡一族的术。`,
+                    total: 2,  /**总回复数量*/
+                    reply: [
+                        {
+                            id: 1,
+                            name:　'我在哪',
+                            time: '5-12 12:30',
+                            avatar: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
+                            content:　`没什么招牌忍术`,
+                            to: ''
+                        },
+                        {
+                            id: 23,
+                            name:　'谁',
+                            time: '5-12 12:30',
+                            avatar: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
+                            content:　`怎么可能，会所有忍术不是盖的。猿魔也是啊`,
+                            to: { id: 1, name: '我在哪' }
+                        }
+                    ]
+                },
+            ],
+        }
+    },
+    methods: {
+        ...mapActions([ 'handleTitle']),
+        showMenu(index) {
+            this.indexShow = index==this.indexShow ? -1 : index
+        },
+        _store(id, isStored) {
+            if (isStored) {
+                console.log('已收藏,执行取消收藏操作')
+            } else {
+                console.log('未收藏，执行收藏操作')
+            }
+        },
+        _reply(itemId) {
+            console.log('弹出填写页面，进行编辑')
+        }
+    },
+    mounted() {
+        this.handleTitle({
+            title:    this.titleInfo.title, 
+            showIcon: this.titleInfo.showIcon
+        });
+    }
 }
 </script>
 
 <style lang="scss" scoped>
 @import "../../common/css/index.scss";
 
-.topiclist {
-    ul li {
-        height: 142px;
-        width: 100%;
-        @include box-sizing;
-        border-top: 1px solid $text-color-orange; /*no*/
-        padding: 20px 40px 10px;
-        &:first-child { border: 0; }
-        p { 
-            max-height: 2.1em;
-            height: auto;
-            overflow: hidden;
-            @include text-justify(1.2em);
-            margin-bottom: 30px;
-        }
-        div {
-            span { 
-                &:not(:first-child) { float: right }
-                &:last-child { margin-right: 15px; }
-                i {
-                    display: inline-block;
-                    margin-right: 8px;
-                    background-position: center;
-                    background-repeat: no-repeat;
-                    color: $text-color-orange;
-                    line-height: 28px;
-                }
-                &:first-child i {
-                    width: 28px;
-                    height: 28px;
-                    @include background-image(url("../../common/images/icons/icon-user.jpg"));
-                    margin-top: -3px;    
-                    vertical-align: bottom;              
-                }
-             }
-        }
+.topic {
+    font-size: $font-size-small;  /*no*/
+    @include color-background;
+    min-height: 960px;
+    .nav {
+        height: 100px;
+        line-height: 100px;
+        position: fixed;
+        top: 0;
+        right: 0;
+        z-index: 110;
+        color: #fff;
+        i { padding: 0 30px 0 10px }
     }
-    .recommend {
-        // margin-top: 73px;
+    .drop-down {
+        position: absolute;
+        top: 0;
         @include color-background;
-        border-bottom: 1px solid $text-color-orange-d;
-        p { color: red }
-        li:last-child { 
-            p { font-weight: 600; }
+        right: 30px;
+        width: 195px;
+        li {
+            height: 54px;
+            line-height: 54px;
+            border: 1px solid $border-color-d;  /*no*/
+            text-align: center;
+            &:last-child { border: 0; }
         }
     }
-    .part {
-        width: 100%;
-        height: 40px;
-        line-height: 40px;
-        text-indent: 2em;
-        font-size: $font-size-small; /*no*/
-        color: $text-color-orange-d;
-        background-color: $bg-color-d;
+    .theme {
+        text-align: justify;
+        padding: 35px;
+        border-bottom: 15px solid #ebebeb; 
+        .title { 
+            font-size: $font-size-normal;/*no*/ 
+            color: black; 
+            font-weight: 600; 
+            line-height: 1.3em; 
+        }
+        .theme-top {
+            display: flex;
+            align-items: stretch; 
+            margin: 30px 0;
+            >div {
+                &:first-child {
+                    width: 80px;
+                    min-width: 80px;
+                    img { 
+                        height: 60px; width: 60px;
+                        @include border-radius(50%);
+                        margin-right: 20px;
+                    }
+                }
+                &:last-child {
+                    width: 100%;
+                    .more { float: right; line-height: 60px;}
+                    p {
+                        &:first-of-type { margin: 5px 0; }
+                        &:last-of-type { color: $text-color-l; font-size: $font-size-min;  /*no*/ }
+                    }
+                }
+                i { color: $text-color-l; }
+            }
+            
+        }
+        >div:last-child {
+            position: relative;
+            line-height: 1.4em;
+            .content {
+                img { margin-top: 15px auto; width: auto; max-width: 95% }
+            }
+        }
     }
-    .article {
-        @include color-background;
+    .list {
+        padding: 0 35px;
+        >ul>li {
+            padding: 30px 0;
+            border-bottom: 1px solid $border-color-d;  /*no*/
+            &:last-child { border: 0 }
+            .item {
+                display: flex;
+                align-items: stretch; 
+                >div {
+                    &:first-child {
+                        width: 80px;
+                        min-width: 80px;
+                        img { 
+                            height: 60px; width: 60px;
+                            @include border-radius(50%);
+                            margin-right: 20px;
+                        }
+                    }
+                    &:last-child {
+                        width: 100%;
+                        .more { float: right; line-height: 60px;}
+                        div:first-child>p {
+                            &:first-of-type { margin: 5px 0; }
+                            &:last-of-type { color: $text-color-l; font-size: $font-size-min;  /*no*/ }
+                        }
+                        .content-box {
+                            position: relative;
+                            .content {
+                                text-align: justify;
+                                line-height: 1.4em;
+                                margin: 30px 35px 0 0;
+                                .reply {
+                                    color: $text-color-dark;
+                                    line-height: 1.3em;
+                                    background: #f4f2f2;
+                                    padding: 10px 6px;
+                                    margin-top: 25px;
+                                    li {
+                                        margin-bottom: 15px;
+                                        &:last-child { margin: 0; }
+                                        a {
+                                            // color: black;
+                                            // i { color: black }
+                                        }
+                                    }
+                                    .bottom {
+                                        text-align: right; padding-right: 10px; 
+                                        span { margin: 0 5px; }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    i { 
+                        color: $text-color-l; 
+                    }
+                }
+            }
+        }
     }
+    .more { padding-left: 25px; }
 }
 </style>

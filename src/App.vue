@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import MHeader from './components/Header/Header'
-import BottomTab from './components/BottomTab/BottomTab'
+import MHeader from 'components/Header/Header'
+import BottomTab from 'components/BottomTab/BottomTab'
 
 export default {
   name: 'App',

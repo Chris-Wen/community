@@ -1,73 +1,73 @@
 <template>
     <div class="topiclist">
         <ul class="recommend">
-            <li>
+            <router-link tag="li" to="/forum/topic">
                 <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
                 <div>
                     <span><i></i> 用户id</span>
                     <span ><i class="self-icon-comment-o"></i> 999</span>
                     <span ><i class="self-icon-clock"></i> 4-26</span>
                 </div>
-            </li>
-            <li>
+            </router-link>
+            <router-link tag="li" to="/forum/topic">
                 <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
                 <div>
                     <span><i></i> 用户id</span>
                     <span><i class="self-icon-comment-o"></i> 999</span>
                     <span><i class="self-icon-clock"></i> 4-26</span>
                 </div>
-            </li>
+            </router-link>
         </ul>
         <p class="part"> 用户帖子 </p>
         <ul class="article">
-            <li>
+            <router-link tag="li" to="/forum/topic">
                 <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
                 <div>
                     <span><i></i> 用户id</span>
                     <span ><i class="self-icon-comment-o"></i> 999</span>
                     <span ><i class="self-icon-clock"></i> 4-26</span>
                 </div>
-            </li>
-            <li>
+            </router-link>
+            <router-link tag="li" to="/forum/topic">
                 <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
                 <div>
                     <span><i></i> 用户id</span>
                     <span ><i class="self-icon-comment-o"></i> 999</span>
                     <span ><i class="self-icon-clock"></i> 4-26</span>
                 </div>
-            </li>
-            <li>
+            </router-link>
+            <router-link tag="li" to="/forum/topic">
                 <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
                 <div>
                     <span><i></i> 用户id</span>
                     <span ><i class="self-icon-comment-o"></i> 999</span>
                     <span ><i class="self-icon-clock"></i> 4-26</span>
                 </div>
-            </li>
-            <li>
+            </router-link>
+            <router-link tag="li" to="/forum/topic">
                 <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
                 <div>
                     <span><i></i> 用户id</span>
                     <span ><i class="self-icon-comment-o"></i> 999</span>
                     <span ><i class="self-icon-clock"></i> 4-26</span>
                 </div>
-            </li>
-            <li>
+            </router-link>
+            <router-link tag="li" to="/forum/topic">
                 <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
                 <div>
                     <span><i></i> 用户id</span>
                     <span ><i class="self-icon-comment-o"></i> 999</span>
                     <span ><i class="self-icon-clock"></i> 4-26</span>
                 </div>
-            </li>
-            <li>
+            </router-link>
+            <router-link tag="li" to="/forum/topic">
                 <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
                 <div>
                     <span><i></i> 用户id</span>
                     <span ><i class="self-icon-comment-o"></i> 999</span>
                     <span ><i class="self-icon-clock"></i> 4-26</span>
                 </div>
-            </li>
+            </router-link>
         </ul>
     </div>
 </template>

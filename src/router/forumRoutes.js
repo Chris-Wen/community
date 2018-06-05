@@ -1,5 +1,6 @@
 import ForumIndex from '@/views/forum/Index'
 import ForumNews from '@/views/forum/News'
+import ForumTopic from '@/views/forum/Topic'
 import ForumTopiclist from '@/views/forum/Topiclist'
 import ForumActivities from '@/views/forum/Activities'
 import GameIntro from '@/views/forum/Game'
@@ -16,12 +17,12 @@ export const forumRoutes = [
                 component: ForumTopiclist
             },
             {
-                path: 'news', 
-                component: ForumNews
-            },
-            {
                 path: 'activity',
                 component: ForumActivities
+            },
+            {
+                path: 'news', 
+                component: ForumNews
             },
             {
                 path: 'game',
@@ -35,6 +36,12 @@ export const forumRoutes = [
     },
     {
         path: '/forum/article',
+        name: '论坛文章',
         component: ForumArticle
+    },
+    {
+        path: '/forum/topic',
+        name: '帖子详情',
+        component: ForumTopic
     }
 ]

@@ -23,6 +23,16 @@
   font-variant: normal;
   text-transform: none;
 
+  /* Enable Ligatures ================ */
+  letter-spacing: 0;
+  -webkit-font-feature-settings: "liga";
+  -moz-font-feature-settings: "liga=1";
+  -moz-font-feature-settings: "liga";
+  -ms-font-feature-settings: "liga" 1;
+  font-feature-settings: "liga";
+  -webkit-font-variant-ligatures: discretionary-ligatures;
+  font-variant-ligatures: discretionary-ligatures;
+
   /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -41,6 +51,12 @@
 }
 
 
+.self-icon-more_horiz:before {
+  content: "\e5d3";
+}
+.self-icon-more_vert:before {
+  content: "\e5d4";
+}
 .self-icon-plus:before {
   content: "\f067";
 }
@@ -178,12 +194,6 @@
 }
 .self-icon-meh-o:before {
   content: "\f11a";
-}
-.self-icon-ellipsis-h:before {
-  content: "\f141";
-}
-.self-icon-ellipsis-v:before {
-  content: "\f142";
 }
 .self-icon-thumbs-up:before {
   content: "\f164";

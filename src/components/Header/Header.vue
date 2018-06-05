@@ -38,8 +38,6 @@ export default {
 
 
 <style lang="scss" scoped>
-// @import "~common/css/variable.scss";
-
 header{
 	box-sizing: border-box;
 	position: fixed;
