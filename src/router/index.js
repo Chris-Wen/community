@@ -5,6 +5,7 @@ import Draw from '@/views/common/Draw'
 import Center from '@/views/common/Center'
 import Login from '@/views/common/Login'
 import Register from '@/views/common/Register'
+import Editor from '@/components/Editor/Editor'
 
 import { shopRoutes } from './shopRoutes.js'
 import { fictionRoutes } from './fictionRoutes.js'
@@ -35,6 +36,11 @@ export default new Router({
     {
       path: '/register',
       component: Register
+    },
+    {
+      path: '/editor',
+      name: 'editor',
+      component: Editor
     },
     ...shopRoutes,
     ...fictionRoutes,

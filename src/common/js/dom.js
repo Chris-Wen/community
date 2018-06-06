@@ -36,3 +36,9 @@ export function toggleClass(el, oldClass, newClass) {
     el.className = nowClass.join(' ')
 }
 
+
+export function scrollTopFixed(dom, topDistance=0) {
+    let scrollTop = document.body.scrollTop;    //页面滚动距离
+    
+
+}

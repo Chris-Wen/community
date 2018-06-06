@@ -2,12 +2,12 @@
     <div class="list">
         <div class="mask" v-show="isOption" @click="showMenu()"></div>
 		<div class="select-box">
-			<span @click="showMenu()">调整排序&nbsp;&nbsp;<i class="fa fa-angle-down fa-lg"></i></span>
+			<span @click="showMenu()">调整排序&nbsp;&nbsp;<i class="self-icon-angle-down fa-lg"></i></span>
 		</div>
 		<ul class="pop-options" v-show="isOption">
             <li v-for="(value,key) in ruleList" :key="key"  @click="changeRule( key+1 )">
                 {{value}}
-                <i v-bind:class="{'fa fa-check fa-1x icon-check' : (rule==key+1) }"></i>
+                <i v-bind:class="{'self-icon-check fa-1x icon-check' : (rule==key+1) }"></i>
             </li>
 		</ul>
 
@@ -73,7 +73,7 @@ export default {
                 {id: "66", sname: "王者荣耀手机手柄", logo: "20180110204525329.jpg", num: "100", price: "1", score: "3000", realprice: "122"}
             ],
             isOption: false,
-            check:'fa fa-check icon-check',
+            check:'self-icon-check icon-check',
             ruleList:['积分由低到高','价格由低到高','价格由高到低','积分由高到低'],
             params: {
                     page: this.page,

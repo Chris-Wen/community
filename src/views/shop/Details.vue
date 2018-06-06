@@ -14,7 +14,7 @@
                         <p>市场参考价：{{details.realprice}}元 <span class="freight">运费：{{ details.freight==2 ? '包邮': '不包邮'}}</span></p>
 					</div>
                     <router-link class="custom-serve" to="/custom">
-                            <span><i class="fa fa-headphones"></i>联系客服</span>
+                            <span><i class="self-icon-headphones"></i>联系客服</span>
                     </router-link>
 				</div>  
 			</div>
@@ -47,7 +47,7 @@ export default {
             titleInfo: {
                 title: '商品详情',
                 showIcon: true,
-                icon: 'fa fa-shopping-cart fa-lg',
+                icon: 'self-icon-shopping-cart fa-lg',
                 link: '/shop/cart'
             },
             details: {

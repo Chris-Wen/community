@@ -141,6 +141,9 @@
 .self-icon-eye-slash:before {
   content: "\f070";
 }
+.self-icon-shopping-cart:before {
+  content: "\f07a";
+}
 .self-icon-bars:before {
   content: "\f0c9";
 }
@@ -186,6 +189,12 @@
 .self-icon-circle-o:before {
   content: "\f10c";
 }
+.self-icon-quote-left:before {
+  content: "\f10d";
+}
+.self-icon-quote-right:before {
+  content: "\f10e";
+}
 .self-icon-smile-o:before {
   content: "\f118";
 }
@@ -194,6 +203,15 @@
 }
 .self-icon-meh-o:before {
   content: "\f11a";
+}
+.self-icon-crop:before {
+  content: "\f125";
+}
+.self-icon-microphone:before {
+  content: "\f130";
+}
+.self-icon-microphone-slash:before {
+  content: "\f131";
 }
 .self-icon-thumbs-up:before {
   content: "\f164";
@@ -224,6 +242,12 @@
 }
 .self-icon-pencil:before {
   content: "\e905";
+}
+.self-icon-camera:before {
+  content: "\e90f";
+}
+.self-icon-music:before {
+  content: "\e911";
 }
 .self-icon-clock:before {
   content: "\e94e";

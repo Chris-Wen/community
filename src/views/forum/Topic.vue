@@ -1,10 +1,8 @@
 <template>
     <div class="topic">
-        <!-- 编辑器 -->
-        <reply-editor v-show="showEditor" :type="editorType" />
         <!-- 右上icon及下拉菜单 -->
         <div class="nav">
-            <i class="self-icon-comment-o fa-2x"></i>
+            <router-link tag="i" :to="{ name: 'editor', params: { type: 'theme' } }" class="self-icon-comment-o fa-2x"></router-link>
             <i @click="navDropDown = !navDropDown" class="self-icon-more_vert fa-2x"></i>
         </div>
         <div v-if="navDropDown" class="mask" @click.stop="navDropDown = false">
@@ -17,7 +15,7 @@
         </div>
         <!-- 页面内容、帖子主题 -->
         <div class="theme">
-            <p class="title">{{topic.title}}</p>
+            <h1>{{topic.title}}</h1>
             <div class="theme-top">
                 <div> <router-link to="/center/friend/info"> <img :src="topic.avatar"></router-link> </div>
                 <div>
@@ -79,10 +77,9 @@
 <script>
 import { mapMutations, mapActions } from 'vuex'
 import  DropDown from 'components/ForumDropDown/ForumDropDown'
-import ReplyEditor from 'components/ReplyEditor/ReplyEditor'
 
 export default {
-    components: { DropDown, ReplyEditor },
+    components: { DropDown },
     data() {
         return {
             titleInfo: {
@@ -191,6 +188,9 @@ export default {
         },
         _reply(itemId) {
             console.log('弹出填写页面，进行编辑')
+        },
+        jumpToEditor(type, index) {
+            this.$router.push({ path: '/editor', params: { type } })
         }
     },
     mounted() {
@@ -237,12 +237,6 @@ export default {
         text-align: justify;
         padding: 35px;
         border-bottom: 15px solid #ebebeb; 
-        .title { 
-            font-size: $font-size-normal;/*no*/ 
-            color: black; 
-            font-weight: 600; 
-            line-height: 1.3em; 
-        }
         .theme-top {
             display: flex;
             align-items: stretch; 

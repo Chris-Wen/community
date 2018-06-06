@@ -1,14 +1,16 @@
 <template>
     <div class="forum-index">
         <div class="top-tab">
-            <p :class="{active: showIndex==1}"  @click="showIndex = 1"> <router-link to="/forum">交流讨论</router-link> </p>
-            <p :class="{active: showIndex==2}"  @click="showIndex = 2"><router-link to="/forum/activity">社区活动</router-link></p>
-            <p :class="{active: showIndex==3}"  @click="showIndex = 3"><router-link to="/forum/news">掌动爆料站</router-link> </p>
-            <p :class="{active: showIndex==4}"  @click="showIndex = 4"><router-link to="/forum/game">新游推荐</router-link></p>
+            <p :class="{ active: showIndex=='index' }" > <router-link to="/forum">交流讨论</router-link> </p>
+            <p :class="{ active: showIndex=='activity' }" ><router-link to="/forum/activity">社区活动</router-link></p>
+            <p :class="{ active: showIndex=='news' }" ><router-link to="/forum/news">掌动爆料站</router-link> </p>
+            <p :class="{ active: showIndex=='game' }" ><router-link to="/forum/game">新游推荐</router-link></p>
         </div>
         <div class="view">
             <transition name="slide-fade">
-                <router-view></router-view>
+                <keep-alive>
+                    <router-view></router-view>
+                </keep-alive>
             </transition>
         </div>
     </div>
@@ -24,17 +26,37 @@ export default {
                 title: '掌动社区——快乐生活是我们的追求！',
                 showIcon: false
             },
-            showIndex: 1
+            showIndex: 'index'
         }
     },
     methods: {
-        ...mapActions([ 'handleTitle']) 
+        ...mapActions([ 'handleTitle']),
+        initTabStatus () {
+                    let url = window.location.href,  page;
+
+                    switch(true) {
+                        case /\/#\/forum\/activity/.test(url):    page = 'activity';
+                            break;
+                        case /\/#\/forum\/news/.test(url):    page = 'news';
+                            break;
+                        case /\/#\/forum\/game/.test(url):    page = 'game';
+                            break;
+                        case /\/#\/forum/.test(url):   page = 'index';
+                            break;
+                    }
+                    if (page) this.showIndex = page
+            } 
     },
     mounted() {
+        this.initTabStatus()
+
         this.handleTitle({
             title:    this.titleInfo.title, 
             showIcon: this.titleInfo.showIcon,
         });
+    },
+    watch: {
+        '$route': 'initTabStatus'
     }
 }
 </script>
