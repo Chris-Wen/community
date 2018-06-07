@@ -31,7 +31,7 @@ export default {
     },
     methods: {
         ...mapActions([ 'handleTitle']),
-        initTabStatus () {
+        _initTabStatus () {
                     let url = window.location.href,  page;
 
                     switch(true) {
@@ -45,18 +45,19 @@ export default {
                             break;
                     }
                     if (page) this.showIndex = page
-            } 
+            },
+        
     },
     mounted() {
-        this.initTabStatus()
+        this._initTabStatus()
 
         this.handleTitle({
             title:    this.titleInfo.title, 
             showIcon: this.titleInfo.showIcon,
-        });
+        })
     },
     watch: {
-        '$route': 'initTabStatus'
+        '$route': '_initTabStatus'
     }
 }
 </script>

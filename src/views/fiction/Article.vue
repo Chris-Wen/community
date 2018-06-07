@@ -1,8 +1,10 @@
 <template>
     <div class="article">
         <div class="title">
-            <h1>文章标题文章标题文章标题文章标题文章</h1>
-            <p>来源：{{'XXXX'}}  &nbsp;&nbsp;作者： {{'XXXX'}}</p>
+            <h1>文章标题文章标题文章标题文章标题文章标题这么长</h1>
+            <div>
+                <span> 作者：{{'南娜南岸'}}</span>  <span>{{'2018-05-05'}}</span>  <span><i class="self-icon-eye"></i>{{1234444}}</span>
+            </div>
         </div>
         <div class="content">
             <div class="article-content" v-html="html"></div>
@@ -56,6 +58,7 @@
 
 <script>
 import { mapMutations, mapActions } from 'vuex'
+import { autoTextAreaHeight } from 'common/js/dom'
 
 export default {
     data() {
@@ -76,6 +79,11 @@ export default {
     },
     methods: {
         ...mapActions([ 'handleTitle']),
+        handleThumbs() {
+            console.log('点赞')
+            this.isThumbs = !this.isThumbs
+            this.thumbsNum = this.isThumbs ? this.thumbsNum+1 : this.thumbsNum-1
+        },
         setHeight() {
             autoTextAreaHeight(this.$refs.textarea)
         } 
@@ -196,3 +204,4 @@ export default {
     }
 }
 </style>
+

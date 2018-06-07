@@ -83,3 +83,8 @@ h2 { font-size: 14px;  /*no*/}
 .item-score-price .item-score, .item-price i { font-size: 1.4em }
 .item-score-price .item-price { color: red }
 
+
+
+/* v-html 引入代码片段 中图片处理 */
+.article-content { width: 100%; box-sizing: border-box; }
+.article-content img { max-width: 100%; margin: 1em 0; }

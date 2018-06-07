@@ -42,3 +42,9 @@ export function scrollTopFixed(dom, topDistance=0) {
     
 
 }
+
+
+
+export function autoTextAreaHeight(dom) {  
+    dom.style.height = dom.scrollTop + dom.scrollHeight + "px";  
+}

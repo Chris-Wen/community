@@ -22,14 +22,8 @@
 export default {
     data() {
         return {
-            data: [1,2,3,4],
-            recommends: [
-                {linkUrl: '#1', picUrl: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109173040544.jpg'},
-                {linkUrl: '#2', picUrl: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109173040544.jpg'},
-                {linkUrl: '#2', picUrl: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109173040544.jpg'}
-            ],
-            data: [1,2,3,4, 5],
-            isUnfold: false
+            data: [1,2,3,4,5,6,7,8,9,10,11],
+            isUnfold: true  
         }
     }
 }
@@ -68,14 +62,14 @@ export default {
         }
         ul {
             width: 100%;
-            height: 100%;
-            max-height: 750px;
+            height: auto;
+            // max-height: 750px;
             // padding-bottom: 40px;
             overflow: hidden;
             transition: all .5s linear;
             &.unfold {
                 overflow: auto;
-                max-height: 1000px;
+                // max-height: 1000px;
             }
             li {    
                 width: 100%;
