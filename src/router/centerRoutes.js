@@ -9,10 +9,14 @@ import FriendList from '@/views/common/center/friend/FriendList'
 import FriendInfo from '@/views/common/center/friend/FriendInfo'
 
 
+import DrawRecord from '@/views/common/draw/Record'
+
+
 
 export const centerRoutes = [
     {
         path: '/center/msg',
+        name: '消息',
         component:　Message
     },
     {
@@ -30,22 +34,33 @@ export const centerRoutes = [
     },
     {
         path: '/center/account',
+        name:　'账号切换',
         component: ToggleAccount
     },
     {
         path: '/center/mark',
+        name: '我的收藏/帖子',
         component: Mark
     },
     {
         path: '/center/record',
+        name: '签到',
         component: Record
     },
     {
         path: '/center/recharge',
+        name: '充值',
         component: Recharge
     },
     {
         path: '/center/repository',
+        name: '仓库',
         component: Repository
+    },
+
+    {
+        path: '/draw/record',
+        name: '中奖记录',
+        component: DrawRecord
     },
 ]   

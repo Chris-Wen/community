@@ -1,11 +1,12 @@
 import FictionIndex from '@/views/fiction/Index'
-import Original from '@/views/fiction/Original'
-import Relative from '@/views/fiction/Relative'
-import Rank from '@/views/fiction/Rank'
-import Complete from '@/views/fiction/Complete'
+import Original from '@/views/fiction/index/Original'
+import Relative from '@/views/fiction/index/Relative'
+import Rank from '@/views/fiction/index/Rank'
+import Complete from '@/views/fiction/index/Complete'
 
 import Recommend from '@/views/fiction/Recommend'
 import Article from '@/views/fiction/Article'
+import FictionInfo from '@/views/fiction/FictionInfo'
 
 export const fictionRoutes = [
     {
@@ -41,5 +42,9 @@ export const fictionRoutes = [
         path: '/fiction/article/:articleId',
         name: 'fiction-article',
         component: Article
+    },
+    {
+        path: '/fiction/info/:fictionId',
+        component: FictionInfo
     },
 ]

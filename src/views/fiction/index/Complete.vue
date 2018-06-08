@@ -1,12 +1,13 @@
 <template>
     <ul class="list">
         <li v-for="(item, index) in data" :key="index">
-            <span class="status">连载中</span>
+            <span class="status">已完结</span>
             <div>
-                <h2>《斗破苍穹》</h2>
+                <h2>《斗破苍》</h2>
                 <p>一个个个个个打的技术监督局发哦激动I就爱的风景</p>
                 <p> <span>作者：EZ</span> <span>字数：121313213212</span> </p>
             </div>
+            
         </li>
     </ul>
 </template>
@@ -22,7 +23,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../common/css/index.scss";
+@import "../../../common/css/index.scss";
 
 .list {
     padding: 0 70px;

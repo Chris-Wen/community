@@ -32,10 +32,6 @@ export default {
             type: Boolean,
             default: true
         },
-        isFullScreenSlider: {
-            type: Boolean,
-            default: true
-        },
         data: [],
     },
     data() {

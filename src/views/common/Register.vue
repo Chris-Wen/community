@@ -1,5 +1,5 @@
 <template>
-  <div class="register">
+ 	<div class="register">
 		<div class="logo">
 			<div>
 				<img src="../../common/images/icons/LOGO(1).png" alt="">
@@ -9,7 +9,7 @@
 		<form @submit.prevent>
 			<ul>
 				<li>
-				 	<p> <em>通行证</em>：<input type="text" placeholder="" autofocus/> </p>
+				 	<p> <em>通行证</em>：<input type="text" placeholder="账号" autofocus/> </p>
 					<p>{{ text }}</p>
 				</li>
 				<li>
@@ -21,31 +21,31 @@
 					<p>{{ text }}</p>
 				</li>
 				<li>
-				 	<p> <em>真实姓名</em>：<input type="text" placeholder="可暂不填写" /> </p>
+				 	<p> <em>手机号码</em>：<input type="text" placeholder="11位手机号" /> </p>
 					<p>{{ text }}</p>
 				</li>
 				<li>
-				 	<p> <em>身份证</em>：<input type="text" placeholder="可暂不填写" /> </p>
+				 	<p> <em>邮箱</em>：<input type="email" placeholder="邮箱" /> </p>
 					<p>{{ text }}</p>
 				</li>
 				<li>
-				 	<p> <em>邮箱</em>：<input type="email" placeholder="" /> </p>
+				 	<p> <em>昵称</em>：<input type="text" placeholder="用户昵称" /> </p>
 					<p>{{ text }}</p>
 				</li>
 				<li>
 				 	<p> 
 						<img class="verify" :src="verify" @click="changeVerify" alt="验证码图片">
-						<em>验证码</em>：<input type="text" placeholder="" /> 
+						<em>验证码</em>：<input type="text" placeholder="验证码" /> 
 					</p>
 					<p>{{ text }}</p>
 				</li>
 			</ul>
 			<div class="compact">
-				<p ><input type="radio" checked/> 我已阅读并同意<a href="javascript:;">《掌动手游网通行证用户服务协议及隐私协议》</a> </p>
+				<p ><input type="radio" checked/> 我已阅读并同意<a class="needsclick" href="http://www.baidu.com" >《掌动用户社区注册协议》</a> </p>
 			</div>	
 			<p><button @click="handleLogin">注 &nbsp;册</button></p>
 		</form>
-  </div>
+  	</div>
 </template>
 
 <script>
@@ -163,11 +163,6 @@ export default {
 			position: relative; 
 			height: 1em;
 			color: $text-color-l; 
-			p {
-				position: absolute;
-				left: -15%;
-				transform: scale(0.85);
-			}
 			a { text-decoration: underline }
 		}
 	}

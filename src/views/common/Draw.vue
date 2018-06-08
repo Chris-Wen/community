@@ -24,7 +24,7 @@
             <p>规则1:每天抽奖次数最多为5次</p>
             <p>规则1:每天抽奖次数最多为5次</p>
         </div>
-        <p> <router-link to="/">中奖记录</router-link> </p>
+        <p> <router-link to="/draw/record">中奖记录</router-link> </p>
         
     </div>
 </template>

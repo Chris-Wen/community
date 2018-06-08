@@ -108,3 +108,34 @@
     background-size: contain;
     background-repeat: repeat-x;
 }
+
+
+
+@mixin animate-wrapper($distance) {
+    @keyframes move
+	{
+		0%
+		{
+			-webkit-transform:translateY(0px);
+					transform:translateY(0px);
+		}
+		50%
+		{
+			-webkit-transform:translateY(- ($distance) );
+					transform:translateY(- ($distance) );
+		}
+		50.001%
+		{
+			-webkit-transform:translateY( ($distance)/2 );
+					transform:translateY( ($distance)/2 );
+		}
+		100%
+		{
+			-webkit-transform:translateY(0px);
+					transform:translateY(0px);
+		}
+	}
+}
+
+
+// .test{ animation: move 6s ease-in-out infinite }

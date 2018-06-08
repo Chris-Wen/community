@@ -3,13 +3,13 @@
         <div class="recommend">
             <i class="recommend-img"></i>
             <ul :class="{'unfold': isUnfold }">
-                <li v-for="(item, index) in data" :key="index"> 
-                    <div class="img"><img src="../../common/images/fiction/fiction.jpg" alt=""></div>
+                <router-link tag="li" v-for="(item, index) in data" :to="'/fiction/info/'+ index" :key="index"> 
+                    <div class="img"><img src="../../../common/images/fiction/fiction.jpg" alt=""></div>
                     <div>
                         <p>《斗破苍穹》</p>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas odio maxime eveniet eligendi </p>
                     </div>
-                </li>
+                </router-link>
             </ul>
             <div v-if="!isUnfold" class="more" @click="isUnfold = true">
                     更多<i class="self-icon-angle-right fa-lg"></i>
@@ -22,21 +22,15 @@
 export default {
     data() {
         return {
-            data: [1,2,3,4],
-            recommends: [
-                {linkUrl: '#1', picUrl: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109173040544.jpg'},
-                {linkUrl: '#2', picUrl: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109173040544.jpg'},
-                {linkUrl: '#2', picUrl: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109173040544.jpg'}
-            ],
-            data: [1,2,3,4, 5],
-            isUnfold: false
+            data: [1,2,3,4,5,6,7,8,9,10,11],
+            isUnfold: true  
         }
     }
 }
 </script>
 
 <style lang="scss" scoped>
-@import "../../common/css/index.scss";
+@import "../../../common/css/index.scss";
 
 .original {
     .recommend {
@@ -49,7 +43,7 @@ export default {
             display: inline-block;
             width: 110px;
             height: 33px;
-            background-image: url("../../common/images/fiction/recommend.png");
+            background-image: url("../../../common/images/fiction/recommend.png");
             background-size: 105px 33px;
             background-repeat: no-repeat;
             background-position: center;
@@ -68,14 +62,14 @@ export default {
         }
         ul {
             width: 100%;
-            height: 100%;
-            max-height: 750px;
+            height: auto;
+            // max-height: 750px;
             // padding-bottom: 40px;
             overflow: hidden;
             transition: all .5s linear;
             &.unfold {
                 overflow: auto;
-                max-height: 1000px;
+                // max-height: 1000px;
             }
             li {    
                 width: 100%;
