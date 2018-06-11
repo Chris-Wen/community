@@ -6,62 +6,14 @@
                 {{'昵称昵称昵称昵称'}}
                 <div class="record-date">已连续签到<span>{{22}}</span>天</div>
             </div>
-            <div class="calendar">
-                <h1>{{dateTime()}}</h1>
-                <table class="calendar-table">
-                    <tr>
-                        <td>1</td>
-                        <td>2</td>
-                        <td>3</td>
-                        <td>4</td>
-                        <td>5</td>
-                        <td>6</td>
-                        <td>7</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>2</td>
-                        <td>3</td>
-                        <td>4</td>
-                        <td>5</td>
-                        <td>6</td>
-                        <td>7</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>2</td>
-                        <td>3</td>
-                        <td>4</td>
-                        <td>5</td>
-                        <td>6</td>
-                        <td>7</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>2</td>
-                        <td>3</td>
-                        <td>4</td>
-                        <td>5</td>
-                        <td>6</td>
-                        <td>7</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>2</td>
-                        <td>3</td>
-                        <td>4</td>
-                        <td>5</td>
-                        <td>6</td>
-                        <td>7</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>2</td>
-                        <td>3</td>
-                        <td>4</td>
-                        <td>5</td>
-                        <td>6</td>
-                        <td>7</td>
+            <div class="calendar" >
+                <h1>{{formateDate()}}</h1>
+                <table class="calendar-table" v-if="calendar.length" >
+                    <tr v-for="(item, index) in calendar" :key="index" >
+                        <td v-for="(val, key) in item" :key="key" :class="{'dark': !val.isCurrentMonth}">
+                            <span>{{val.day}}</span>
+                            <div v-if="val.isSigned" class="check-icon"></div>
+                        </td>
                     </tr>
                 </table>
             </div>
@@ -82,6 +34,8 @@
 
 <script>
 import { mapMutations, mapActions } from 'vuex'
+import { getMonthDays } from 'common/js/tools'
+import { addClass } from 'common/js/dom'
 
 export default {
     data() {
@@ -90,22 +44,57 @@ export default {
                 title: '我的签到',
                 showIcon: false
             },
-            // dateTime: ''
+            calendar: []
         }
     },
     methods: {
         ...mapActions([ 'handleTitle']),
-        dateTime () {
+        formateDate () {
             const date = new Date();
             return date.getFullYear() + '年' + (date.getMonth()+1) + '月'
+        },
+        initCalendarTable() {
+            const date = new Date()
+            let month = date.getMonth() + 1
+
+            let days = getMonthDays(month)                  //当前月份天数
+            let lastMonthDays = getMonthDays( month-1 )     //上月月份天数
+            let monthStartWeekday= new Date(date.getFullYear(), date.getMonth(), 1).getDay()     //月初星期几  
+
+            let calendarTable = []
+            monthStartWeekday = monthStartWeekday==0 ? 7 : monthStartWeekday
+            for (let i=0; i<7; i++) {
+                calendarTable[i] = new Array() 
+            }
+            for( let i=0; i<42; i++ ) {
+                let j = Math.floor(i/7)
+                let dateObject = { }
+                dateObject.isSigned = false     //是否已签到    
+                dateObject.row = j              //列
+                dateObject.key = i              
+
+                if (j==1 && i==10) dateObject.isSigned = true;
+                if (i<monthStartWeekday) {
+                    dateObject.isCurrentMonth = false           //是否为当前月
+                    dateObject.day = lastMonthDays - (monthStartWeekday - i - 1)
+                } else {
+                    dateObject.isCurrentMonth = !(i+1-monthStartWeekday > days)
+                    dateObject.day = i+1-monthStartWeekday > days 
+                        ?   i +1 - monthStartWeekday - days
+                        :   i + 1 - monthStartWeekday 
+                }
+                calendarTable[j].push(dateObject)
+            }
+            this.calendar = calendarTable.slice()
         }
     },
     mounted() {
         this.handleTitle({
             title:    this.titleInfo.title, 
             showIcon: this.titleInfo.showIcon
-        });
+        })
 
+        this.initCalendarTable()
     }
 }
 </script>
@@ -145,6 +134,8 @@ export default {
         .calendar {
             height: 400px;
             padding: 25px 18px 0;
+            margin-bottom:　25px;
+            @include box-sizing;
             @include big-background-image(url('../../../common/images/global/bg-record.jpg'));
             h1 { text-align: center; margin-bottom: 30px; }
             .calendar-table {
@@ -154,9 +145,21 @@ export default {
                 height: 295px;
                 text-align: center;
                 border-collapse: collapse;
-                th, td { border: 1px solid $border-color-d; /*no*/ }
-                border: 1px solid #fff; /*no*/
-                td { vertical-align: middle; }
+                tr { border-bottom: 1px solid $border-color-d; /*no*/ }
+                td { 
+                    border-right: 1px solid $border-color-d; /*no*/
+                    height: 49.15px;
+                    vertical-align: middle; 
+                    position: relative;
+                    &:last-child { border: 0; }
+                    .check-icon {
+                        @include center;
+                        width: 100%;
+                        height: 85%;
+                        @include background-image(url('../../../common/images/icons/check-circle.jpg'));
+                    }
+                }
+                .dark { color: $text-color-ll; }
             }
         }
         .color-grad-btn {

@@ -78,7 +78,12 @@ export default {
         ...mapActions([ 'handleTitle']),
         setHeight() {
             autoTextAreaHeight(this.$refs.textarea)
-        } 
+        },
+        handleThumbs() {
+            console.log('点赞')
+            this.isThumbs = !this.isThumbs
+            this.thumbsNum = this.isThumbs ? this.thumbsNum+1 : this.thumbsNum-1
+        }, 
     },
     mounted() {
         this.handleTitle({

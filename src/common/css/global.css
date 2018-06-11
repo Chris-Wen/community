@@ -61,6 +61,12 @@ h2 { font-size: 14px;  /*no*/}
     padding-top: 50%;
 }
 
+
+.router-link-active:active {
+    opacity: 0.6;
+}
+
+
 /* 商城板块专用 */
 .item-title {
     color: black; 

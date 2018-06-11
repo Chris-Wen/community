@@ -59,7 +59,7 @@ export default {
             let dom = this.$refs.tab
 
             if (!dom) { return;  }
-            this.topTabFixed = scrollTop > dom.offsetTops 
+            this.topTabFixed = scrollTop > dom.offsetTop 
         },
         initTabStatus () {
             let url = window.location.href,  page;

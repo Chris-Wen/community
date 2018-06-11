@@ -16,6 +16,7 @@ Vue.use(Router)
 
 
 export default new Router({
+  linkExactActiveClass: 'linkClickStyle',
   routes: [ 
     {
       path: '/',

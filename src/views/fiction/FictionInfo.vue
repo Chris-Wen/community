@@ -48,11 +48,17 @@
                 </li>
             </ul>
         </div>
+
+        <!-- 评论输入栏 -->
+        <div class="comment-input">
+            <textarea ref="textarea" v-model="commentInput" placeholder="期待你的评论~" style="height: auto" @input='setHeight'></textarea> <div>发送</div>
+        </div>
     </div>
 </template>
 
 <script>
 import { mapMutations, mapActions } from 'vuex'
+import { autoTextAreaHeight } from 'common/js/dom'
 
 export default {
     data() {
@@ -61,12 +67,22 @@ export default {
                 title: '某本小说',
                 showIcon: false
             },
-            data: [12,3,34,5,6,7]
+            commentInput: '',
+            data: [
+                {}
+            ],
         }
     },
     methods: {
         ...mapActions([ 'handleTitle']),
-
+        handleThumbs() {
+            console.log('点赞')
+            this.isThumbs = !this.isThumbs
+            this.thumbsNum = this.isThumbs ? this.thumbsNum+1 : this.thumbsNum-1
+        },
+        setHeight() {
+            autoTextAreaHeight(this.$refs.textarea)
+        } 
     },
     mounted() {
         this.handleTitle({
@@ -186,6 +202,30 @@ export default {
                     }
                 }
             }
+        }
+    }
+    .comment-input {
+        padding: 35px 0 50px;
+        @include box-sizing;
+        display: flex;
+        textarea {
+            @include box-sizing;
+            width: 100%;
+            min-height: 3em;
+            border: 1px solid $border-color-d;  /*no*/
+            // line-height: 1.5em;
+            padding: .8em 1em 0;
+        }
+        >div {
+            margin-left: 10px;
+            font-weight: 800;
+            width: 25%;
+            min-width: 6em;
+            height: 3em;
+            line-height: 3em;
+            text-align: center;
+            color: white;
+            background: $text-color-orange;
         }
     }
 }

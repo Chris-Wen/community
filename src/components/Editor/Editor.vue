@@ -29,7 +29,7 @@ export default {
             },
             editorType: '',
             themeTitle: '',
-            textInput: '',
+            textInput: 'https://blog.csdn.net/qq_32786873/article/details/75125737    https://segmentfault.com/a/1190000010034177   https://github.com/xiangpaopao/blog/issues/7',
         }
     },
     methods: {
@@ -38,8 +38,8 @@ export default {
             let type = this.$route.params.type
             this.editorType = 'theme'
 
-            this.themeTitle = localStorage.getItem('editorPageThemeTitle') ? unescape(localStorage.getItem('editorPageThemeTitle')) : ''
-            this.textInput = localStorage.getItem('editorPageTextInput') ? unescape(localStorage.getItem('editorPageTextInput')) : ''
+            // this.themeTitle = localStorage.getItem('editorPageThemeTitle') ? unescape(localStorage.getItem('editorPageThemeTitle')) : ''
+            // this.textInput = localStorage.getItem('editorPageTextInput') ? unescape(localStorage.getItem('editorPageTextInput')) : ''
 
             return type=='reply' ? '发布回复' : '发布主题'
         },
