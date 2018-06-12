@@ -23,8 +23,10 @@ export default {
     data() {
         return {
             titleInfo: {
-                title: '掌动社区——快乐生活是我们的追求！',
-                showIcon: false
+                title: '掌动论坛',
+                showIcon: true,
+                icon: 'self-icon-comment-o fa-lg',
+                link: '/',
             },
             showIndex: 'index'
         }
@@ -54,6 +56,8 @@ export default {
         this.handleTitle({
             title:    this.titleInfo.title, 
             showIcon: this.titleInfo.showIcon,
+            icon: this.titleInfo.icon,
+            link: this.titleInfo.link
         })
     },
     watch: {

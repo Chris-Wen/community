@@ -77,7 +77,8 @@ export default {
             title: this.titleInfo.title,
             showIcon: this.titleInfo.showIcon,
             showBottomTab: this.titleInfo.showBottomTab
-        })
+		})
+
     }
 }
 </script>
@@ -89,8 +90,9 @@ export default {
     background-image: url('../../common/images/global/bg-register.jpg');
     background-repeat: no-repeat;
     background-size: 100%;
-	padding: 0 80px 50px;
+	padding: 0 80px;
 	font-size: $font-size-small; /*no*/
+	@include box-sizing;
     .logo {
         width: 100%;
         height: 290px;

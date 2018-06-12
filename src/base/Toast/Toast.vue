@@ -32,7 +32,7 @@ export default {
         leftBtn: { default: '取消' },
         rightBtn: { default: '确定' },
         selfClass: { default: '' },
-        showStyle: { default: '' }
+        showStyle: { default: 'leftBtn' }
     },
     methods: {
         _handleClick(index) {
@@ -47,6 +47,27 @@ export default {
 
 <style lang="scss">
 @import '../../common/css/index.scss';
+@keyframes glow {
+    0% {
+        border-color: rgba(255, 0, 0, .5);
+        box-shadow: 0 0 20px rgba(255, 0, 0,.6), inset 0 0 10px rgba(255, 0, 0,.4), 0 1px 0 rgba(255, 0, 0, .5);
+    }
+    100% {
+        border-color: red;
+        box-shadow: 0 0 5px rgba(255, 0, 0,.2), inset 0 0 5px rgba(255, 0, 0,.1), 0 1px 0 red;
+    }
+} 
+
+@keyframes glow1 {
+    0% {
+        border-color: rgba(255, 0, 0, 1);
+        box-shadow: 0 0 20px rgba(255, 0, 0,.6), inset 0 0 10px rgba(255, 0, 0,.4), 0 1px 0 rgba(255, 0, 0, 1);
+    }
+    100% {
+        border-color: #fff;
+        // box-shadow: 0 0 5px rgba(255, 0, 0,.2), inset 0 0 5px rgba(255, 0, 0,.1), 0 1px 0 #fff;
+    }
+}
 
 .toast-popup{
     position: fixed;
@@ -111,7 +132,10 @@ export default {
                 width: 50%;
                 height: 85px;
                 line-height: 85px;
-                &.active { border: 1px solid red;  /*no*/ }
+                &.active { 
+                    border: 1px solid red;  /*no*/
+                    animation: glow1 800ms ease-out infinite alternate; 
+                }
                 &:first-child { border-bottom-left-radius: .5em; color: $text-color-dark;}
                 &:last-child { 
                     color: $text-color-orange-d; 

@@ -56,12 +56,15 @@
                 <p>{{score}}</p>
                 <p>我的积分</p>
             </div>
-            <div class="change-goods">
-                <p>已兑换商品</p>
-                <ul>
-                    <li></li>
-                </ul>
-                <a href="javascript:;">更多>>></a>
+            <div class="transform-goods">
+                <div v-if="data.length">
+                    <p>已兑换商品</p>
+                    <ul >
+                        <li></li>
+                    </ul>
+                    <a href="javascript:;">更多>>></a>
+                </div>
+                <div class="else" else> 暂无已兑换商品</div>
             </div>
         </div>
     </div>
@@ -81,6 +84,7 @@ export default {
             score: 1132135123,    
             attent: 0,
             fans: 0,
+            data: []
         }
     },
     methods: {
@@ -188,7 +192,7 @@ export default {
                 font-weight: 800;
             }
         }
-        .change-goods {
+        .transform-goods {
             padding: 10px 0;
             >p {
                 text-indent: 2em;
@@ -204,6 +208,12 @@ export default {
                 width: 100%;
                 height: 100px;
                 margin: 10px 0;
+            }
+            .else {
+                text-align: center;
+                line-height: 100px;
+                font-size: $font-size-normal;  /*no*/
+                color: $text-color-dark;
             }
         }
     }

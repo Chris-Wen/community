@@ -142,8 +142,7 @@ export default {
                         line-height: 1.2em;
                         height: 3.4em;
                         max-height: 3.4em;
-                        text-overflow: ellipsis;
-                        overflow: hidden;
+                        @include lines-nowrap(3);
                     }
                 }
             }

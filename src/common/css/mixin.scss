@@ -28,10 +28,18 @@
             box-sizing: border-box;
 }
 
-@mixin no-wrap {
+@mixin no-wrap {                    //单行溢出身略号
     text-overflow: ellipsis;
     overflow: hidden;   
     white-space: nowrap;
+}
+
+@mixin lines-nowrap($lines) {       //多行溢出身略号
+    overflow : hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
 }
 
 @mixin text-justify ($line) {

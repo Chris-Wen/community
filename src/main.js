@@ -13,6 +13,8 @@ import 'lib-flexible'
 
 Vue.use(Vuex)
 
+// import './common/js/reset.js'
+
 import './common/css/self-icons.css'
 import './common/css/reset.css'
 import './common/css/global.css'

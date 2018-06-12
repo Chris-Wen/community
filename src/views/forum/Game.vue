@@ -2,7 +2,7 @@
     <div class="game">
         <div class="part">
             <p class="mark"><i>最新游戏</i></p>
-            <p class="dotted">{{'....'.repeat(40)}}</p>
+            <p class="dotted">..............................................................................</p>
         </div>
         <ul class="new-game">
             <router-link tag="li" to="/forum/game_info">
@@ -24,7 +24,7 @@
         </ul>
         <div class="part game-part">
             <p class="mark"><i>热门游戏</i></p>
-            <p class="dotted">{{'....'.repeat(40)}}</p>
+            <p class="dotted">..............................................................................</p>
         </div>
 
         <ul class="top-game flex-between">
@@ -63,6 +63,9 @@ export default {
             let number = value<100000 ? value : Math.floor(value/10000) + '万+'
             return number
         }
+    },
+    methods: {
+        setDotsStyle() { return '......'.repeat(30) }
     }
 }
 </script>

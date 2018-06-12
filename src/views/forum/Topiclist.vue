@@ -21,7 +21,7 @@
         <p class="part"> 用户帖子 </p>
         <ul class="article">
             <router-link tag="li" to="/forum/topic">
-                <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
+                <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur </p>
                 <div>
                     <span><i></i> 用户id</span>
                     <span ><i class="self-icon-comment-o"></i> 999</span>
@@ -90,11 +90,11 @@ export default {
         padding: 20px 40px 10px;
         &:first-child { border: 0; }
         p { 
-            max-height: 2.1em;
-            height: auto;
-            overflow: hidden;
+            max-height: 2.3em;
+            height: 2.3em;
+            @include lines-nowrap(2);
             @include text-justify(1.2em);
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
         div {
             span { 

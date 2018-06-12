@@ -27,6 +27,7 @@ export default {
   width: 100%;
   padding: 100px 0;
   box-sizing: border-box;
+  margin: 0 auto;
 }
 
 </style>

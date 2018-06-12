@@ -1,5 +1,5 @@
 <template>
-	<header>
+	<header class="ct-top-header">
 		{{ title }}
 		<div class="icon">
 			<a href="javascript:history.go(-1);" >
@@ -39,6 +39,7 @@ export default {
 
 <style lang="scss" scoped>
 header{
+	margin: auto;
 	box-sizing: border-box;
 	position: fixed;
 	z-index: 100;

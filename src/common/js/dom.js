@@ -37,12 +37,29 @@ export function toggleClass(el, oldClass, newClass) {
 }
 
 
-export function scrollTopFixed(dom, topDistance=0) {
-    let scrollTop = document.body.scrollTop;    //页面滚动距离
-    
-
-}
 
 export function autoTextAreaHeight(dom) {         //textarea height auto set
     dom.style.height = dom.scrollTop + dom.scrollHeight + "px";  
+}
+
+
+
+export function initClientHeight(dom2, dom1=document.querySelector('.ct-top-header')) {
+    let h = document.documentElement.clientHeight || document.body.clientHeight 
+
+    if (dom1 && dom2) {
+        dom2.style.height = h - dom1.offsetHeight + 'px'
+    }
+}
+
+export function setClientHeight( isBottomShow = true ) {
+    let h = document.documentElement.clientHeight || document.body.clientHeight 
+    
+    if ( document.querySelector('.ct-top-header') ) {
+        if ( isBottomShow ) {
+            return h - 2*document.querySelector('.ct-top-header').offsetHeight
+        } else {
+            return h - 2*document.querySelector('.ct-top-header').offsetHeight
+        }
+    }
 }

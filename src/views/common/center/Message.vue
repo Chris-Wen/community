@@ -6,45 +6,53 @@
             <mt-badge v-if="unread" class="badge" type="error">{{unread}}</mt-badge>
             <i :class="[ msgIndex ==1 ? 'self-icon-angle-down' : 'self-icon-angle-right', 'fa-lg']"></i>
         </div>
-        <ul v-if="msgIndex==1" class="content">
-            <li v-for="(item, index) in data" :key="index" @touchstart="touchStart" @touchend="touchEnd">
-                <slider-delete>
-                    <div class="msg-list">
-                        <h2>消息标题消息标题消息标题消息标题</h2>
-                        <div class="msg">
-                            <p>消息内容消息内容消息内容消息内容消息内容消息内容消息内容</p>
-                        </div> 
-                        <p>{{'2018-05-29 12:30'}}</p>
-                    </div>
-                </slider-delete>
-            </li>
-        </ul>
+        <div class="msg-container">
+            <ul v-if="msgIndex==1" class="content" >
+                <li v-for="(item, index) in data" :key="index" @touchstart="touchStart" @touchend="touchEnd">
+                    <slider-delete>
+                        <div class="msg-list">
+                            <h2>消息标题消息标题消息标题消息标题</h2>
+                            <div class="msg">
+                                <p>消息内容消息内容消息内容消息内容消息内容消息内容消息内容</p>
+                            </div> 
+                            <p>{{'2018-05-29 12:30'}}</p>
+                        </div>
+                    </slider-delete>
+                </li>
+            </ul>
+        </div>
+        
         <div @click="changeTab(2)" :class="['item-tab', {'active': msgIndex==2} ]">我的帖子     <i :class="[ msgIndex ==2 ? 'self-icon-angle-down' : 'self-icon-angle-right', 'fa-lg']"></i></div>
-        <ul v-if="msgIndex==2" class="content">
-            <li>
-                <slider-delete>
-                    <div class="msg-list">
-                        <h2>消息标题消息标题消息标题消息标题</h2>
-                        <div class="msg">
-                            <p>消息内容消息内容消息内容消息内容消息内容消息内容消息内容</p>
-                        </div> 
-                    </div>
-                </slider-delete>
-            </li>
-        </ul>
+        <div class="msg-container"> 
+           <ul v-if="msgIndex==2" class="content" ref="">
+                <li>
+                    <slider-delete>
+                        <div class="msg-list">
+                            <h2>消息标题消息标题消息标题消息标题</h2>
+                            <div class="msg">
+                                <p>消息内容消息内容消息内容消息内容消息内容消息内容消息内容</p>
+                            </div> 
+                        </div>
+                    </slider-delete>
+                </li>
+            </ul> 
+        </div>
+        
         <div @click="changeTab(3)" :class="['item-tab', {'active': msgIndex==3} ]">我收到的回复     <i :class="[ msgIndex ==3 ? 'self-icon-angle-down' : 'self-icon-angle-right', 'fa-lg']"></i></div>
-        <ul v-if="msgIndex==3" class="content">
-            <li>
-                <slider-delete>
-                    <div class="msg-list">
-                        <h2>消息标题消息标题消息标题消息标题</h2>
-                        <div class="msg">
-                            <p>消息内容消息内容消息内容消息内容消息内容消息内容消息内容</p>
-                        </div> 
-                    </div>
-                </slider-delete>
-            </li>
-        </ul>
+        <div class="msg-container">
+            <ul v-if="msgIndex==3" class="content">
+                <li>
+                    <slider-delete>
+                        <div class="msg-list">
+                            <h2>消息标题消息标题消息标题消息标题</h2>
+                            <div class="msg">
+                                <p>消息内容消息内容消息内容消息内容消息内容消息内容消息内容</p>
+                            </div> 
+                        </div>
+                    </slider-delete>
+                </li>
+            </ul>
+        </div>
     </div>    
 </template>
 
@@ -52,7 +60,7 @@
 import { Badge } from 'mint-ui'
 import { mapMutations, mapActions } from 'vuex'
 import SliderDelete from '../../../base/SliderDelete/SliderDelete'
-import { hasClass, removeClass } from 'common/js/dom'
+import { hasClass, removeClass, setClientHeight } from 'common/js/dom'
 
 export default {
     components: { SliderDelete, 'mt-badge': Badge },
@@ -73,9 +81,20 @@ export default {
     },
     methods: {
         ...mapActions([ 'handleTitle']),
+        initTabStyle() {
+            let height = setClientHeight();
+            document.querySelector('.center-message').style.minHeight = height +　'px'
+        },
         changeTab (index, ev) {
             ev = ev || event;
             this.msgIndex = hasClass(ev.currentTarget, 'active') ? 0 : index
+
+            let target = ev.currentTarget
+            let height = setClientHeight();
+            let tabHeight = target.offsetHeight
+            
+            console.log(target.nextElementSibling)
+            target.nextElementSibling.style.height = (height - index*tabHeight) + 'px'
         },
         touchStart(ev) {
             ev = ev || event;
@@ -95,6 +114,8 @@ export default {
             title:    this.titleInfo.title, 
             showIcon: this.titleInfo.showIcon
         });
+
+        this.initTabStyle()        
     }
 }
 </script>
@@ -103,9 +124,11 @@ export default {
 @import "../../../common/css/index.scss";
 
 .center-message {
+    .msg-container { overflow: auto; } 
     font-size: $font-size-small;  /*no*/
     @include color-background;
-    min-height: 950px;
+    // min-height: 950px;
+    @include box-sizing;
     .item-tab {
         font-weight: 800;
         padding: 1em 35px;

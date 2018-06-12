@@ -2,13 +2,13 @@
     <div class="news">
         <div class="top-news">
             <p class="mark"><i>游民资讯</i></p>
-            <p class="dotted">{{'......'.repeat(30)}}</p>
+            <p class="dotted">......................................................................................................</p>
             <ul>
                 <router-link tag="li" to="/forum/article">
                     <div class="info">
-                        <h2>{{"游民资讯游民资讯游民资讯游民资讯游民资讯游民资讯游民资讯"}}</h2>
+                        <h2 class="lines-nowrap">{{"游民资讯游民资讯游民资讯游民资讯游民资讯游民资讯游民资讯"}}</h2>
                         <div>
-                            <p>{{"内容简介内容简介内容简介内容简介内容简介内容简介内容简介"}}</p>
+                            <p class="lines-nowrap">{{"内容简介内容简介内容简介内容简介内容简介内容简介内容简介"}}</p>
                             <p>{{'2018-05-01'}}   <span> <i class="self-icon-eye"></i> {{299999 | exchangeNumber }}</span> </p>
                         </div>
                     </div>
@@ -18,7 +18,7 @@
                     <div class="info">
                         <h2>{{"游民资讯游民资讯"}}</h2>
                         <div>
-                            <p>{{"内容简介内容简介内容简介内容简"}}</p>
+                            <p class="lines-nowrap">{{"内容简介内容简"}}</p>
                             <p>{{'2018-05-01'}}   <span> <i class="self-icon-eye"></i> {{99999 | exchangeNumber }}</span> </p>
                         </div>
                     </div>
@@ -28,13 +28,13 @@
         </div>
         <div class="game-news">
             <p class="mark"><i>泛游戏</i></p>
-            <p class="dotted">{{'......'.repeat(30)}}</p>
+            <p class="dotted">......................................................................................................</p>
             <ul>
                 <li>
                     <div class="info">
-                        <h2>{{"游民资讯游民资讯游民资讯游民资讯游民资讯游民资讯游民资讯"}}</h2>
+                        <h2 class="lines-nowrap">{{"游民资讯游民资讯游民资讯游民资讯游民资讯游民资讯游民资讯"}}</h2>
                         <div>
-                            <p>{{"内容简介内容简介内容简介内容简介内容简介内容简介内容简介"}}</p>
+                            <p class="lines-nowrap">{{"内容简介内容简介内容简介内容简介内容简介内容简介内容简介"}}</p>
                             <p>{{'2018-05-01'}}   <span> <i class="self-icon-eye"></i> {{299999 | exchangeNumber }}</span> </p>
                         </div>
                     </div>
@@ -65,6 +65,10 @@ export default {
             let number = value<100000 ? value : Math.floor(value/10000) + '万+'
             return number
         }
+    },
+    methods: {
+        setDotsStyle() { return '......'.repeat(30) }
+
     }
 }
 </script>
@@ -109,7 +113,7 @@ export default {
             display: flex;
             align-items: center;
             justify-content: space-around;
-            h2 { max-height: 2.2em; }
+            h2 { max-height: 2.2em;  }
             .info {
                 height: 150px;
                 width: 50%;

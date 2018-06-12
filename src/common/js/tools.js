@@ -31,10 +31,24 @@ Date.prototype.format = function(fmt) {
    return fmt; 
 }
 
-export function getMonthDays(month) {
+export function getMonthDays(month) {       //获取每月总天数
     const date = new Date()
     let year = date.getFullYear()
     let d = new Date(year, month, 0) 
     return d.getDate()
 }
+
+export function transformDate(time) {       //时间戳转换时间    格式：yyyy-MM-dd hh:mm
+    const date = new Date(time*1000);    //时间戳为10位需*1000，时间戳为13位的话不需乘1000
+          
+    let Y = date.getFullYear() + '-',  
+        M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-',  
+        D = date.getDate() + ' ',  
+        h = date.getHours() + ':',  
+        m = date.getMinutes() + ':';  
+        // s = date.getSeconds();     
+
+    return Y+M+D+h+m;  
+}
+
 

@@ -32,6 +32,7 @@
 
 <script>
 import { mapMutations, mapActions } from 'vuex'
+import { initClientHeight } from 'common/js/dom'
 
 export default {
     data() {
@@ -53,7 +54,8 @@ export default {
         ...mapActions([ 'handleTitle']),
         handleLogin() {
             console.log('login')
-        }
+        },
+        
     },
     mounted() {
         this.handleTitle({ 
@@ -61,6 +63,8 @@ export default {
             showIcon: this.titleInfo.showIcon,
             showBottomTab: this.titleInfo.showBottomTab
         })
+
+        initClientHeight(document.querySelector('.login'))
     }
 }
 </script>
@@ -74,6 +78,7 @@ export default {
     padding-top: 80px;
     position: absolute;
     @include color-background;
+    @include box-sizing;
     form {
         text-align: center;
         ul {

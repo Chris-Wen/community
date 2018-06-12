@@ -27,7 +27,7 @@
         <section >
 			<div class="info-title">
 				<span>商品详情</span> 
-				<p class="dotted">{{'····'. repeat(20)}}</p>
+				<p class="dotted">{{ setDotsStyle() }}</p>
 			</div>
 			<ul id="productInfo">
 				<li><i>品名：</i>{{details.sname}}</li>
@@ -65,6 +65,7 @@ export default {
     },
     methods: {
         ...mapActions(['handleTitle']),
+        setDotsStyle() { return '····'.repeat(40) },
         addCart() {
 
         },

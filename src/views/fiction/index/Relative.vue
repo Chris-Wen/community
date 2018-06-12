@@ -95,7 +95,7 @@ export default {
                     p {
                         @include text-justify(1.2em);
                         max-height: 3.4em;
-                        overflow: hidden;
+                        @include lines-nowrap(3);
                         &:first-child { 
                             max-width: 370px; 
                             font-weight: 600; 

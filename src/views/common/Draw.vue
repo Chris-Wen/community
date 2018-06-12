@@ -11,11 +11,13 @@
                 <p v-html="toastSlot.intro"></p>
             </div>
         </self-toast>
-
-        <div class="turnplate">
-            <div class="prize" ref="turnplate"></div>
-            <div class="btn-draw"  @click="startRotate"></div>
+        <div class="turnplate-box">
+            <div class="turnplate">
+                <div class="prize" ref="turnplate"></div>
+                <div class="btn-draw"  @click="startRotate"></div>
+            </div>
         </div>
+        
         <p style="font-size: 16px; color: red; font-weight: 800">抽奖次数： {{lotteryTicket}}</p>
         <div class="rule">
             <p>抽奖规则</p>
@@ -38,7 +40,7 @@ export default {
     data() {
         return {
             titleInfo: {
-                title:  '掌动社区——快乐生活是我们的追求！',
+                title:  '掌动社区',
                 showIcon:   false
             },
             lotteryTicket: 5,   //抽奖次数
@@ -136,11 +138,10 @@ export default {
 
 .draw {
     background-image: url('../../common/images/global/bg-draw.png') ;
-    background-size: 100% 1108px;
+    background-size: 100% 100%;
     background-repeat: y; 
-    padding: 55px 0;
     color: $text-color-w;
-    @include box-sizing;
+    .turnplate-box { padding-top: 55px; }
     .turnplate {
         width: 557px;
         height: 557px;
@@ -196,6 +197,7 @@ export default {
     >p {
         text-align: center;
         margin-top: 30px;
+        padding-bottom: 55px;
         a{ text-decoration: underline; color: #fff; padding: 10px 30px;}
     } 
 }
