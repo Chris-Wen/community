@@ -13,7 +13,7 @@
         <!-- 积分 -->
         <div class="score">
             <div class="title">
-                <p class="dotted">···························································································· </p>
+                <p class="dotted">{{'······'.repeat(30)}}</p>
                 <p> <span>我的积分</span> <i>{{this.$store.state.userInfo.score || '***'}}</i></p>  
             </div>
             <ul class="score-bar">
@@ -62,7 +62,7 @@
                         <p>8000分以上</p>
                     </router-link>
                 </ul>
-                <p class="dotted"> ···························································································· </p>
+                <p class="dotted">{{`······`.repeat(30) }}</p>
                 <ul class="others">
                     <li>
                         <i></i> 
@@ -97,7 +97,7 @@
                         <p>数码运动</p>
                     </li>
                 </ul>
-                <p class="dotted">{{  setDotsStyle()  }} </p>
+                <p class="dotted">{{`······`.repeat(30)}} </p>
                 <ul class="disport">
                     <li>
                         <i></i> 
@@ -144,7 +144,6 @@ export default {
     components:{ Slider },
     methods: {
         ...mapActions([ 'handleTitle']),
-        setDotsStyle() {  return '····'.repeat(40) },
         loadImage() {
             // if (!this.checkloaded) {
             //     this.checkloaded = true

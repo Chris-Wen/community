@@ -3,7 +3,7 @@
     <div class="news">
         <div class="top-news">
             <p class="mark"><i>游民资讯</i></p>
-            <p class="dotted">......................................................................................................</p>
+            <p class="dotted">{{`......`.repeat(30)}}</p>
             <ul>
                 <router-link tag="li" to="/forum/article">
                     <div class="info">
@@ -29,7 +29,7 @@
         </div>
         <div class="game-news">
             <p class="mark"><i>泛游戏</i></p>
-            <p class="dotted">......................................................................................................</p>
+            <p class="dotted">{{`......`.repeat(30)}}</p>
             <ul>
                 <li>
                     <div class="info">

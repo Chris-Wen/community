@@ -2,7 +2,7 @@
     <div class="game">
         <div class="part">
             <p class="mark"><i>最新游戏</i></p>
-            <p class="dotted">..............................................................................</p>
+            <p class="dotted">{{`......`.repeat(30)}}</p>
         </div>
         <ul class="new-game">
             <router-link tag="li" to="/forum/game_info">
@@ -24,7 +24,7 @@
         </ul>
         <div class="part game-part">
             <p class="mark"><i>热门游戏</i></p>
-            <p class="dotted">..............................................................................</p>
+            <p class="dotted">{{`......`.repeat(30)}}</p>
         </div>
 
         <ul class="top-game flex-between">
@@ -65,7 +65,7 @@ export default {
         }
     },
     methods: {
-        setDotsStyle() { return '......'.repeat(30) }
+        
     }
 }
 </script>
