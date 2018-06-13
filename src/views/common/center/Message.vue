@@ -7,7 +7,7 @@
             <i :class="[ msgIndex ==1 ? 'self-icon-angle-down' : 'self-icon-angle-right', 'fa-lg']"></i>
         </div>
         <div class="msg-container">
-            <ul v-if="msgIndex==1" class="content" >
+            <ul v-if="msgIndex==1" class="content shrink-list" >
                 <li v-for="(item, index) in data" :key="index" @touchstart="touchStart" @touchend="touchEnd">
                     <slider-delete>
                         <div class="msg-list">
@@ -24,7 +24,7 @@
         
         <div @click="changeTab(2)" :class="['item-tab', {'active': msgIndex==2} ]">我的帖子     <i :class="[ msgIndex ==2 ? 'self-icon-angle-down' : 'self-icon-angle-right', 'fa-lg']"></i></div>
         <div class="msg-container"> 
-           <ul v-if="msgIndex==2" class="content" ref="">
+           <ul v-if="msgIndex==2" class="content shrink-list">
                 <li>
                     <slider-delete>
                         <div class="msg-list">
@@ -40,7 +40,7 @@
         
         <div @click="changeTab(3)" :class="['item-tab', {'active': msgIndex==3} ]">我收到的回复     <i :class="[ msgIndex ==3 ? 'self-icon-angle-down' : 'self-icon-angle-right', 'fa-lg']"></i></div>
         <div class="msg-container">
-            <ul v-if="msgIndex==3" class="content">
+            <ul v-if="msgIndex==3" class="content shrink-list">
                 <li>
                     <slider-delete>
                         <div class="msg-list">
@@ -84,17 +84,17 @@ export default {
         initTabStyle() {
             let height = setClientHeight();
             document.querySelector('.center-message').style.minHeight = height +　'px'
+
+            let domArray = document.querySelectorAll(".msg-container")
+            let tabHeight = document.querySelector(".item-tab").offsetHeight
+            
+            domArray.forEach(element => {
+                element.style.maxHeight = (height - 3*tabHeight) + 'px'
+            });
         },
         changeTab (index, ev) {
             ev = ev || event;
             this.msgIndex = hasClass(ev.currentTarget, 'active') ? 0 : index
-
-            let target = ev.currentTarget
-            let height = setClientHeight();
-            let tabHeight = target.offsetHeight
-            
-            console.log(target.nextElementSibling)
-            target.nextElementSibling.style.height = (height - index*tabHeight) + 'px'
         },
         touchStart(ev) {
             ev = ev || event;
@@ -115,7 +115,9 @@ export default {
             showIcon: this.titleInfo.showIcon
         });
 
-        this.initTabStyle()        
+        setTimeout(() => {
+            this.initTabStyle()        
+        }, 20);
     }
 }
 </script>
@@ -139,6 +141,7 @@ export default {
     }
     .active { color: $text-color-orange;}
     .content {
+        height: auto;
         border-bottom: 1px solid $border-color-d;  /*no*/
         .msg-list {
             margin: 25px 40px 0 40px;

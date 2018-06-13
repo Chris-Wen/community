@@ -1,9 +1,10 @@
 import ForumIndex from '@/views/forum/Index'
-import ForumNews from '@/views/forum/News'
+import ForumNews from '@/views/forum/index/News'
+import GameIntro from '@/views/forum/index/Game'
+import ForumTopiclist from '@/views/forum/index/Topiclist'
+import ForumActivities from '@/views/forum/index/Activities'
+
 import ForumTopic from '@/views/forum/Topic'
-import ForumTopiclist from '@/views/forum/Topiclist'
-import ForumActivities from '@/views/forum/Activities'
-import GameIntro from '@/views/forum/Game'
 import GameInfo from '@/views/forum/GameInfo'
 import ForumArticle from '@/views/forum/Article'
 

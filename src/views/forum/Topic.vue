@@ -14,69 +14,75 @@
             </ul>
         </div>
         <!-- 页面内容、帖子主题 -->
-        <div class="theme">
-            <h1>{{topic.title}}</h1>
-            <div class="theme-top">
-                <div> <router-link to="/center/friend/info"> <img :src="topic.avatar"></router-link> </div>
-                <div>
-                    <div class="more" @click=" showTopDrop = !showTopDrop ">
-                        <i class="self-icon-more_horiz fa-lg"></i>
-                    </div>
-                    <p>{{topic.name}}</p>
-                    <p>{{topic.time}}</p>
-                </div>
-            </div>
-            <div>
-                <drop-down v-show="showTopDrop" 
-                    :userId="userId" :itemId="topic.topicId" 
-                    :itemUserId="topic.id" :isStored="topic.isStored" 
-                    @store="_store" @reply="_reply"
-                />
-                <div class="content" v-html="topic.content"></div>
-            </div>
-        </div>
-        <!-- 评论 -->
-        <div class="list">
-            <ul>
-                <li v-for="(item, index) in commentList" :key="index">
-                    <div class="item">
-                        <div> <router-link to="/center/friend/info"> <img :src="item.avatar"></router-link> </div>
+        <!-- <scroll :data="datalist"> -->
+            <div ref="wrapper">
+                <div class="theme">
+                    <h1>{{topic.title}}</h1>
+                    <div class="theme-top">
+                        <div> <router-link to="/center/friend/info"> <img :src="topic.avatar"></router-link> </div>
                         <div>
-                            <div>
-                                <div class="more" @click="showMenu(index)">
-                                    <i class="self-icon-more_horiz fa-lg"></i>
-                                </div>
-                                <p>{{item.name}}</p>
-                                <p>{{item.time}}</p>
+                            <div class="more" @click=" showTopDrop = !showTopDrop ">
+                                <i class="self-icon-more_horiz fa-lg"></i>
                             </div>
-                            <div class="content-box">
-                                <drop-down v-show="indexShow == index" :userId="userId" :itemId="item.listId" :itemUserId="item.id" :isStored="item.isStored"></drop-down>
-                                <div class="content">
-                                    <div v-html="item.content"></div>
-                                    <ul class="reply" v-if="item.total>0">
-                                        <li v-for="(val, key) in item.reply" :key="key">
-                                            <router-link to="/center/friend/info">{{val.name}}</router-link>:
-                                            <span >回复<router-link to="/center/friend/info"> {{val.name}}</router-link>：</span>
-                                            {{val.content}}
-                                        </li>
-                                        <li class="bottom" v-if="item.total>=3">还有{{ item.total-2 }}条评论 <span class="self-icon-caret-up"></span> </li>
-                                    </ul>
-                                </div>
-                            </div>
+                            <p>{{topic.name}}</p>
+                            <p>{{topic.time}}</p>
                         </div>
                     </div>
-                </li>
-            </ul>
-            <ol>
-                <li></li>
-            </ol>
-        </div>
+                    <div>
+                        <drop-down v-show="showTopDrop" 
+                            :userId="userId" :itemId="topic.topicId" 
+                            :itemUserId="topic.id" :isStored="topic.isStored" 
+                            @store="_store" @reply="_reply"
+                        />
+                        <div class="content" v-html="topic.content"></div>
+                    </div>
+                </div>
+                <!-- 评论 -->
+                <div class="list">
+                    <ul>
+                        <li v-for="(item, index) in commentList" :key="index">
+                            <div class="item">
+                                <div> <router-link to="/center/friend/info"> <img :src="item.avatar"></router-link> </div>
+                                <div>
+                                    <div>
+                                        <div class="more" @click="showMenu(index)">
+                                            <i class="self-icon-more_horiz fa-lg"></i>
+                                        </div>
+                                        <p>{{item.name}}</p>
+                                        <p>{{item.time}}</p>
+                                    </div>
+                                    <div class="content-box">
+                                        <drop-down v-show="indexShow == index" :userId="userId" :itemId="item.listId" :itemUserId="item.id" :isStored="item.isStored"></drop-down>
+                                        <div class="content">
+                                            <div v-html="item.content"></div>
+                                            <ul class="reply" v-if="item.total>0">
+                                                <li v-for="(val, key) in item.reply" :key="key">
+                                                    <router-link to="/center/friend/info">{{val.name}}</router-link>:
+                                                    <span >回复<router-link to="/center/friend/info"> {{val.name}}</router-link>：</span>
+                                                    {{val.content}}
+                                                </li>
+                                                <li class="bottom" v-if="item.total>=3">还有{{ item.total-2 }}条评论 <span class="self-icon-caret-up"></span> </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <ol>
+                        <li></li>
+                    </ol>
+                </div>
+            </div>
+        <!-- </scroll> -->
     </div>
 </template>
 
 <script>
 import { mapMutations, mapActions } from 'vuex'
 import  DropDown from 'components/ForumDropDown/ForumDropDown'
+// import Scroll from 'base/Scroll/Scroll'
+import BScroll from 'better-scroll'
 
 export default {
     components: { DropDown },
@@ -104,7 +110,51 @@ export default {
                 avatar: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
                 content:　`有人说三代火影很弱，没什么招牌忍术，不要跟我说尸鬼封禁，那是旋涡一族的术。<br> 三代作为影，他没有血继限界，可以说他是靠怒力上位的。<br> 他的查克拉量应该很大，招牌术就是猿魔、手里剑影分身、一次放五种遁术、火龙岩弹。<br> 可以说三代强在查克拉量和战斗经验上。毕竟看到初代和二代不慌的能有几个。<br> 三代牛的还是活得长，得有七八十岁吧。<br>`
             },
-            commentList: [
+            commentList: '',
+            datalist: []
+        }
+    },
+    methods: {
+        ...mapActions([ 'handleTitle']),
+        showMenu(index) {
+            this.indexShow = index==this.indexShow ? -1 : index
+        },
+        _store(id, isStored) {
+            if (isStored) {
+                console.log('已收藏,执行取消收藏操作')
+            } else {
+                console.log('未收藏，执行收藏操作')
+            }
+        },
+        _reply(itemId) {
+            console.log('弹出填写页面，进行编辑')
+        },
+        jumpToEditor(type, index) {
+            this.$router.push({ path: '/editor', params: { type } })
+        }
+    },
+    created () {
+            this.$nextTick(() => {
+                this._initScroll();
+            });
+            this.classMap = ['min', 'discount', 'guarantee', 'invoice', 'special'];
+        },
+        methods: {
+            _initScroll () {
+                this.shopBoxScroll = new BScroll(this.$refs.shopBox, {
+                    // better-scroll 会将点击事件去掉，要在这里开启，同时点击在PC 会被执行两次，要在这里控制
+                    click: true
+                });
+            }
+        },
+    mounted() {
+        this.handleTitle({
+            title:    this.titleInfo.title, 
+            showIcon: this.titleInfo.showIcon
+        });
+
+        setTimeout(() => {
+            this.commentList = [
                 {
                     id: 123,
                     listId: 1001,
@@ -171,33 +221,10 @@ export default {
                         }
                     ]
                 },
-            ],
-        }
-    },
-    methods: {
-        ...mapActions([ 'handleTitle']),
-        showMenu(index) {
-            this.indexShow = index==this.indexShow ? -1 : index
-        },
-        _store(id, isStored) {
-            if (isStored) {
-                console.log('已收藏,执行取消收藏操作')
-            } else {
-                console.log('未收藏，执行收藏操作')
-            }
-        },
-        _reply(itemId) {
-            console.log('弹出填写页面，进行编辑')
-        },
-        jumpToEditor(type, index) {
-            this.$router.push({ path: '/editor', params: { type } })
-        }
-    },
-    mounted() {
-        this.handleTitle({
-            title:    this.titleInfo.title, 
-            showIcon: this.titleInfo.showIcon
-        });
+            ]
+            
+            this.datalist = [1,3,4]
+        }, 1000);
     }
 }
 </script>
@@ -312,10 +339,6 @@ export default {
                                     li {
                                         margin-bottom: 15px;
                                         &:last-child { margin: 0; }
-                                        a {
-                                            // color: black;
-                                            // i { color: black }
-                                        }
                                     }
                                     .bottom {
                                         text-align: right; padding-right: 10px; 

@@ -71,7 +71,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../common/css/index.scss";
+@import "../../../common/css/index.scss";
 
 .game {
     .part {
@@ -92,7 +92,7 @@ export default {
                 line-height: 48px;
                 text-align: center;
                 color: #fff;
-                @include background-image(url('../../common/images/fiction/bg_orange.png'));
+                @include background-image(url('../../../common/images/fiction/bg_orange.png'));
                 background-size: 120px 42px;
             }
         }

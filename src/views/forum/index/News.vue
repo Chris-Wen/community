@@ -1,4 +1,5 @@
 <template>
+    <!-- <scroll :data='datalist'> -->
     <div class="news">
         <div class="top-news">
             <p class="mark"><i>游民资讯</i></p>
@@ -12,7 +13,7 @@
                             <p>{{'2018-05-01'}}   <span> <i class="self-icon-eye"></i> {{299999 | exchangeNumber }}</span> </p>
                         </div>
                     </div>
-                    <div class="img"><img src="../../common/images/fiction/BANNER.jpg" alt=""></div>
+                    <div class="img"><img src="../../../common/images/fiction/BANNER.jpg" alt=""></div>
                 </router-link>
                 <router-link tag="li" to="/forum/article">
                     <div class="info">
@@ -22,7 +23,7 @@
                             <p>{{'2018-05-01'}}   <span> <i class="self-icon-eye"></i> {{99999 | exchangeNumber }}</span> </p>
                         </div>
                     </div>
-                    <div class="img"><img src="../../common/images/fiction/BANNER.jpg" alt=""></div>
+                    <div class="img"><img src="../../../common/images/fiction/BANNER.jpg" alt=""></div>
                 </router-link>
             </ul>
         </div>
@@ -38,7 +39,7 @@
                             <p>{{'2018-05-01'}}   <span> <i class="self-icon-eye"></i> {{299999 | exchangeNumber }}</span> </p>
                         </div>
                     </div>
-                    <div class="img"><img src="../../common/images/fiction/BANNER.jpg" alt=""></div>
+                    <div class="img"><img src="../../../common/images/fiction/BANNER.jpg" alt=""></div>
                 </li>
                 <li>
                     <div class="info">
@@ -48,17 +49,23 @@
                             <p>{{'2018-05-01'}}   <span> <i class="self-icon-eye"></i> {{99999 | exchangeNumber }}</span> </p>
                         </div>
                     </div>
-                    <div class="img"><img src="../../common/images/fiction/BANNER.jpg" alt=""></div>
+                    <div class="img"><img src="../../../common/images/fiction/BANNER.jpg" alt=""></div>
                 </li>
             </ul>
         </div>
     </div>    
+    <!-- </scroll> -->
 </template>
 
 <script>
+import Scroll from 'base/Scroll/Scroll'
+
 export default {
+    components: { Scroll },
     data() {
-        return{ }
+        return{
+            datalist: []
+         }
     },
     filters: {
         exchangeNumber: function(value) {
@@ -74,7 +81,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../common/css/index.scss";
+@import "../../../common/css/index.scss";
 
 .news {
     .dotted { color: $text-color-orange-d; padding-top: 30px;}
@@ -91,7 +98,7 @@ export default {
             line-height: 48px;
             text-align: center;
             color: #fff;
-            @include background-image(url('../../common/images/fiction/bg_orange.png'));
+            @include background-image(url('../../../common/images/fiction/bg_orange.png'));
             background-size: 120px 42px;
         }
     }

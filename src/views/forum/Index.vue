@@ -6,20 +6,22 @@
             <p :class="{ active: showIndex=='news' }" ><router-link to="/forum/news">掌动爆料站</router-link> </p>
             <p :class="{ active: showIndex=='game' }" ><router-link to="/forum/game">新游推荐</router-link></p>
         </div>
-        <div class="view">
+        <!-- <scroll class="view" :data="datalist"> -->
             <transition name="slide-fade">
                 <keep-alive>
                     <router-view></router-view>
                 </keep-alive>
             </transition>
-        </div>
+        <!-- </scroll> -->
     </div>
 </template>
 
 <script>
 import { mapMutations, mapActions } from 'vuex'
+// import Scroll from 'base/Scroll/Scroll'
 
 export default {
+    // components: { Scroll },
     data() {
         return {
             titleInfo: {
@@ -28,7 +30,8 @@ export default {
                 icon: 'self-icon-comment-o fa-lg',
                 link: '/',
             },
-            showIndex: 'index'
+            showIndex: 'index',
+            datalist: [],
         }
     },
     methods: {
@@ -59,6 +62,10 @@ export default {
             icon: this.titleInfo.icon,
             link: this.titleInfo.link
         })
+
+        setTimeout(() => {
+            this.datalist = [12,344]
+        }, 5000);
     },
     watch: {
         '$route': '_initTabStatus'
@@ -73,9 +80,9 @@ export default {
     position: relative;
     font-size: $font-size-small; /*no*/
     .top-tab {
-        position: fixed;
-        z-index: 10;
-        top: 100px;
+        // position: fixed;
+        // z-index: 10;
+        // top: 100px;
         width: 100%;
         height: 70px;
         line-height: 70px;
@@ -95,7 +102,7 @@ export default {
         }
     }
     .view { 
-        margin-top: 73px;
+        // margin-top: 73px;
         .slide-fade-enter-active {
             transition: all .3s ease;
         }

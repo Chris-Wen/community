@@ -1,73 +1,69 @@
 <template>
     <div class="topiclist">
         <ul class="recommend">
-            <router-link tag="li" to="/forum/topic">
-                <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
-                <div>
-                    <span><i></i> 用户id</span>
-                    <span ><i class="self-icon-comment-o"></i> 999</span>
-                    <span ><i class="self-icon-clock"></i> 4-26</span>
-                </div>
-            </router-link>
-            <router-link tag="li" to="/forum/topic">
-                <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
-                <div>
-                    <span><i></i> 用户id</span>
-                    <span><i class="self-icon-comment-o"></i> 999</span>
-                    <span><i class="self-icon-clock"></i> 4-26</span>
-                </div>
-            </router-link>
+            <li>
+                <h1> ★★★★★<i>【限时任务】</i>★★★★★</h1>
+                <p>显示任务内容显示任务内容显示任务内容</p>
+            </li>
+            <li>
+                <h1> ★★★★★<i>【日常任务】</i>★★★★★ </h1>
+                <p>日常任务内容日常任务内容日常任务内容日常任务内容日常任务内容日常任务内容</p>
+            </li>
+            <li>
+                <h1> ★★★★★<i>【特殊任务】</i>★★★★★ </h1>
+                <p>日常任务内容日常任务内容日常任务内容日常任务内容日常任务内容日常任务内容内容日常任务内容内容日常任务内容</p>
+            </li>
         </ul>
         <p class="part"> 用户帖子 </p>
         <ul class="article">
-            <router-link tag="li" to="/forum/topic">
-                <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur </p>
-                <div>
-                    <span><i></i> 用户id</span>
-                    <span ><i class="self-icon-comment-o"></i> 999</span>
-                    <span ><i class="self-icon-clock"></i> 4-26</span>
-                </div>
-            </router-link>
-            <router-link tag="li" to="/forum/topic">
+            <li>
                 <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
                 <div>
                     <span><i></i> 用户id</span>
                     <span ><i class="self-icon-comment-o"></i> 999</span>
                     <span ><i class="self-icon-clock"></i> 4-26</span>
                 </div>
-            </router-link>
-            <router-link tag="li" to="/forum/topic">
+            </li>
+            <li>
                 <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
                 <div>
                     <span><i></i> 用户id</span>
                     <span ><i class="self-icon-comment-o"></i> 999</span>
                     <span ><i class="self-icon-clock"></i> 4-26</span>
                 </div>
-            </router-link>
-            <router-link tag="li" to="/forum/topic">
+            </li>
+            <li>
                 <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
                 <div>
                     <span><i></i> 用户id</span>
                     <span ><i class="self-icon-comment-o"></i> 999</span>
                     <span ><i class="self-icon-clock"></i> 4-26</span>
                 </div>
-            </router-link>
-            <router-link tag="li" to="/forum/topic">
+            </li>
+            <li>
                 <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
                 <div>
                     <span><i></i> 用户id</span>
                     <span ><i class="self-icon-comment-o"></i> 999</span>
                     <span ><i class="self-icon-clock"></i> 4-26</span>
                 </div>
-            </router-link>
-            <router-link tag="li" to="/forum/topic">
+            </li>
+            <li>
                 <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
                 <div>
                     <span><i></i> 用户id</span>
                     <span ><i class="self-icon-comment-o"></i> 999</span>
                     <span ><i class="self-icon-clock"></i> 4-26</span>
                 </div>
-            </router-link>
+            </li>
+            <li>
+                <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
+                <div>
+                    <span><i></i> 用户id</span>
+                    <span ><i class="self-icon-comment-o"></i> 999</span>
+                    <span ><i class="self-icon-clock"></i> 4-26</span>
+                </div>
+            </li>
         </ul>
     </div>
 </template>
@@ -79,7 +75,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../common/css/index.scss";
+@import "../../../common/css/index.scss";
 
 .topiclist {
     ul li {
@@ -111,7 +107,7 @@ export default {
                 &:first-child i {
                     width: 28px;
                     height: 28px;
-                    @include background-image(url("../../common/images/icons/icon-user.jpg"));
+                    @include background-image(url("../../../common/images/icons/icon-user.jpg"));
                     margin-top: -3px;    
                     vertical-align: bottom;              
                 }
@@ -119,12 +115,16 @@ export default {
         }
     }
     .recommend {
-        // margin-top: 73px;
         @include color-background;
-        border-bottom: 1px solid $text-color-orange-d;
-        p { color: red }
-        li:last-child { 
-            p { font-weight: 600; }
+        padding: 0 35px;
+        li { 
+            min-height: 110px;
+            padding: 25px 20px; 
+            @include flex-colum;
+            justify-content: space-between;
+            p, h1 { text-align: center;} 
+            p { margin: 0 }
+            &:nth-child(odd) { h1 { color: red }} 
         }
     }
     .part {
