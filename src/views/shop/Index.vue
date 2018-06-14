@@ -210,11 +210,11 @@ export default {
                     border-top-left-radius: 1em;
                     border-bottom-left-radius: 1em;
                     color:$text-color-w;
-                    padding: 1px 0;
+                    padding: 1px 0;         /*no*/
                 }      
                 i {
-                    color:$text-color-orange-d;
-                    border:1px solid $text-color-orange-d;
+                    color: $text-color-orange-d;
+                    border: 1px solid $text-color-orange-d;  /*no*/
                     border-top-right-radius: 1em;
                     border-bottom-right-radius: 1em;
                 }

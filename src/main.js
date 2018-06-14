@@ -5,6 +5,13 @@ import App from './App'
 import Vuex from 'vuex'
 import router from './router'
 import store from './store/index/index'
+import VueLazyload from 'vue-lazyload'
+
+
+Vue.use(VueLazyload, {
+  preload: 1.3,
+  loading: require('common/images/icons/LOGO(1).png')
+})
 
 Vue.config.productionTip = false
 
@@ -13,12 +20,17 @@ import 'lib-flexible'
 
 Vue.use(Vuex)
 
-import './common/js/reset.js'
+import './common/js/reset'
 
 import './common/css/self-icons.css'
 import './common/css/reset.css'
 import './common/css/global.css'
 fastclick.attach(document.body)
+
+import { Indicator } from 'mint-ui'
+window.Indicator = Indicator
+
+
 
 Vue.prototype.preSrc = 'http://221.123.178.232/smallgamesdk/Public/Uploads/'
 /* eslint-disable no-new */

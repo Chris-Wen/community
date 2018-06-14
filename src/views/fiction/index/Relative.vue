@@ -1,7 +1,7 @@
 <template>
     <div class="original">
         <div class="recommend">
-            <i class="recommend-img"></i>
+            <div class="recommend-img">精品力荐•同人</div>
             <ul :class="{'unfold': isUnfold }">
                 <li v-for="(item, index) in data" :key="index"> 
                     <div class="img"><img src="../../../common/images/fiction/fiction.jpg" alt=""></div>
@@ -46,16 +46,17 @@ export default {
         @include box-sizing;
         background-color: $bg-color-d;
         .recommend-img{
-            display: inline-block;
-            width: 110px;
+            font-size: $font-size-min;  /*no*/
+            font-weight: 800;
+            width: 8em;
             height: 33px;
-            background-image: url("../../../common/images/fiction/recommend.png");
-            background-size: 105px 33px;
-            background-repeat: no-repeat;
-            background-position: center;
+            line-height: 33px;
+            text-align: center;
+            color: white;
+            @include background-image(url("../../../common/images/fiction/fiction-tag.png"));
             position: absolute;
             top: 0;
-            right: 70px;
+            right: 55px;
         }
         .more {
             text-align: center;

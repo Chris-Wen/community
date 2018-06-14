@@ -9,35 +9,38 @@
 		<form @submit.prevent>
 			<ul>
 				<li>
-				 	<p> <em>通行证</em>：<input type="text" placeholder="账号" autofocus/> </p>
-					<p>{{ text }}</p>
+				 	<p> 
+						<em>通行证</em>：
+						<input type="text" placeholder="账号" v-model="inputParams.account"  @blur="checkAccount" autofocus/> 
+					</p>
+					<p>{{ warning.account }}</p>
 				</li>
 				<li>
 				 	<p> <em>设置密码</em>：<input type="password" placeholder="请输入密码" /> </p>
-					<p>{{ text }}</p>
+					<p>{{ warning.password }}</p>
 				</li>
 				<li>
 				 	<p> <em>确认密码</em>：<input type="password" placeholder="请确认密码" /> </p>
-					<p>{{ text }}</p>
+					<p>{{ warning.confrim }}</p>
 				</li>
 				<li>
 				 	<p> <em>手机号码</em>：<input type="text" placeholder="11位手机号" /> </p>
-					<p>{{ text }}</p>
+					<p>{{ warning.phone }}</p>
 				</li>
 				<li>
 				 	<p> <em>邮箱</em>：<input type="email" placeholder="邮箱" /> </p>
-					<p>{{ text }}</p>
+					<p>{{ warning.email }}</p>
 				</li>
 				<li>
 				 	<p> <em>昵称</em>：<input type="text" placeholder="用户昵称" /> </p>
-					<p>{{ text }}</p>
+					<p>{{ warning.nickname }}</p>
 				</li>
 				<li>
 				 	<p> 
 						<img class="verify" :src="verify" @click="changeVerify" alt="验证码图片">
 						<em>验证码</em>：<input type="text" placeholder="验证码" /> 
 					</p>
-					<p>{{ text }}</p>
+					<p>{{ warning.verify }}</p>
 				</li>
 			</ul>
 			<div class="compact">
@@ -50,6 +53,7 @@
 
 <script>
 import { mapMutations, mapActions } from 'vuex'
+import * as api from 'api/loginApi.js'
 
 export default {
     data() {
@@ -59,8 +63,38 @@ export default {
                 showIcon: false,
                 showBottomTab: true,  /*true表示底部不显示*/
 			},
-			verify: 'http://community.73776.com/index.php/shop/WebShop/verify',
-			text: '',
+			verify: 'http://shop.73776.com/index.php/home/verify',
+			warning: {
+				account: '',
+				password: '',
+				confirm: '',
+				phone: '',
+				email: '',
+				nickname: '',
+				verify: ''
+			},
+			rule: {
+				account: {
+					tip: '支持数字、字母，不含空格及特殊符号,6~12位',
+				},
+				password: {
+					tip: '不含空格，6~18位'
+				},
+				password: { tip: '与密码不一致' },
+				phone: {
+					tip: '11位手机号码'
+				},
+				email: {
+					tip: '可暂不填写'
+				},
+				nickname: {
+					tip: '不含特殊符号，空格，不超过8位',
+				},
+				code: { tip: '必填项'}
+			},
+			inputParams: {
+				account: '',
+			}
         }
     },
     methods: {
@@ -70,6 +104,13 @@ export default {
         },
 		changeVerify() {
 
+		},
+		checkAccount() {
+			if (this.inputParams.account) {
+				// api.valiUserName(this.inputParams.account).then( res=> {
+				// 	console.log(res)
+				// })
+			} 
 		}
     },
     mounted() {
@@ -79,7 +120,22 @@ export default {
             showBottomTab: this.titleInfo.showBottomTab
 		})
 
-    }
+	},
+	watch: {
+		inputParams: {
+			handler(val) {
+				// console.log(val)
+			},
+			deep: true
+		},
+		'inputParams.account'(val) {
+			if (val.length<6 || val.length>12) {
+				this.warning.account = this.rule.account.tip
+			} else {
+				this.warning.account = ''
+			}
+		}
+	}
 }
 </script>
 

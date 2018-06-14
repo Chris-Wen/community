@@ -14,78 +14,77 @@
             </ul>
         </div>
         <!-- 页面内容、帖子主题 -->
-        <!-- <scroll :data="datalist"> -->
-            <div ref="wrapper">
-                <div class="theme">
-                    <h1>{{topic.title}}</h1>
-                    <div class="theme-top">
-                        <div> <router-link to="/center/friend/info"> <img :src="topic.avatar"></router-link> </div>
-                        <div>
-                            <div class="more" @click=" showTopDrop = !showTopDrop ">
-                                <i class="self-icon-more_horiz fa-lg"></i>
-                            </div>
-                            <p>{{topic.name}}</p>
-                            <p>{{topic.time}}</p>
-                        </div>
-                    </div>
+        <mt-loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore">
+            <div class="theme">
+                <h1>{{topic.title}}</h1>
+                <div class="theme-top">
+                    <div> <router-link to="/center/friend/info"> <img :src="topic.avatar"></router-link> </div>
                     <div>
-                        <drop-down v-show="showTopDrop" 
-                            :userId="userId" :itemId="topic.topicId" 
-                            :itemUserId="topic.id" :isStored="topic.isStored" 
-                            @store="_store" @reply="_reply"
-                        />
-                        <div class="content" v-html="topic.content"></div>
+                        <div class="more" @click=" showTopDrop = !showTopDrop ">
+                            <i class="self-icon-more_horiz fa-lg"></i>
+                        </div>
+                        <p>{{topic.name}}</p>
+                        <p>{{topic.time}}</p>
                     </div>
                 </div>
-                <!-- 评论 -->
-                <div class="list">
-                    <ul>
-                        <li v-for="(item, index) in commentList" :key="index">
-                            <div class="item">
-                                <div> <router-link to="/center/friend/info"> <img :src="item.avatar"></router-link> </div>
+                <div>
+                    <drop-down v-show="showTopDrop" 
+                        :userId="userId" :itemId="topic.topicId" 
+                        :itemUserId="topic.id" :isStored="topic.isStored" 
+                        @store="_store" @reply="_reply"
+                    />
+                    <div class="content" v-html="topic.content"></div>
+                </div>
+            </div>
+            <!-- 评论 -->
+            <div class="list">
+                <ul>
+                    <li v-for="(item, index) in commentList" :key="index">
+                        <div class="item">
+                            <div> <router-link to="/center/friend/info"> <img :src="item.avatar"></router-link> </div>
+                            <div>
                                 <div>
-                                    <div>
-                                        <div class="more" @click="showMenu(index)">
-                                            <i class="self-icon-more_horiz fa-lg"></i>
-                                        </div>
-                                        <p>{{item.name}}</p>
-                                        <p>{{item.time}}</p>
+                                    <div class="more" @click="showMenu(index)">
+                                        <i class="self-icon-more_horiz fa-lg"></i>
                                     </div>
-                                    <div class="content-box">
-                                        <drop-down v-show="indexShow == index" :userId="userId" :itemId="item.listId" :itemUserId="item.id" :isStored="item.isStored"></drop-down>
-                                        <div class="content">
-                                            <div v-html="item.content"></div>
-                                            <ul class="reply" v-if="item.total>0">
-                                                <li v-for="(val, key) in item.reply" :key="key">
-                                                    <router-link to="/center/friend/info">{{val.name}}</router-link>:
-                                                    <span >回复<router-link to="/center/friend/info"> {{val.name}}</router-link>：</span>
-                                                    {{val.content}}
-                                                </li>
-                                                <li class="bottom" v-if="item.total>=3">还有{{ item.total-2 }}条评论 <span class="self-icon-caret-up"></span> </li>
-                                            </ul>
-                                        </div>
+                                    <p>{{item.name}}</p>
+                                    <p>{{item.time}}</p>
+                                </div>
+                                <div class="content-box">
+                                    <drop-down v-show="indexShow == index" :userId="userId" :itemId="item.listId" :itemUserId="item.id" :isStored="item.isStored"></drop-down>
+                                    <div class="content">
+                                        <div v-html="item.content"></div>
+                                        <ul class="reply" v-if="item.total>0">
+                                            <li v-for="(val, key) in item.reply" :key="key">
+                                                <router-link to="/center/friend/info">{{val.name}}</router-link>:
+                                                <span >回复<router-link to="/center/friend/info"> {{val.name}}</router-link>：</span>
+                                                {{val.content}}
+                                            </li>
+                                            <li class="bottom" v-if="item.total>=3">还有{{ item.total-2 }}条评论 <span class="self-icon-caret-up"></span> </li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
-                        </li>
-                    </ul>
-                    <ol>
-                        <li></li>
-                    </ol>
-                </div>
+                        </div>
+                    </li>
+                </ul>
+                <ol>
+                    <li></li>
+                </ol>
             </div>
-        <!-- </scroll> -->
+        </mt-loadmore>
     </div>
 </template>
 
 <script>
 import { mapMutations, mapActions } from 'vuex'
 import  DropDown from 'components/ForumDropDown/ForumDropDown'
+import { Loadmore } from 'mint-ui'
 // import Scroll from 'base/Scroll/Scroll'
-import BScroll from 'better-scroll'
+
 
 export default {
-    components: { DropDown },
+    components: { DropDown, mtLoadmore : Loadmore },
     data() {
         return {
             titleInfo: {
@@ -110,8 +109,77 @@ export default {
                 avatar: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
                 content:　`有人说三代火影很弱，没什么招牌忍术，不要跟我说尸鬼封禁，那是旋涡一族的术。<br> 三代作为影，他没有血继限界，可以说他是靠怒力上位的。<br> 他的查克拉量应该很大，招牌术就是猿魔、手里剑影分身、一次放五种遁术、火龙岩弹。<br> 可以说三代强在查克拉量和战斗经验上。毕竟看到初代和二代不慌的能有几个。<br> 三代牛的还是活得长，得有七八十岁吧。<br>`
             },
-            commentList: '',
-            datalist: []
+            commentList:  [
+                    {
+                        id: 123,
+                        listId: 1001,
+                        name:　'我是谁',
+                        time: '5-12 12:30',
+                        isStored: true,
+                        avatar: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
+                        content:　`有人说三代火影很弱，没什么招牌忍术，不要跟我说尸鬼封禁，那是旋涡一族的术。`,
+                        total: 13,  /**总回复数量*/
+                        reply: [
+                            {
+                                id: 1,
+                                name:　'我在哪',
+                                time: '5-12 12:30',
+                                avatar: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
+                                content:　`没什么招牌忍术`,
+                                to: ''
+                            },
+                            {
+                                id: 23,
+                                name:　'我是谁',
+                                time: '5-12 12:30',
+                                avatar: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
+                                content:　`怎么可能，会所有忍术不是盖的。猿魔也是啊`,
+                                to: { id: 1, name: '我在哪' }
+                            }
+                        ]
+                    },
+                    {
+                        id: 123,
+                        listId: 1002,
+                        isStored: false,
+                        name:　'我是谁',
+                        time: '5-12 16:40',
+                        avatar: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
+                        content:　`三代火影很弱，没什么招牌忍术`,
+                        total: 0,  /**总回复数量*/
+                    },
+                    {
+                        id: 123,
+                        listId: 1003,
+                        isStored: false,
+                        name:　'谁',
+                        time: '5-12 12:30',
+                        avatar: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
+                        content:　`有人说三代火影很弱，没什么招牌忍术，不要跟我说尸鬼封禁，那是旋涡一族的术。`,
+                        total: 2,  /**总回复数量*/
+                        reply: [
+                            {
+                                id: 1,
+                                name:　'我在哪',
+                                time: '5-12 12:30',
+                                avatar: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
+                                content:　`没什么招牌忍术`,
+                                to: ''
+                            },
+                            {
+                                id: 23,
+                                name:　'谁',
+                                time: '5-12 12:30',
+                                avatar: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
+                                content:　`怎么可能，会所有忍术不是盖的。猿魔也是啊`,
+                                to: { id: 1, name: '我在哪' }
+                            }
+                        ]
+                    },
+                ],
+            datalist: [],
+
+            allLoaded: false
         }
     },
     methods: {
@@ -131,98 +199,27 @@ export default {
         },
         jumpToEditor(type, index) {
             this.$router.push({ path: '/editor', params: { type } })
+        },
+
+        //上、下拉刷新加载
+        loadTop() {
+            console.log('刷新操作')
+            this.$refs.loadmore.onTopLoaded();
+        },
+        loadBottom() {
+            console.log('加载更多操作')
+
+            this.allLoaded = true;  // 若数据已全部获取完毕
+            this.$refs.loadmore.onBottomLoaded();
         }
     },
-    created () {
-            this.$nextTick(() => {
-                this._initScroll();
-            });
-            this.classMap = ['min', 'discount', 'guarantee', 'invoice', 'special'];
-        },
-        methods: {
-            _initScroll () {
-                this.shopBoxScroll = new BScroll(this.$refs.shopBox, {
-                    // better-scroll 会将点击事件去掉，要在这里开启，同时点击在PC 会被执行两次，要在这里控制
-                    click: true
-                });
-            }
-        },
     mounted() {
         this.handleTitle({
             title:    this.titleInfo.title, 
             showIcon: this.titleInfo.showIcon
         });
 
-        setTimeout(() => {
-            this.commentList = [
-                {
-                    id: 123,
-                    listId: 1001,
-                    name:　'我是谁',
-                    time: '5-12 12:30',
-                    isStored: true,
-                    avatar: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
-                    content:　`有人说三代火影很弱，没什么招牌忍术，不要跟我说尸鬼封禁，那是旋涡一族的术。`,
-                    total: 13,  /**总回复数量*/
-                    reply: [
-                        {
-                            id: 1,
-                            name:　'我在哪',
-                            time: '5-12 12:30',
-                            avatar: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
-                            content:　`没什么招牌忍术`,
-                            to: ''
-                        },
-                        {
-                            id: 23,
-                            name:　'我是谁',
-                            time: '5-12 12:30',
-                            avatar: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
-                            content:　`怎么可能，会所有忍术不是盖的。猿魔也是啊`,
-                            to: { id: 1, name: '我在哪' }
-                        }
-                    ]
-                },
-                {
-                    id: 123,
-                    listId: 1002,
-                    isStored: false,
-                    name:　'我是谁',
-                    time: '5-12 16:40',
-                    avatar: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
-                    content:　`三代火影很弱，没什么招牌忍术`,
-                    total: 0,  /**总回复数量*/
-                },
-                {
-                    id: 123,
-                    listId: 1003,
-                    isStored: false,
-                    name:　'谁',
-                    time: '5-12 12:30',
-                    avatar: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
-                    content:　`有人说三代火影很弱，没什么招牌忍术，不要跟我说尸鬼封禁，那是旋涡一族的术。`,
-                    total: 2,  /**总回复数量*/
-                    reply: [
-                        {
-                            id: 1,
-                            name:　'我在哪',
-                            time: '5-12 12:30',
-                            avatar: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
-                            content:　`没什么招牌忍术`,
-                            to: ''
-                        },
-                        {
-                            id: 23,
-                            name:　'谁',
-                            time: '5-12 12:30',
-                            avatar: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
-                            content:　`怎么可能，会所有忍术不是盖的。猿魔也是啊`,
-                            to: { id: 1, name: '我在哪' }
-                        }
-                    ]
-                },
-            ]
-            
+        setTimeout(() => {   
             this.datalist = [1,3,4]
         }, 1000);
     }
