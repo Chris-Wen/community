@@ -5,10 +5,10 @@
         <form @submit.prevent>
             <ul>
                 <li>
-                    <em>账 号：</em><input type="text" placeholder="手机号/邮箱/掌动通行证/普通" autofocus/>
+                    <em>账 号：</em><input v-model.trim="loginParams.login_user" type="text" placeholder="手机号/邮箱/掌动通行证/普通" autofocus/>
                 </li>
                 <li>
-                    <em>密 码：</em><input type="password" placeholder="请输入密码" />
+                    <em>密 码：</em><input v-model.trim="loginParams.login_pwd" type="password" placeholder="请输入密码" />
                 </li>
             </ul>
             <button @click="handleLogin">登 录</button>
@@ -33,6 +33,8 @@
 <script>
 import { mapMutations, mapActions } from 'vuex'
 import { initClientHeight } from 'common/js/dom'
+import { Toast } from 'mint-ui'
+import * as api from 'api/loginApi.js'
 
 export default {
     data() {
@@ -46,14 +48,26 @@ export default {
             valiupwd: false,
             clearable: true,
             eye: { open: false },
-            loginName: '',
-            loginUpwd: ''
+            loginParams: {
+                login_pwd: '',
+                login_user: ''
+            }
         }
     },
     methods: {
         ...mapActions([ 'handleTitle']),
         handleLogin() {
-            console.log('login')
+            api.post('/login/login', this.loginParams).then( res => {
+                console.log(res)
+                if (res.code==200) {
+					let instance = Toast('登录成功')
+					setTimeout(() => {
+						instance.close()
+						
+						this.$router.push('/')
+					}, 2000);
+				}
+            })
         },
         
     },

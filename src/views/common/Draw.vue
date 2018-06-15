@@ -44,7 +44,7 @@ export default {
                 showIcon:   false
             },
             lotteryTicket: 5,   //抽奖次数
-            prize_list: [
+            prizeList: [
                 {
                     img: '',            //奖品图片
                     name: '奖品1',      //奖品名称
@@ -80,7 +80,7 @@ export default {
                 });
             this.lotteryTicket --;
             this.isRotating = true;
-            this.$refs.turnplate.style = 0;
+            this.$refs.turnplate.style = "";
             
             let deg, index = Math.random(1);
             switch (true) {
@@ -98,11 +98,9 @@ export default {
                         break;
             }
 
-            let final_rotate_deg = 60*deg;
-            let random = Math.random(1) > 0.5 ? 1 : -1;
-            let random_deg = random * Math.floor( Math.random(1)*25 );
-            // console.log(random_deg)
-            let total_rotate_deg = 360*5 + final_rotate_deg + random_deg;
+            let final_rotate_deg = 360/this.prizeList.length * deg;      //指针最终停止角度（奖品栏正中位置）
+            //转动6个整圈后 停在最终位置
+            let total_rotate_deg = 360*6 + final_rotate_deg;
 
             setTimeout(()=>{              
                 this.$refs.turnplate.style = `transform: rotate(${total_rotate_deg}deg); transition: all 5s ease`
@@ -137,43 +135,33 @@ export default {
 @import "../../common/css/index.scss";
 
 .draw {
-    background-image: url('../../common/images/global/bg-draw.png') ;
+    background-image: url('../../common/images/global/bg-draw.jpg') ;
     background-size: 100% 100%;
     background-repeat: y; 
     color: $text-color-w;
-    .turnplate-box { padding-top: 55px; }
+    .turnplate-box { padding-top: 240px; }
     .turnplate {
-        width: 557px;
-        height: 557px;
+        width: 547px;
+        height: 547px;
         margin: auto;
-        background-image: url('../../common/images/global/git.png');
-        background-size: 557px 557px;
-        background-repeat: no-repeat;
-        @include border-radius(50%);
+        @include background-image(url('../../common/images/global/bg-draw.gif'));
         @include box-sizing;
-        padding-top: 75px;
         position: relative;
         .prize {
-            width: 409px;
-            height: 409px;
-            margin: auto;
-            background-image: url('../../common/images/global/prize.png');
-            background-size: 409px 409px;
-            background-repeat: no-repeat;
-            @include border-radius(50%);
+            width: 100%;
+            height: 100%;
+            @include background-image(url('../../common/images/global/turnplate.png'));
+            background-size: 436px 436px;
         }
         .btn-draw {
-            width: 142px;
-            height: 176px;
+            width: 211px;
+            height: 211px;
             position: absolute;
             margin: auto;
             left: 0;
             right: 0;
-            top: 175px;
-            background: url('../../common/images/global/btn-draw.png') no-repeat;
-            background-position: center center;
-            background-size: 142px 176px;
-            img { width: 100%; height: 100%;  }
+            top: 160px;
+            @include background-image(url('../../common/images/global/btn-draw.png'));
         }
     }
     .rule {

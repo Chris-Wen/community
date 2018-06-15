@@ -11,42 +11,45 @@
 				<li>
 				 	<p> 
 						<em>通行证</em>：
-						<input type="text" placeholder="账号" v-model="inputParams.account"  @blur="checkAccount" autofocus/> 
+						<input type="text" placeholder="账号" v-model.trim="inputParams.passport"  @blur="fastCheck('passport')" autofocus/> 
 					</p>
-					<p>{{ warning.account }}</p>
+					<p>{{ warning.passport }}</p>
 				</li>
 				<li>
-				 	<p> <em>设置密码</em>：<input type="password" placeholder="请输入密码" /> </p>
+				 	<p> <em>设置密码</em>：<input type="password" placeholder="请输入密码" v-model.trim="inputParams.password" /> </p>
 					<p>{{ warning.password }}</p>
 				</li>
 				<li>
-				 	<p> <em>确认密码</em>：<input type="password" placeholder="请确认密码" /> </p>
+				 	<p> <em>确认密码</em>：<input type="password" placeholder="请确认密码" v-model.trim="inputParams.confirm" /> </p>
 					<p>{{ warning.confrim }}</p>
 				</li>
 				<li>
-				 	<p> <em>手机号码</em>：<input type="text" placeholder="11位手机号" /> </p>
-					<p>{{ warning.phone }}</p>
+				 	<p> <em>手机号码</em>：<input type="text" placeholder="11位手机号" @blur="fastCheck('mobile')" v-model.trim="inputParams.mobile" /> </p>
+					<p>{{ warning.mobile }}</p>
 				</li>
-				<li>
+				<!-- <li>
 				 	<p> <em>邮箱</em>：<input type="email" placeholder="邮箱" /> </p>
 					<p>{{ warning.email }}</p>
-				</li>
+				</li> -->
 				<li>
-				 	<p> <em>昵称</em>：<input type="text" placeholder="用户昵称" /> </p>
+				 	<p> <em>昵称</em>：<input type="text" placeholder="用户昵称" @blur="fastCheck('nickname')" v-model.trim="inputParams.nickname" /> </p>
 					<p>{{ warning.nickname }}</p>
 				</li>
 				<li>
-				 	<p> 
-						<img class="verify" :src="verify" @click="changeVerify" alt="验证码图片">
-						<em>验证码</em>：<input type="text" placeholder="验证码" /> 
-					</p>
-					<p>{{ warning.verify }}</p>
+				 	<div> 
+						<em>验证码</em>：
+						<div>
+							<input type="text" placeholder="验证码" v-model.trim="inputParams.verifycode" />
+							<img class="verify" :src="verify" @click="changeVerify" alt="验证码图片">
+						</div> 
+					</div>
+					<p>{{ warning.verifycode }}</p>
 				</li>
 			</ul>
 			<div class="compact">
 				<p ><input type="radio" checked/> 我已阅读并同意<a class="needsclick" href="http://www.baidu.com" >《掌动用户社区注册协议》</a> </p>
 			</div>	
-			<p><button @click="handleLogin">注 &nbsp;册</button></p>
+			<p><button @click="handleRegister">注 &nbsp;册</button></p>
 		</form>
   	</div>
 </template>
@@ -54,6 +57,7 @@
 <script>
 import { mapMutations, mapActions } from 'vuex'
 import * as api from 'api/loginApi.js'
+import { Toast } from 'mint-ui'
 
 export default {
     data() {
@@ -61,55 +65,87 @@ export default {
             titleInfo: {
                 title: '注 册',
                 showIcon: false,
-                showBottomTab: true,  /*true表示底部不显示*/
+                showBottomTab: true,  				/*true表示底部不显示*/
 			},
-			verify: 'http://shop.73776.com/index.php/home/verify',
+			verify: 'http://shop.73776.com/index.php/home/login/verify',
 			warning: {
-				account: '',
+				passport: '',
 				password: '',
 				confirm: '',
-				phone: '',
-				email: '',
+				mobile: '',
 				nickname: '',
-				verify: ''
+				verifycode: ''
 			},
 			rule: {
-				account: {
-					tip: '支持数字、字母，不含空格及特殊符号,6~12位',
+				passport: {
+					tip: '字母开头，支持数字、字母,6~12位',
+					reg: /^[a-zA-Z][a-zA-Z0-9_]{5,11}$/
 				},
 				password: {
-					tip: '不含空格，6~18位'
+					tip: '数字、字母、特殊字符的任意两种以上组合，6-12位',
+					reg: /(?!^\\d+$)(?!^[a-zA-Z]+$)(?!^[_#@]+$).{6,12}/
 				},
-				password: { tip: '与密码不一致' },
-				phone: {
-					tip: '11位手机号码'
+				password: { tip: '两次密码不一致' },
+				mobile: {
+					tip: '11位手机号码',
+					reg: /^1[23456789][0-9]{9}$/
 				},
 				email: {
 					tip: '可暂不填写'
 				},
 				nickname: {
-					tip: '不含特殊符号，空格，不超过8位',
+					tip: '不含特殊符号，空格，2~8位',
+					reg: /[ '.,:;*?~`!@#$%^&+=)(<>{}]|\]|\[|\/|\\\|\"|\|{2,8}/
 				},
-				code: { tip: '必填项'}
+				verifycode: { tip: '必填项'}
 			},
 			inputParams: {
-				account: '',
+				passport: '',
+				password: '',
+				confirm: '',
+				mobile: '',
+				nickname: '',
+				verifycode: ''
 			}
         }
     },
     methods: {
         ...mapActions([ 'handleTitle']),
-        handleLogin() {
-            console.log('login')
+        handleRegister() {
+			console.log(this.inputParams)
+            api.post('/login/user_register', this.inputParams).then( res => {	
+				console.log(res)
+				if (res.code==200) {
+					let instance = Toast('注册成功')
+					setTimeout(() => {
+						instance.close()
+						
+						this.$router.push('/login')
+					}, 2000);
+				}
+			})
         },
-		changeVerify() {
-
+		changeVerify(ev) {
+			ev = ev || event
+			let target = event.currentTarget
+			target.src = this.verify + '/?timestamp=' + new Date().getTime()
 		},
-		checkAccount() {
-			if (this.inputParams.account) {
-				// api.valiUserName(this.inputParams.account).then( res=> {
-				// 	console.log(res)
-				// })
+		fastCheck(payload) {
+			let data;
+			switch(payload) {
+				case 'passport': data = { passport: this.inputParams[payload] };
+					break;
+				case 'mobile': data = { mobile: this.inputParams[payload] };
+					break;
+				case 'nickname': data = { nickname: this.inputParams[payload] };
+					break;
+			}
+			if (this.inputParams[payload]) {
+				console.log(data)
+				api.post('/login/check_' + payload, data ).then( res => {
+					console.log(res.code==200)
+					this.warning[payload] = res.code == 401 ? res.msg : ''
+				})
 			} 
 		}
     },
@@ -128,11 +164,11 @@ export default {
 			},
 			deep: true
 		},
-		'inputParams.account'(val) {
+		'inputParams.passport'(val) {
 			if (val.length<6 || val.length>12) {
-				this.warning.account = this.rule.account.tip
+				this.warning.passport = this.rule.passport.tip
 			} else {
-				this.warning.account = ''
+				this.warning.passport = ''
 			}
 		}
 	}
@@ -166,16 +202,19 @@ export default {
 		ul {
 			padding-top: 10px;
 			li{
-				P {
+				>P {
 					&:first-child {
+						display: flex;
+						height: 50px;
+						line-height: 50px;
 						em {
 							display: inline-block;
 							@include text-align-justify(4);
+							min-width: 4em;
 						}
 						input {
 							text-indent: 1em;
-							height: 40px;
-							width: 70%;
+							width: 100%;
 						}
 					}
 					&:nth-child(2) {
@@ -186,18 +225,25 @@ export default {
 						line-height: 35px;
 					}
 				}
-				&:last-child p {
-					// padding-top: 10px;
-					input {
-						width: 35%;
+				&:last-child {
+					line-height: 50px;
+					>div {
+						display: flex;
+						em {
+							display: inline-block;
+							@include text-align-justify(4);
+							min-width: 4em;
+						}
+						>div {
+							width: 100%;
+							@include box-sizing;
+							display: flex;
+							justify-content: space-between;
+							input { width: 100%; text-indent: 1em; width: 7em;}
+							.verify {	 width: 150px; height: 50px;  }
+						}		
 					}
-					.verify {	
-						float: right;
-						margin-right: 5%;
-						width: 120px;
-						margin-top: -5px;	
-					}
-					&:last-child { width: 80% }
+					>p { width: 80% }
 				}
 			}
 		}
