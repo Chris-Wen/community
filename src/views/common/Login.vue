@@ -11,6 +11,10 @@
                     <em>密 码：</em><input v-model.trim="loginParams.login_pwd" type="password" placeholder="请输入密码" />
                 </li>
             </ul>
+            <div v-if="isCodeShow" class="code">
+                <input type="text" placeholder="验证码" v-model.trim="loginParams.login_code" />
+                <img class="verify" :src="verify" @click="changeVerify" alt="验证码图片">
+            </div>
             <button @click="handleLogin">登 录</button>
         </form>
         <ul>
@@ -34,7 +38,7 @@
 import { mapMutations, mapActions } from 'vuex'
 import { initClientHeight } from 'common/js/dom'
 import { Toast } from 'mint-ui'
-import * as api from 'api/loginApi.js'
+import * as api from 'api/api.js'
 
 export default {
     data() {
@@ -50,13 +54,32 @@ export default {
             eye: { open: false },
             loginParams: {
                 login_pwd: '',
-                login_user: ''
-            }
+                login_user: '',
+                login_code: ''
+            },
+            isCodeShow: false,
+            verify: '/index.php/home/login/verify',
         }
     },
     methods: {
         ...mapActions([ 'handleTitle']),
         handleLogin() {
+            if (!this.loginParams.login_pwd || !this.loginParams.login_user) {
+                Toast({
+					message: '请输入完整登录信息',
+					position: 'middle',
+					duration: 3000
+                })
+                return ;
+            } else if (this.isCodeShow && !this.login_code){
+                Toast({
+					message: '请输入验证码',
+					position: 'middle',
+					duration: 3000
+                })
+                return ;
+            }
+            console.log(this.loginParams)
             api.post('/login/login', this.loginParams).then( res => {
                 console.log(res)
                 if (res.code==200) {
@@ -66,10 +89,16 @@ export default {
 						
 						this.$router.push('/')
 					}, 2000);
-				}
+				} else if (res.code==700){
+                    this.isCodeShow = true
+                }
             })
         },
-        
+        changeVerify(ev) {
+            ev = ev || event
+			let target = event.currentTarget
+			target.src = this.verify + '/?timestamp=' + new Date().getTime()
+        }
     },
     mounted() {
         this.handleTitle({ 
@@ -129,6 +158,13 @@ export default {
             font-size: $font-size-normal; /*no*/
             font-weight: 600;
         }
+    }
+    .code {
+        padding: 15px 12.5% 0;
+        display: flex;
+        justify-content: space-between;
+        input { width: 100%; text-indent: 1em; width: 10em; border-bottom: 1px solid black; /*no*/ outline: none;}
+        .verify {	 width: 150px; height: 50px; border: 1px solid $border-color-d; /*no*/ }
     }
     >ul {
         padding: 0 25%;
