@@ -27,8 +27,9 @@ import './common/css/reset.css'
 import './common/css/global.css'
 fastclick.attach(document.body)
 
-import { Indicator } from 'mint-ui'
+import { Indicator,Toast } from 'mint-ui'
 window.Indicator = Indicator
+window.Toast = Toast
 
 
 

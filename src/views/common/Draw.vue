@@ -3,10 +3,10 @@
         <div v-show="true" class="mask-bg">
             <div class="flash-star"></div>
             <div class="popup-container">
-
+                
             </div>
         </div>
-        <self-toast v-if="toastParams.showToast" 
+        <!-- <self-toast v-if="toastParams.showToast" 
             leftBtn="存入仓库" 
             rightBtn="申请邮寄" 
             :showCloseBtn="false" 
@@ -16,7 +16,7 @@
                 <h1>{{toastSlot.name}}</h1>
                 <p v-html="toastSlot.intro"></p>
             </div>
-        </self-toast>
+        </self-toast> -->
         <div class="turnplate-box">
             <div class="turnplate">
                 <div class="prize" ref="turnplate"></div>
@@ -24,7 +24,7 @@
             </div>
         </div>
         
-        <div class="lottery-times">抽奖次数： {{lotteryTicket}}</div>
+        <div v-if="true" class="lottery-times">抽奖次数： {{lotteryTicket}}</div>
         <div class="rule">
             <h1 class="rule-name">抽奖规则</h1>
             <div>
@@ -49,14 +49,13 @@
 
 <script>
 import { mapMutations, mapActions } from 'vuex'
-import { Toast } from 'mint-ui' 
-import SelfToast from 'base/Toast/Toast'
+import * as api from 'api/api'
 
 export default {
     data() {
         return {
             titleInfo: {
-                title:  '掌动社区',
+                title:  '幸运大转盘',
                 showIcon:   false
             },
             lotteryTicket: 5,   //抽奖次数
@@ -70,12 +69,16 @@ export default {
                 {   img: '',  name: '奖品3',   isPrize: 1  },
                 {   img: '',  name: '奖品4',   isPrize: 1  },
                 {   img: '',  name: '奖品5',   isPrize: 1  },
+                {   img: '',  name: '未中奖',   isPrize: 0 },
+                {   img: '',  name: '未中奖',   isPrize: 0 },
+                {   img: '',  name: '未中奖',   isPrize: 0 },
+                {   img: '',  name: '未中奖',   isPrize: 0 },
                 {   img: '',  name: '未中奖',   isPrize: 0 }
             ],
             isRotating: false,
             toastParams: {
                 showToast:　false,
-                toast: true
+                toast: false
             },
             toastSlot: {
                 pic: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
@@ -83,18 +86,39 @@ export default {
             }
         }
     },
-    components: { Toast, SelfToast },
+    created() {
+        // api.get('/home/member/session_data').then( res => {
+        //     console.log(res)
+
+        // })
+    },
     methods: {
         ...mapActions([ 'handleTitle']),
+        initDraw() {
+
+        },
         startRotate() {
-            if (this.isRotating) {  console.log('正在抽奖中'); return;  }
-            if (this.lotteryTicket==0) { console.log('您今天没有抽奖次数了'); return; }
-            Toast({
+            if (this.isRotating) {  
+                return Toast({
                     message: '正在抽奖中',
                     position: 'middle',
                     duration: 1000,
                     className: 'popup'
-                });
+                })  
+            }
+            if (this.lotteryTicket==0) { 
+                return Toast({
+                    message: '您今天抽奖次数用完了',
+                    position: 'middle',
+                    duration: 3000
+                }) 
+            }
+            
+            api.get('/home/lottery/getAwards').then( res => {
+                console.log(res)
+                
+            })
+
             this.lotteryTicket --;
             this.isRotating = true;
             this.$refs.turnplate.style = "";
@@ -279,13 +303,16 @@ export default {
             width: 60px;
             height: 60px;
         }
-        background-image: url('../../common/images/global/prize-popup-bg.png');
-        background-size: 100% auto;
-        background-repeat: no-repeat;
+        
+        
         .popup-container {
             width: 100%;
-            height: 800px;
-
+            height: 510px;
+            margin-top: 150px;
+            background-image: url('../../common/images/global/prize-popup-bg.png');
+            background-size: 529px 502px;
+            background-position: center bottom;
+            background-repeat: no-repeat;
         }
     }
 }

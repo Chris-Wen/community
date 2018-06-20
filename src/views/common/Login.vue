@@ -37,8 +37,6 @@
 <script>
 import { mapMutations, mapActions } from 'vuex'
 import { initClientHeight } from 'common/js/dom'
-import { Toast } from 'mint-ui'
-import * as api from 'api/api.js'
 
 export default {
     data() {
@@ -58,11 +56,11 @@ export default {
                 login_code: ''
             },
             isCodeShow: false,
-            verify: '/index.php/home/login/verify',
+            verify: 'http://shop.73776.com/index.php/home/login/verify',
         }
     },
     methods: {
-        ...mapActions([ 'handleTitle']),
+        ...mapActions([ 'handleTitle', 'login']),
         handleLogin() {
             if (!this.loginParams.login_pwd || !this.loginParams.login_user) {
                 Toast({
@@ -79,19 +77,33 @@ export default {
                 })
                 return ;
             }
-            console.log(this.loginParams)
-            api.post('/login/login', this.loginParams).then( res => {
+            // console.log(this.loginParams)
+
+            // vuex function
+            this.login(this.loginParams).then( res => {
                 console.log(res)
                 if (res.code==200) {
 					let instance = Toast('登录成功')
 					setTimeout(() => {
 						instance.close()
-						
-						this.$router.push('/')
+                        
+						this.$router.go(-1)
 					}, 2000);
 				} else if (res.code==700){
                     this.isCodeShow = true
-                }
+                } else if (res.code==400) {
+                    Toast({
+                        message: '登录失败，请稍候重试',
+                        position: 'middle',
+                        duration: 3000
+                    })
+                } else if (res.code==402 || res.code==401) {
+                    Toast({
+                        message: res.msg,
+                        position: 'middle',
+                        duration: 3000
+                    })
+                } 
             })
         },
         changeVerify(ev) {

@@ -3,8 +3,8 @@
         <div class="top">
             <div><img src="../../common/images/global/user.jpg" ></div>
             <div>
-                <h2>{{uname}}</h2>
-                <p><span>关注：{{attent}}</span> <span>粉丝：{{fans}}</span></p>
+                <h2>{{this.$store.state.userInfo.uname || '未登录'}}</h2>
+                <p><span>关注：{{this.$store.state.userInfo.attent || 0}}</span> <span>粉丝：{{this.$store.state.userInfo.fans || 0}}</span></p>
             </div>
         </div>
         <ul class="icon-group">
@@ -53,7 +53,7 @@
 
         <div class="personal">
             <div class="score">
-                <p>{{score}}</p>
+                <p>{{this.$store.state.userInfo.score || '******'}}</p>
                 <p>我的积分</p>
             </div>
             <div class="transform-goods">
@@ -80,12 +80,13 @@ export default {
                 title: "个人中心",
                 showIcon: false
             },
-            uname: "昵称昵称昵称昵称昵称昵称昵称昵称昵称昵称昵称昵称",
-            score: 1132135123,    
-            attent: 0,
-            fans: 0,
             data: []
         }
+    },
+    created() {
+        //  api get params
+
+        this.data = []
     },
     methods: {
         ...mapActions([ 'handleTitle']) 

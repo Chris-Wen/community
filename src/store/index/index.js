@@ -7,6 +7,8 @@ import * as mutations from './mutation-type'
 
 Vue.use(Vuex)
 
+const SOTRE_USERINFO = JSON.parse(sessionStorage.getItem('ZDKJ_USERINFO'))
+
   // 定义状态
 const  state = {
 	author: 'Chris-Wen',
@@ -17,11 +19,14 @@ const  state = {
 		link: ''			//跳转目标页
 	},
 	bottomTab: { showBottomTab: '' },
-	userInfo: {
-		uname: sessionStorage.getItem('zdkjuname'),
-		score: sessionStorage.getItem('zdkjscore'),
-		token: localStorage.getItem('zdkjtoken')
-	},
+	userInfo: 
+		{
+			uname: SOTRE_USERINFO ? SOTRE_USERINFO.uname : '',
+			score: SOTRE_USERINFO ? SOTRE_USERINFO.score : '',
+			uid: SOTRE_USERINFO ? SOTRE_USERINFO.uid : '',
+			attents:　SOTRE_USERINFO ? SOTRE_USERINFO.attents : '',				//关注数量
+			fans: SOTRE_USERINFO ? SOTRE_USERINFO.fans : '',					//粉丝
+		},
 	indexInfo: {
 		indexBanner: '',
 		shortBanner: ''

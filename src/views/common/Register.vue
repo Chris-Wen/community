@@ -57,7 +57,6 @@
 <script>
 import { mapMutations, mapActions } from 'vuex'
 import * as api from 'api/loginApi.js'
-import { Toast } from 'mint-ui'
 
 export default {
     data() {
@@ -67,7 +66,7 @@ export default {
                 showIcon: false,
                 showBottomTab: true,  				/*true表示底部不显示*/
 			},
-			verify: '/index.php/home/login/verify',
+			verify: 'http://shop.73776.com/index.php/home/login/verify',
 			warning: {
 				passport: '',
 				password: '',
@@ -117,22 +116,39 @@ export default {
 				verifycode: false,
 				checkbox: true,
 			},
-			clickable: false
+			clickable: false,
+
         }
     },
     methods: {
         ...mapActions([ 'handleTitle']),
         handleRegister() {
 			if (!this.clickable) return;
+			
+			this.clickable = false			//防短时重复注册
             api.post('/login/user_register', this.inputParams).then( res => {	
+				this.clickable = true
+
 				console.log(res)
 				if (res.code==200) {
-					let instance = Toast('注册成功')
+					let instance = Toast('注册成功,跳转登录页面')
 					setTimeout(() => {
 						instance.close()
 						
-						this.$router.push('/login')
+						this.$router.go(-1)
 					}, 2000);
+				} else if(res.code==402) {
+					Toast({
+						message: res.msg,
+						position: 'middle',
+						duration: 3000
+					})
+				} else if (res.code==407) {
+					Toast({
+						message: '注册失败，请稍候重试',
+						position: 'middle',
+						duration: 3000
+					})
 				}
 			})
         },
@@ -174,7 +190,7 @@ export default {
 	watch: {
 		edited: {
 			handler(val) {
-				console.log(val)
+				// console.log(val)
 				let allEdited = true;
 				for(let i in val) {
 					if (!val[i]) { 

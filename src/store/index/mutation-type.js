@@ -9,7 +9,14 @@ export const handleTitle = (state,payload) => {
 }
 
 export const login = (state, payload) => {
-    state.userInfo.uname = payload.uname
-    state.userInfo.score = payload.score
-    state.userInfo.token = payload.utoken
+    let userInfo = {
+        uname: payload.nickname || payload.username || payload.passport,
+        score: payload.score,
+        uid: payload.uid
+    }
+    state.userInfo.uname = userInfo.uname
+    state.userInfo.score = userInfo.score
+    state.userInfo.uid = userInfo.uid
+    
+    sessionStorage.setItem('ZDKJ_USERINFO', JSON.stringify(userInfo))
 }
