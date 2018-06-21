@@ -28,7 +28,7 @@ export default {
                 title: '掌动论坛',
                 showIcon: true,
                 icon: 'self-icon-comment-o fa-lg',
-                link: '/',
+                link: '/editor',
             },
             showIndex: 'index',
             datalist: [],
@@ -37,31 +37,30 @@ export default {
     methods: {
         ...mapActions([ 'handleTitle']),
         _initTabStatus () {
-                    let url = window.location.href,  page;
+                let url = window.location.href,  page, showEditIcon=true;
 
-                    switch(true) {
-                        case /\/#\/forum\/activity/.test(url):    page = 'activity';
-                            break;
-                        case /\/#\/forum\/news/.test(url):    page = 'news';
-                            break;
-                        case /\/#\/forum\/game/.test(url):    page = 'game';
-                            break;
-                        case /\/#\/forum/.test(url):   page = 'index';
-                            break;
-                    }
-                    if (page) this.showIndex = page
+                switch(true) {
+                    case /\/#\/forum\/activity/.test(url):    page = 'activity';
+                        break;
+                    case /\/#\/forum\/news/.test(url):    page = 'news';  showEditIcon = false;
+                        break;
+                    case /\/#\/forum\/game/.test(url):    page = 'game';  showEditIcon = false;
+                        break;
+                    case /\/#\/forum/.test(url):   page = 'index';  
+                        break;
+                }
+                if (page) this.showIndex = page
+                this.handleTitle({
+                    title:    this.titleInfo.title, 
+                    showIcon: showEditIcon,
+                    icon: this.titleInfo.icon,
+                    link: this.titleInfo.link
+                })
             },
         
     },
     mounted() {
         this._initTabStatus()
-
-        this.handleTitle({
-            title:    this.titleInfo.title, 
-            showIcon: this.titleInfo.showIcon,
-            icon: this.titleInfo.icon,
-            link: this.titleInfo.link
-        })
 
         setTimeout(() => {
             this.datalist = [12,344]
@@ -79,10 +78,11 @@ export default {
 .forum-index {
     position: relative;
     font-size: $font-size-small; /*no*/
+    padding-top: 73px;
     .top-tab {
-        // position: fixed;
-        // z-index: 10;
-        // top: 100px;
+        position: fixed;
+        z-index: 1;
+        top: 100px;
         width: 100%;
         height: 70px;
         line-height: 70px;
@@ -101,8 +101,7 @@ export default {
             }
         }
     }
-    .view { 
-        // margin-top: 73px;
+    // .view { 
         .slide-fade-enter-active {
             transition: all .3s ease;
         }
@@ -113,7 +112,7 @@ export default {
             transform: translateX(10px);
             opacity: 0;
         } 
-    }
+    // }
 }
 
 </style>

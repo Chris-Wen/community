@@ -23,8 +23,6 @@ export const login = ( {commit}, payload ) => {
 } 
 
 
-
-
 // export const getBanner = ({commit,state}, payload) => {
 //     return new Promise((resolve, reject) => {
 //         api.get('/getIndexInfo')

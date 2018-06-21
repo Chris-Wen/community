@@ -12,40 +12,71 @@ import { fictionRoutes } from './fictionRoutes.js'
 import { forumRoutes } from './forumRoutes.js'
 import { centerRoutes } from './centerRoutes.js'
 
+
+// import store from './store/store'
+
+
 Vue.use(Router)
+
+
+const routes = [ 
+  {
+    path: '/',
+    redirect: '/draw'
+  },
+  {
+    path: '/draw',
+    component: Draw
+  },
+  {
+    path: '/center',
+    component: Center
+  },
+  {
+    path: '/login',
+    component: Login
+  },
+  {
+    path: '/register',
+    component: Register
+  },
+  {
+    path: '/editor',
+    name: 'editor',
+    meta: {
+      requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
+    },
+    component: Editor
+  },
+  ...shopRoutes,
+  ...fictionRoutes,
+  ...forumRoutes,
+  ...centerRoutes
+]
+
+
+//路由判断进行登录拦截
+// router.beforeEach((to, from, next) => {
+//   if (to.meta.requireAuth) {      // 判断该路由是否需要登录权限
+//       // if (store.state.token) {    // 通过vuex state获取当前的token是否存在
+//       if (true) {
+//           next();
+//       } else {
+//           next({
+//               path: '/login',
+//               query: {redirect: to.fullPath}  // 将跳转的路由path作为参数，登录成功后跳转到该路由
+//           })
+//       }
+//   }
+//   else {
+//       next();
+//   }
+// })
 
 
 export default new Router({
   // linkExactActiveClass: 'linkClickStyle',
-  routes: [ 
-    {
-      path: '/',
-      redirect: '/draw'
-    },
-    {
-      path: '/draw',
-      component: Draw
-    },
-    {
-      path: '/center',
-      component: Center
-    },
-    {
-      path: '/login',
-      component: Login
-    },
-    {
-      path: '/register',
-      component: Register
-    },
-    {
-      path: '/editor',
-      name: 'editor',
-      component: Editor
-    },
-    ...shopRoutes,
-    ...fictionRoutes,
-    ...forumRoutes,
-    ...centerRoutes
-  ]
+  routes
 })
+
+

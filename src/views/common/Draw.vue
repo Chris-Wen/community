@@ -1,22 +1,14 @@
 <template>
     <div class="draw">
-        <div v-show="true" class="mask-bg">
-            <div class="flash-star"></div>
-            <div class="popup-container">
-                
-            </div>
-        </div>
-        <!-- <self-toast v-if="toastParams.showToast" 
+        <draw-popup v-if="toastParams.showToast" 
             leftBtn="存入仓库" 
             rightBtn="申请邮寄" 
-            :showCloseBtn="false" 
             @handleClick="_handleClick" >
-            <div class="toast-slot"> 
-                <img :src="toastSlot.pic">
-                <h1>{{toastSlot.name}}</h1>
-                <p v-html="toastSlot.intro"></p>
-            </div>
-        </self-toast> -->
+            <!-- 插槽奖品内容 -->
+            <p>{{toastSlot.name}}</p>
+            <img :src="toastSlot.pic">
+            
+        </draw-popup>
         <div class="turnplate-box">
             <div class="turnplate">
                 <div class="prize" ref="turnplate"></div>
@@ -49,9 +41,11 @@
 
 <script>
 import { mapMutations, mapActions } from 'vuex'
+import DrawPopup from '../../components/DrawPopup/DrawPopup'
 import * as api from 'api/api'
 
 export default {
+    components: { DrawPopup },
     data() {
         return {
             titleInfo: {
@@ -77,8 +71,7 @@ export default {
             ],
             isRotating: false,
             toastParams: {
-                showToast:　false,
-                toast: false
+                showToast: true,
             },
             toastSlot: {
                 pic: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
@@ -113,10 +106,9 @@ export default {
                     duration: 3000
                 }) 
             }
-            
-            api.get('/home/lottery/getAwards').then( res => {
+            api.get('/lottery/getAwards').then( res => {
                 console.log(res)
-                
+
             })
 
             this.lotteryTicket --;
@@ -150,7 +142,7 @@ export default {
                 this.isRotating = false;
 
                 this.toastParams.toast = true
-                // this.toastParams.showToast = true
+                this.toastParams.showToast = true
             }, 5500);
         },
         _handleClick(index) {
@@ -288,31 +280,6 @@ export default {
                 border-top:16px solid #99a3f6; 
             }
 
-        }
-    }
-
-    //弹窗及各种特效
-    .mask-bg {
-        @include mask-bg;
-        .flash-star{
-            // transform: scale(0.5);
-            position: absolute;
-            top: 8%;
-            left: 50%;
-            @include background-image(url('../../common/images/icons/flash-star.png'));
-            width: 60px;
-            height: 60px;
-        }
-        
-        
-        .popup-container {
-            width: 100%;
-            height: 510px;
-            margin-top: 150px;
-            background-image: url('../../common/images/global/prize-popup-bg.png');
-            background-size: 529px 502px;
-            background-position: center bottom;
-            background-repeat: no-repeat;
         }
     }
 }

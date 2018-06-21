@@ -13,6 +13,7 @@
             <span class="upload-img">
                 
             </span>
+            <div class="add"></div>
         </div>
     </div>
 </template>
@@ -29,7 +30,11 @@ export default {
             },
             editorType: '',
             themeTitle: '',
-            textInput: 'https://blog.csdn.net/qq_32786873/article/details/75125737    https://segmentfault.com/a/1190000010034177   https://github.com/xiangpaopao/blog/issues/7',
+            textInput: `https://blog.csdn.net/qq_32786873/article/details/75125737    
+            https://segmentfault.com/a/1190000010034177   
+            https://github.com/xiangpaopao/blog/issues/7
+            http://vanthink-ued.github.io/vue-core-image-upload/index.html#/cn/get-started
+            `,
         }
     },
     methods: {
@@ -65,7 +70,6 @@ export default {
             title:  title, 
             showIcon: this.titleInfo.showIcon
         })
-
 
     }
 }

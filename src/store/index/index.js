@@ -21,24 +21,12 @@ const  state = {
 	bottomTab: { showBottomTab: '' },
 	userInfo: 
 		{
-			uname: SOTRE_USERINFO ? SOTRE_USERINFO.uname : '',
+			uname: SOTRE_USERINFO ? SOTRE_USERINFO.uname : '',		
 			score: SOTRE_USERINFO ? SOTRE_USERINFO.score : '',
 			uid: SOTRE_USERINFO ? SOTRE_USERINFO.uid : '',
 			attents:　SOTRE_USERINFO ? SOTRE_USERINFO.attents : '',				//关注数量
 			fans: SOTRE_USERINFO ? SOTRE_USERINFO.fans : '',					//粉丝
 		},
-	indexInfo: {
-		indexBanner: '',
-		shortBanner: ''
-	},
-	listPage: {
-		list: [],
-		ruleList1: [],
-		ruleList2: [],
-		ruleList3: [],
-		ruleList4: []
-	},
-	cartData: []
 }
 
 //store
