@@ -5,6 +5,7 @@ import ShopCart from '@/views/shop/Cart'
 import ShopStrategy from '@/views/shop/Strategy'
 import ManageAddress from '@/views/shop/ManageAddress'
 import NewAddress from '@/views/shop/NewAddress'
+import OrderInfo from '@/views/shop/OrderInfo'
 
 
 export const shopRoutes = [
@@ -22,18 +23,32 @@ export const shopRoutes = [
     },
     {
         path: '/shop/cart',
-        component: ShopCart
+        name: 'shopcart',
+        meta: { requireAuth: true },
+        component: ShopCart,
     },
     {
         path: '/shop/strategy',
+        name: '积分攻略',
         component: ShopStrategy
     },
     {
         path: '/shop/address',
+        name: 'address',
+        meta: { requireAuth: true },
         component: ManageAddress
     },
     {
         path: '/shop/new_address',
+        name: 'new_address',
+        meta: { requireAuth: true },
         component: NewAddress
-    }
+    },
+    {
+        path: '/order_info',
+        name: 'order_info',
+        meta: { requireAuth: true },
+        component: OrderInfo
+    },
+
 ]   

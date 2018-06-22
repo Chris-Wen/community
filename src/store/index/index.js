@@ -19,6 +19,7 @@ const  state = {
 		link: ''			//跳转目标页
 	},
 	bottomTab: { showBottomTab: '' },
+	token: true,
 	userInfo: 
 		{
 			uname: SOTRE_USERINFO ? SOTRE_USERINFO.uname : '',		

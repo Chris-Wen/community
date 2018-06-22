@@ -71,7 +71,7 @@ export default {
             ],
             isRotating: false,
             toastParams: {
-                showToast: true,
+                showToast: false,
             },
             toastSlot: {
                 pic: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
@@ -80,10 +80,10 @@ export default {
         }
     },
     created() {
-        // api.get('/home/member/session_data').then( res => {
-        //     console.log(res)
+        api.get('/home/member/session_data').then( res => {
+            console.log(res)
 
-        // })
+        })
     },
     methods: {
         ...mapActions([ 'handleTitle']),

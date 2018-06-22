@@ -55,12 +55,12 @@
                                     <div class="content">
                                         <div v-html="item.content"></div>
                                         <ul class="reply" v-if="item.total>0">
-                                            <li v-for="(val, key) in item.reply" :key="key">
+                                            <li v-for="(val, key) in item.reply" :key="key" @click.stop.capture="replyComment('commentId', 'replyUserid')">
                                                 <router-link to="/center/friend/info">{{val.name}}</router-link>:
                                                 <span >回复<router-link to="/center/friend/info"> {{val.name}}</router-link>：</span>
                                                 {{val.content}}
                                             </li>
-                                            <li class="bottom" v-if="item.total>=3">还有{{ item.total-2 }}条评论 <span class="self-icon-caret-up"></span> </li>
+                                            <router-link :to="{ name: 'forum_comment_list', params: { commentId: 123 } }" class="bottom" v-if="item.total>=3">还有{{ item.total-2 }}条评论 <span class="self-icon-caret-up"></span> </router-link>
                                         </ul>
                                     </div>
                                 </div>
@@ -197,10 +197,10 @@ export default {
         _reply(itemId) {
             console.log('弹出填写页面，进行编辑')
         },
-        jumpToEditor(type, index) {
-            this.$router.push({ path: '/editor', params: { type } })
-        },
+        replyComment(commentId, replyUserid) {         //回复评论
 
+            this.$router.push({ path: '/editor', params: { type: 123 } })
+        },
         //上、下拉刷新加载
         loadTop() {
             console.log('刷新操作')

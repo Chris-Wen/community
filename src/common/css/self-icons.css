@@ -1,5 +1,10 @@
 /**项目中用到的个别小logo**/
-.zd-icon-score { background-image: url('../images/icons/icon_zd.jpg'); display: inline-block; vertical-align: -3.5%; }
+.zd-icon-score { 
+  background-image: url('../images/icons/icon_zd.jpg'); 
+  display: inline-block; 
+  background-size: contain;
+  width: 25px; height: 25px;
+}
 
 /**self font awesome**/
 @font-face {
