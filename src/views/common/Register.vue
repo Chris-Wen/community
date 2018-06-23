@@ -11,7 +11,7 @@
 				<li>
 				 	<p> 
 						<em>通行证</em>：
-						<input type="text" placeholder="账号" v-model.trim="inputParams.passport"  @blur="fastCheck('passport')" autofocus/> 
+						<input type="text" placeholder="账号" v-model.trim="inputParams.passport" maxlength="5" name="account" minlength="3" @blur="fastCheck('passport')" autofocus/> 
 					</p>
 					<p>{{ warning.passport }}</p>
 				</li>
@@ -20,7 +20,7 @@
 					<p>{{ warning.password }}</p>
 				</li>
 				<li>
-				 	<p> <em>确认密码</em>：<input type="password" placeholder="请确认密码" v-model.trim.lazy="inputParams.confirm" /> </p>
+				 	<p> <em>确认密码</em>：<input type="password" placeholder="请确认密码" maxlength="5" name="password" v-model.trim.lazy="inputParams.confirm" /> </p>
 					<p>{{ warning.confirm }}</p>
 				</li>
 				<li>
@@ -49,7 +49,7 @@
 			<div class="compact">
 				<p ><input type="checkbox" v-model="inputParams.checkbox" checked/> 我已阅读并同意<a class="needsclick" href="http://www.baidu.com" >《掌动用户社区注册协议》</a> </p>
 			</div>	
-			<p><button :class="{'dark': !clickable}" @click="handleRegister">注 &nbsp;册</button></p>
+			<p><button :class="{'dark': !clickable}" @click="handleRegister" disabled>注 &nbsp;册</button></p>
 		</form>
   	</div>
 </template>
@@ -123,6 +123,7 @@ export default {
     methods: {
         ...mapActions([ 'handleTitle']),
         handleRegister() {
+			console.log(123)
 			if (!this.clickable) return;
 			
 			this.clickable = false			//防短时重复注册

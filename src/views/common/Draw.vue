@@ -80,10 +80,10 @@ export default {
         }
     },
     created() {
-        api.get('/home/member/session_data').then( res => {
-            console.log(res)
+        // api.get('/home/member/session_data').then( res => {
+        //     console.log(res)
 
-        })
+        // })
     },
     methods: {
         ...mapActions([ 'handleTitle']),
@@ -106,10 +106,10 @@ export default {
                     duration: 3000
                 }) 
             }
-            api.get('/lottery/getAwards').then( res => {
-                console.log(res)
+            // api.get('/lottery/getAwards').then( res => {
+            //     console.log(res)
 
-            })
+            // })
 
             this.lotteryTicket --;
             this.isRotating = true;
@@ -169,6 +169,7 @@ export default {
 @import "../../common/css/index.scss";
 
 .draw {
+    position: relative;
     padding-bottom: 45px;
     background-image: url('../../common/images/global/bg-draw.jpg') ;
     background-size: 100% 100%;
