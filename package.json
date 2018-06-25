@@ -17,9 +17,10 @@
     "lib-flexible": "^0.3.2",
     "mint-ui": "^2.2.13",
     "vue": "^2.5.2",
+    "vue-core-image-upload": "^2.4.11",
+    "vue-lazyload": "^1.2.5",
     "vue-router": "^3.0.1",
-    "vuex": "^3.0.1",
-    "vue-lazyload": "^1.2.5"
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
@@ -27,6 +28,7 @@
     "babel-helper-vue-jsx-merge-props": "^2.0.3",
     "babel-loader": "^7.1.1",
     "babel-plugin-component": "^1.1.1",
+    "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "babel-plugin-syntax-jsx": "^6.18.0",
     "babel-plugin-transform-runtime": "^6.22.0",
     "babel-plugin-transform-vue-jsx": "^3.5.0",

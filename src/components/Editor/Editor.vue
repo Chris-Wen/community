@@ -7,13 +7,72 @@
         </form>
         <div class="upload">
             <div class="btn-group">
-                <span class="self-icon-camera fa-lg"></span> <span class="self-icon-image fa-lg"></span> <span class="self-icon-smile-o fa-lg"></span> 
+                <span class="self-icon-smile-o fa-lg"></span> <span class="self-icon-image fa-lg" @click="showPart == 'emoji'"></span>  
+            </div>
+            <!-- emoji -->
+            <div class="emoji" ref="emoji">
+                <span class="zd-sprite-smile"></span>
+                <span class="zd-sprite-smiley"></span>
+                <span class="zd-sprite-smirk"></span>
+                <span class="zd-sprite-sob"></span>
+                <span class="zd-sprite-angry"></span>
+                <span class="zd-sprite-anguished"></span>
+                <span class="zd-sprite-cry"></span>
+                <span class="zd-sprite-cold_sweat"></span>
+                <span class="zd-sprite-blush"></span>
+                <span class="zd-sprite-sunglasses"></span>
+                <span class="zd-sprite-coffee"></span>
+                <span class="zd-sprite-broken_heart"></span>
+                <span class="zd-sprite-heart"></span>
+                <span class="zd-sprite-bomb"></span>
+                <span class="zd-sprite-video_game"></span>
+                <span class="zd-sprite-crescent_moon"></span>
+                <span class="zd-sprite-sunny"></span>
+                <span class="zd-sprite-confused"></span>
+                <span class="zd-sprite-disappointed"></span>
+                <span class="zd-sprite-disappointed_relieved"></span>
+                <span class="zd-sprite-dizzy_face"></span>
+                <span class="zd-sprite-flushed"></span>
+                <span class="zd-sprite-weary"></span>
+                <span class="zd-sprite-heart_eyes"></span>
+                <span class="zd-sprite-kissing_heart"></span>
+                <span class="zd-sprite-kissing"></span>
+                <span class="zd-sprite-laughing"></span>
+                <span class="zd-sprite-muscle"></span>
+                <span class="zd-sprite-ok_hand"></span>
+                <span class="zd-sprite-v"></span>
+                <span class="zd-sprite-clap"></span>
+                <span class="zd-sprite-hankey"></span>
+                <span class="zd-sprite-pray"></span>
+                <span class="zd-sprite-pill"></span>
+                <span class="zd-sprite-fire "></span>
+                <span class="zd-sprite-fire_engine"></span>
+                <span class="zd-sprite-rage"></span>
+                <span class="zd-sprite-thumbsup"></span>
+                <span class="zd-sprite-thumbsdown "></span>
+                <span class="zd-sprite-stuck_out_tongue"></span>
+                <span class="zd-sprite-unamused"></span>
+                <span class="zd-sprite-stuck_out_tongue_closed_eyes"></span>
+                <span class="zd-sprite-stuck_out_tongue_winking_eye"></span>
+                <span class="zd-sprite-zap"></span>
+                <span class="zd-sprite-underage"></span>
+                <span class="zd-sprite-pig"></span>
+                <span class="zd-sprite-soccer"></span>
+                <span class="zd-sprite-basketball"></span>
+                <span class="zd-sprite-baseball"></span>
+                <span class="zd-sprite-bear"></span>
+                <span class="zd-sprite-cn"></span>
+                <span class="zd-sprite-beer"></span>
+                <span class="zd-sprite-beers"></span>
             </div>
             <!-- <input type="file"> -->
-            <span class="upload-img">
-                
-            </span>
-            <div class="add"></div>
+            <vue-core-image-upload v-if="showPart == 'upload'"
+                :crop="false"
+                @imageuploaded="imageuploaded"
+                :max-file-size="5242880"
+                url="http://101.198.151.190/api/upload.php" >
+                <i class="self-icon-image fa-lg"></i>
+            </vue-core-image-upload>
         </div>
     </div>
 </template>
@@ -21,8 +80,10 @@
 <script>
 import { mapMutations, mapActions } from 'vuex'
 import { textareaFormat, textUnformat } from 'common/js/tools'
+import VueCoreImageUpload  from 'vue-core-image-upload'
 
 export default {
+    components: { 'vue-core-image-upload': VueCoreImageUpload },
     data() {
         return {
             titleInfo: {
@@ -32,9 +93,10 @@ export default {
             themeTitle: '',
             textInput: `https://blog.csdn.net/qq_32786873/article/details/75125737    
             https://segmentfault.com/a/1190000010034177   
-            https://github.com/xiangpaopao/blog/issues/7
+            https://github.com/xiangpaopao/blog/issues/7 &#128512;
             http://vanthink-ued.github.io/vue-core-image-upload/index.html#/cn/get-started
             `,
+            showPart: 'emoji'
         }
     },
     methods: {
@@ -53,6 +115,15 @@ export default {
 
             localStorage.removeItem('editorPageThemeTitle').removeItem('editorPageTextInput')
             // this.$router.go(-1)  
+        },
+        imageuploaded() {
+
+        },
+        initEmojiEvent() {
+            this.$refs.emoji.addEventListener('click', function(e) {
+                let ev = e || window.event
+                console.log(e.target)
+            })
         }
     },
     watch: {
@@ -66,6 +137,7 @@ export default {
     mounted() {
         const title = this.initEditor()
 
+        this.initEmojiEvent()
         this.handleTitle({
             title:  title, 
             showIcon: this.titleInfo.showIcon
@@ -78,6 +150,20 @@ export default {
 
 <style lang="scss" scoped>
 @import '../../common/css/index.scss';
+@import '../../common/css/emoji-sprite.css';
+
+.emoji {
+    height: auto;
+    padding: 20px;
+    margin: auto;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    &::after {
+        content: "";
+        flex: auto;
+    }
+}
 
 .editor {
     font-size: $font-size-normal;  /*no*/

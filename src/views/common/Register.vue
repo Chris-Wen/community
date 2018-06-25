@@ -11,20 +11,20 @@
 				<li>
 				 	<p> 
 						<em>通行证</em>：
-						<input type="text" placeholder="账号" v-model.trim="inputParams.passport"  @blur="fastCheck('passport')" autofocus/> 
+						<input type="text" placeholder="账号" name="passport" maxlength="12" v-model.trim="inputParams.passport"  @blur="fastCheck('passport')" autofocus/> 
 					</p>
 					<p>{{ warning.passport }}</p>
 				</li>
 				<li>
-				 	<p> <em>设置密码</em>：<input type="password" placeholder="请输入密码" v-model.trim="inputParams.password" /> </p>
+				 	<p> <em>设置密码</em>：<input type="password" name="password" maxlength="12" placeholder="请输入密码" v-model.trim="inputParams.password" /> </p>
 					<p>{{ warning.password }}</p>
 				</li>
 				<li>
-				 	<p> <em>确认密码</em>：<input type="password" placeholder="请确认密码" v-model.trim.lazy="inputParams.confirm" /> </p>
+				 	<p> <em>确认密码</em>：<input type="password" name="confirm" maxlength="12" placeholder="请确认密码" v-model.trim.lazy="inputParams.confirm" /> </p>
 					<p>{{ warning.confirm }}</p>
 				</li>
 				<li>
-				 	<p> <em>手机号码</em>：<input type="text" placeholder="11位手机号" @blur="fastCheck('mobile')" v-model.trim="inputParams.mobile" /> </p>
+				 	<p> <em>手机号码</em>：<input type="text" name="mobile" maxlength="11" placeholder="11位手机号" @blur="fastCheck('mobile')" v-model.trim="inputParams.mobile" /> </p>
 					<p>{{ warning.mobile }}</p>
 				</li>
 				<!-- <li>
@@ -32,7 +32,7 @@
 					<p>{{ warning.email }}</p>
 				</li> -->
 				<li>
-				 	<p> <em>昵称</em>：<input type="text" placeholder="用户昵称" @blur="fastCheck('nickname')" v-model.trim="inputParams.nickname" /> </p>
+				 	<p> <em>昵称</em>：<input type="text" name="nickname" maxlength="8" placeholder="用户昵称" @blur="fastCheck('nickname')" v-model.trim="inputParams.nickname" /> </p>
 					<p>{{ warning.nickname }}</p>
 				</li>
 				<li>
@@ -56,7 +56,8 @@
 
 <script>
 import { mapMutations, mapActions } from 'vuex'
-import * as api from 'api/loginApi.js'
+import * as api from 'api/api'
+import { hex_md5 } from 'common/js/md5'
 
 export default {
     data() {
@@ -126,6 +127,8 @@ export default {
 			if (!this.clickable) return;
 			
 			this.clickable = false			//防短时重复注册
+			// this.inputParams.password = hex_md5(this.inputParams.password)
+			// this.inputParams.confirm = hex_md5(this.inputParams.confirm)
             api.post('/login/user_register', this.inputParams).then( res => {	
 				this.clickable = true
 

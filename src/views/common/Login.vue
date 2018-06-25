@@ -37,7 +37,9 @@
 <script>
 import { mapMutations, mapActions } from 'vuex'
 import { initClientHeight } from 'common/js/dom'
+import { hex_md5 } from 'common/js/md5'
 
+window.hex_md5 = hex_md5
 export default {
     data() {
         return { 
@@ -79,7 +81,7 @@ export default {
             }
             // console.log(this.loginParams)
 
-            // vuex function
+            // this.loginParams.login_pwd = hex_md5(this.loginParams.login_pwd)     
             this.login(this.loginParams).then( res => {
                 console.log(res)
                 if (res.code==200) {

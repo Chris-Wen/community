@@ -5,11 +5,6 @@ import ForumTopiclist from '@/views/forum/index/Topiclist'
 import ForumActivities from '@/views/forum/index/Activities'
 
 
-import ForumTopic from '@/views/forum/Topic'
-import GameInfo from '@/views/forum/GameInfo'
-import ForumArticle from '@/views/forum/Article'
-import CommentList from '@/views/forum/Comment'
-
 
 export const forumRoutes = [
     {
@@ -35,22 +30,22 @@ export const forumRoutes = [
     },
     {
         path: '/forum/game_info',
-        component: GameInfo
+        component: () => import('@/views/forum/GameInfo')
     },
     {
         path: '/forum/article',
         name: '论坛文章',
-        component: ForumArticle
+        component: () => import('@/views/forum/Article')
     },
     {
         path: '/forum/topic',
         name: '帖子详情',
-        component: ForumTopic
+        component: () => import('@/views/forum/Topic')
     },
     {
         path: '/forum/comment',
         name: 'forum_comment_list',
         meta: { requireAuth: true },
-        component: CommentList
+        component: () => import('@/views/forum/Comment')
     }
 ]
