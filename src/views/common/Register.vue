@@ -49,7 +49,7 @@
 			<div class="compact">
 				<p ><input type="checkbox" v-model="inputParams.checkbox" checked/> 我已阅读并同意<a class="needsclick" href="http://www.baidu.com" >《掌动用户社区注册协议》</a> </p>
 			</div>	
-			<p><button :class="{'dark': !clickable}" @click="handleRegister">注 &nbsp;册</button></p>
+			<p><button :class="{'dark': !clickable}" @click="handleRegister" disabled>注 &nbsp;册</button></p>
 		</form>
   	</div>
 </template>
@@ -124,6 +124,7 @@ export default {
     methods: {
         ...mapActions([ 'handleTitle']),
         handleRegister() {
+			console.log(123)
 			if (!this.clickable) return;
 			
 			this.clickable = false			//防短时重复注册
