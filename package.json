@@ -11,18 +11,19 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "better-scroll": "^1.10.3",
-    "cube-ui": "^1.8.4",
+    "exif-js": "^2.3.0",
     "fastclick": "^1.0.6",
     "lib-flexible": "^0.3.2",
     "mint-ui": "^2.2.13",
     "vue": "^2.5.2",
-    "vue-core-image-upload": "^2.4.11",
     "vue-lazyload": "^1.2.5",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
+    "cube-ui": "^1.8.4",
+    "vue-core-image-upload": "^2.4.11",
+    "better-scroll": "^1.10.3",
     "autoprefixer": "^7.1.2",
     "babel-core": "^6.22.1",
     "babel-helper-vue-jsx-merge-props": "^2.0.3",

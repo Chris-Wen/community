@@ -58,10 +58,35 @@
 
 <script>
 export default {
-    
+    methods: {
+        initEmojiEvent() {
+            this.$refs.emoji.addEventListener('click', e => {
+                let ev = e || window.event
+                this.$emit('emojiEvent', e.target)
+            })
+        }
+    },
+    mounted() {
+        this.$nextTick(()=>{
+            this.initEmojiEvent()
+        })
+    }
 }
 </script>
 
 <style lang="scss">
+@import '../../common/css/emoji-sprite.css';
 
+.emoji {
+    height: auto;
+    padding: 20px;
+    margin: auto;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    &::after {
+        content: "";
+        flex: auto;
+    }
+}
 </style>
