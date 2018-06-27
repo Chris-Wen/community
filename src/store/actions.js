@@ -1,26 +1,29 @@
 // Mutation 存在必须同步执行这个限制      所以采用 action，在action内部执行异步操作
 import axios from 'axios'
-
 axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? '/mook' : '/index.php/home'
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
 axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest'
-
 import qs from 'qs'
 
+import * as types from './mutation-type'
 
-export const handleTitle = ( {commit},payload ) => commit('handleTitle',payload)
+export default {
+    handleTitle ({commit}, payload) { commit( types.SET_TITLE, payload) },
 
-export const login = ( {commit}, payload ) => {				
-    return new Promise((resolve, reject) => {    
-        axios.post('/login/login', qs.stringify(payload) ).then( response => {
-			// console.log(response)
-			let res = response.data
-			if (res.code == 200) commit('login',res.data[0]);
-			
-            resolve(res) 
-        }).catch( err =>  reject(err) )
-    })
-} 
+    login ({commit}, payload){				
+        return new Promise((resolve, reject) => {    
+            axios.post('/login/login', qs.stringify(payload) ).then( response => {
+                // console.log(response)
+                let res = response.data
+                if (res.code == 200) commit( types.SET_USERINFO, res.data[0]);
+                
+                resolve(res) 
+            }).catch( err =>  reject(err) )
+        })
+    },
+    
+    
+}
 
 
 // export const getBanner = ({commit,state}, payload) => {

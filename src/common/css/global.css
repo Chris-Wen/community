@@ -34,7 +34,14 @@ h2 { font-size: 14px;  /*no*/}
     line-height: 1.2em;
     font-size: 14px; /*no*/
 }
-
+.mint-msgbox { font-size: 14px !important;  /*no*/ line-height: 1.5; }
+.mint-msgbox .mint-msgbox-message { padding:　.5em 5%; }
+.mint-msgbox-title { font-size: 16px !important;  /*no*/}
+.mint-msgbox .mint-msgbox-btns {  height: auto; }
+.mint-msgbox-btns .mint-msgbox-btn {
+    line-height: 2;
+    font-size: 14px;  /*no*/
+}
 
 /*global*/
 .dotted { 

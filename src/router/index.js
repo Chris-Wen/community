@@ -5,7 +5,6 @@ import Draw from '@/views/common/Draw'
 import Center from '@/views/common/Center'
 import Login from '@/views/common/Login'
 import Register from '@/views/common/Register'
-// import Editor from '@/components/Editor/Editor'
 
 import { shopRoutes } from './shopRoutes.js'
 import { fictionRoutes } from './fictionRoutes.js'
@@ -13,7 +12,7 @@ import { forumRoutes } from './forumRoutes.js'
 import { centerRoutes } from './centerRoutes.js'
 
 
-import store from '../store/index/index'
+import store from '../store/index'
 
 Vue.use(Router)
 

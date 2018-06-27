@@ -4,7 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import Vuex from 'vuex'
 import router from './router'
-import store from './store/index/index'
+import store from './store/index'
 import VueLazyload from 'vue-lazyload'
 
 

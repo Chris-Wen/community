@@ -87,30 +87,30 @@ export default {
         width: 60px;
         height: 60px;
         &:nth-child(1) {
-            top: 5%;
+            top: 10%;
             left: 50%;
             animation: flash 1.5s ease-in-out infinite;
         }
         &:nth-child(2) {
-            top: 13%;
+            top: 16%;
             left: 11%;
             transform: scale(0.7);
             animation: flash 1.2s ease-in-out infinite;
         }
         &:nth-child(3) {
-            top: 45%;
+            top: 42%;
             left: 25%;
             animation: flash 1.7s ease-in-out infinite;
             transform: scale(0.9)
         }
         &:nth-child(4) {
-            top: 52%;
+            top: 46%;
             left: 70%;
             animation: flash 1.6s ease-in-out infinite;
             transform: scale(0.7)
         }
         &:nth-child(5) {
-            top: 30%;
+            top: 28%;
             left: 65%;
             animation: flash 1.55s ease-in-out infinite;
             transform: scale(0.7)
@@ -172,7 +172,7 @@ export default {
         }
         .popup-container {
             position: relative;
-            margin-top: 30%;
+            margin-top: 40%;
             width: 100%;
             height: 510px;
             background-image: url('../../common/images/global/prize-popup-bg.png');

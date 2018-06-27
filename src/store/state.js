@@ -1,15 +1,5 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-
-import * as actions from './actions'	
-import * as mutations from './mutation-type'
-
-
-Vue.use(Vuex)
-
 const SOTRE_USERINFO = JSON.parse(sessionStorage.getItem('ZDKJ_USERINFO'))
 
-  // 定义状态
 const  state = {
 	author: 'Chris-Wen',
 	titleGroup: {			//公共头部
@@ -30,13 +20,5 @@ const  state = {
 		},
 }
 
-//store
-const store =  new Vuex.Store({			
-	state,
-	mutations,
-	actions
-})
 
-
-//导出到 vue 
-export default store
+export default state

@@ -7,6 +7,8 @@ import Complete from '@/views/fiction/index/Complete'
 import Recommend from '@/views/fiction/Recommend'
 import Article from '@/views/fiction/Article'
 import FictionInfo from '@/views/fiction/FictionInfo'
+import NovelList from '@/views/fiction/NovelList'
+import Chapter from '@/views/fiction/Chapter'
 
 export const fictionRoutes = [
     {
@@ -46,5 +48,13 @@ export const fictionRoutes = [
     {
         path: '/fiction/info/:fictionId',
         component: FictionInfo
+    },
+    {
+        path: '/fiction/novel_list/:novelId',
+        component: NovelList
+    },
+    {
+        path: '/fiction/chapter/:chapterId',
+        component: Chapter
     },
 ]

@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
 	name: 'MFooter',
@@ -49,7 +49,7 @@ export default {
         
     },
     computed: {
-        ...mapState({ showBottomTab: state => state.bottomTab.showBottomTab })
+        ...mapGetters(['showBottomTab'])
     },
     watch: {
         '$route': function() {

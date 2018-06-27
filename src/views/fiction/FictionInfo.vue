@@ -24,13 +24,13 @@
         <div class="fiction-list">
             <h2>章节目录</h2>
             <ul>
-                <li>第1233章：谁知道是啥标题</li>
-                <li>第1章：爱谁谁</li>
-                <li>第2章：爱谁谁</li>
-                <li>第3章：爱谁谁</li>
-                <li>第4章：爱谁谁</li>
+                <router-link tag="li" :to="'/fiction/chapter/0'">第1233章：谁知道是啥标题</router-link>
+                <router-link tag="li" :to="'/fiction/chapter/0'">第1章：爱谁谁</router-link>
+                <router-link tag="li" :to="'/fiction/chapter/0'">第2章：爱谁谁</router-link>
+                <router-link tag="li" :to="'/fiction/chapter/0'">第3章：爱谁谁</router-link>
+                <router-link tag="li" :to="'/fiction/chapter/0'">第4章：爱谁谁</router-link>
             </ul>
-            <p class="more">更多 >></p>
+            <router-link tag="p" :to="'/fiction/novel_list/1'" class="more" >更多 >></router-link>
         </div>
         <div class="comment">
             <h2>读者评论</h2>

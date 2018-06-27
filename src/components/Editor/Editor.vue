@@ -2,8 +2,8 @@
     <div class="editor">
         <div @click="publish" class="nav">发布</div>
         <form>
-            <input v-if="editorType=='theme'" v-model="themeTitle" class="top"  type="text" placeholder="加个标题，限40字符">
-            <textarea class="textarea" v-model.lazy="textInput" style=" border: none;"></textarea>
+            <input v-if="editorType=='theme'" v-model="userInputParams.themeTitle" class="top"  type="text" placeholder="加个标题，限40字符">
+            <textarea class="textarea" v-model.lazy="userInputParams.textInput" style=" border: none;"></textarea>
         </form>
         <div class="extentions">
             <div class="btn-group">
@@ -12,52 +12,65 @@
             </div>
             <div>
                 <!-- emoji -->
-                <emoji v-if="showPart=='emoji' " @emojiEvent="emojiClick"></emoji>
+                <emoji v-show="showPart=='emoji' " @emojiEvent="emojiClick"></emoji>
                 <!-- upload-image -->
-                <ul class="upload-input" v-if="showPart == 'upload'" ref="uploadBody">
-                    <li v-for="(item, key) in previewImages" :key="key">
+                <ul class="upload-input" v-show="showPart == 'upload'" ref="uploadBody">
+                    <li v-for="(item, key) in userInputParams.previewImages" :key="key">
                         <img :src="item"  style="display:none"/>
                         <span class="self-icon-times-circle" @click="cancleTargetImage(key)"></span>
                     </li>
-                    <li @click="activateUpload" v-show="previewImages.length<6"> + </li>
+                    <li @click="activateUpload" v-show="userInputParams.previewImages.length<6"> + </li>
                 </ul>
-                <upload :previewImgArray="previewImages" :uploadFiles="holdFiles"></upload>
+                <upload :previewImgArray="userInputParams.previewImages" :uploadFiles="userInputParams.holdFiles"></upload>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import { mapMutations, mapActions } from 'vuex'
+import { mapMutations } from 'vuex'
 import { textareaFormat, textUnformat } from 'common/js/tools'
 import Emoji from 'base/Emoji/emoji'
 import Upload from 'base/Upload/Upload'
+import { MessageBox } from 'mint-ui'
 
 export default {
     components: { Emoji, Upload },
     data() {
         return {
             titleInfo: {
+                title: '',
                 showIcon: false
             },
             editorType: '',
-            themeTitle: '',
-            textInput: `https://blog.csdn.net/qq_32786873/article/details/75125737    
-            https://segmentfault.com/a/1190000010034177   
-            https://github.com/xiangpaopao/blog/issues/7 &#128512;
-            `,
-            showPart: 'upload',
-            previewImages: [],
-            holdFiles: [],
+            showPart: 'emoji',
+            savedEdit: false,
+            userInputParams: {
+                themeTitle: '',
+                textInput: '',
+                previewImages: [],
+                holdFiles: [],
+            },
+            userInputing: false,        //是否已编辑
         }
     },
     methods: {
-        ...mapActions([ 'handleTitle']),
+        ...mapMutations({handleTitle : 'SET_TITLE'}),
         initEditor() {
             let type = this.$route.params.type
-            this.editorType = 'theme'
+            let title = type ? '发布回复' : '发布主题'
+            this.editorType = type ? type : 'theme' 
+            
+            this.handleTitle({
+                title:  title, 
+                showIcon: this.titleInfo.showIcon
+            })
 
-            return type=='reply' ? '发布回复' : '发布主题'
+            let editPageInput = sessionStorage.getItem('editPageInput') && JSON.parse(sessionStorage.getItem('editPageInput'))
+            if (editPageInput) { 
+                this.userInputParams = editPageInput
+                this.userInputing = true
+            }
         },
         publish() {
             console.log('发表回复或文章')
@@ -70,23 +83,44 @@ export default {
         emojiClick(dom) {
             console.log(dom)
         },
-        activateUpload() {
+        activateUpload() {      //触发图片上传
             return document.getElementById('uploadFile').click()
         },
         cancleTargetImage(index) {
             this.previewImages.splice(index, 1)
             this.holdFiles.splice(index, 1)
+        },
+    },
+    beforeRouteLeave (to, from, next) {
+        if (this.userInputing) {
+            MessageBox.confirm('当前页面数据尚未提交，退出页面数据将丢失，是否退出？').then(action => {
+                if (action) {
+                    this.userInputParams = null
+                    sessionStorage.removeItem('editPageInput')
+                    next()
+                } else {
+                    next(false)
+                }
+            })
+        } else {
+            next()
+        }
+    },
+    mounted() {
+        this.initEditor()
+        
+        // 刷新页面自动判断保存用户编辑数据
+        window.onbeforeunload = () => {     
+            this.userInputing && sessionStorage.setItem('editPageInput', JSON.stringify(this.userInputParams))
         }
     },
     watch: {
-        textInput: function(val) {
-            window.localStorage.setItem('editorPageTextInput', escape(val))
+        userInputParams: {      //判断用户是否已编辑数据
+            handler: function(val) {  this.userInputing = true  },
+            deep: true
         },
-        themeTitle: function(val) {
-            window.localStorage.setItem('editorPageThemeTitle', escape(val))
-        },
-        previewImages(val) {
-            this.$nextTick(() => {
+        'userInputParams.previewImages'(val) {
+            this.$nextTick().then(() => {
                 // console.log(this.$refs.uploadBody.children)
                 let images = this.$refs.uploadBody.children
                 for(let i=0; i<images.length; i++) {
@@ -96,18 +130,8 @@ export default {
                     }
                 }
             })
-        },
-        
-    },
-    mounted() {
-        const title = this.initEditor()
-
-        // this.initEmojiEvent()
-        this.handleTitle({
-            title:  title, 
-            showIcon: this.titleInfo.showIcon
-        })
-    },
+        },  
+    }
 }
 </script>
 
