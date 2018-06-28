@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { mapMutations, mapActions } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 import DrawPopup from '../../components/DrawPopup/DrawPopup'
 import * as api from 'api/api'
 
@@ -85,12 +85,23 @@ export default {
 
         // })
     },
+    computed: {
+        ...mapGetters(['token'])
+    },
     methods: {
         ...mapActions([ 'handleTitle']),
         initDraw() {
 
         },
         startRotate() {
+            if (!this.token) {
+                let instance = Toast('您还未登录，请先登录');
+                setTimeout(() => {
+                    instance.close()
+                    this.$router.push('/login')
+                }, 2000);
+                return;
+            }
             if (this.isRotating) {  
                 return Toast({
                     message: '正在抽奖中',

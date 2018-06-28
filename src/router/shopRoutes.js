@@ -5,6 +5,7 @@ import ShopCart from '@/views/shop/Cart'
 import ShopStrategy from '@/views/shop/Strategy'
 import ManageAddress from '@/views/shop/ManageAddress'
 import NewAddress from '@/views/shop/NewAddress'
+import OrderConfirm from '@/views/shop/OrderConfirm'
 import OrderInfo from '@/views/shop/OrderInfo'
 
 
@@ -45,10 +46,15 @@ export const shopRoutes = [
         component: NewAddress
     },
     {
-        path: '/order_info',
-        name: 'order_info',
+        path: '/order_confirm',
+        name: 'order_confirm',
         meta: { requireAuth: true },
+        component: OrderConfirm
+    },
+    {
+        path: '/shop/order_info',
+        name: 'order_info',
+        meta: { requireAuth: false },
         component: OrderInfo
     },
-
 ]   

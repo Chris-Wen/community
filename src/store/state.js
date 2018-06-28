@@ -1,4 +1,3 @@
-const SOTRE_USERINFO = JSON.parse(sessionStorage.getItem('ZDKJ_USERINFO'))
 
 const  state = {
 	author: 'Chris-Wen',
@@ -9,15 +8,16 @@ const  state = {
 		link: ''			//跳转目标页
 	},
 	bottomTab: { showBottomTab: '' },
-	token: true,
-	userInfo: 
-		{
-			uname: SOTRE_USERINFO ? SOTRE_USERINFO.uname : '',		
-			score: SOTRE_USERINFO ? SOTRE_USERINFO.score : '',
-			uid: SOTRE_USERINFO ? SOTRE_USERINFO.uid : '',
-			attents:　SOTRE_USERINFO ? SOTRE_USERINFO.attents : '',				//关注数量
-			fans: SOTRE_USERINFO ? SOTRE_USERINFO.fans : '',					//粉丝
+	token: null,
+	userInfo: {
+			uname: '',		
+			score: '',
+			uid: '',
+			attents:　'',				//关注数量
+			fans: '',					//粉丝
 		},
+
+	
 }
 
 

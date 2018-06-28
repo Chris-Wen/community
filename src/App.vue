@@ -24,6 +24,7 @@ export default {
 
 <style>
 #app {
+  /* font-size: 14px;  no */
   position: relative;
   width: 100%;
   padding: 100px 0;

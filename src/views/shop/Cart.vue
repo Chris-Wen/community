@@ -7,7 +7,7 @@
                         <div class="item">
                             <div class="check-box">
                                 <div @click.stop="handlePlanPay($event, index)">
-                                    <i name="checkbox" class="check"></i>
+                                    <i name="checkbox" class="self-icon-circle-o"></i>
                                 </div>
                                 <router-link tag="div" to="">
                                     <img src="../../common/images/shop/hold/hotsale1.jpg" >
@@ -33,7 +33,7 @@
             </ul>
             <div class="bottom">
                 <div class="select-all" @click="selectAll">
-					<i :class="[isAllSelected ? 'self-icon-check-circle' : 'check']"></i>
+					<i :class="[isAllSelected ? 'self-icon-check-circle' : 'self-icon-circle-o']"></i>
 					&nbsp;全选 
 				</div>
 				<div class="cart-total">
@@ -121,10 +121,10 @@ export default {
         handlePlanPay(event, index) {
             let el = event.currentTarget.children[0]
             if ( this.planToPayData.indexOf(this.data[index]) == -1 ) {
-                toggleClass(el, 'check', 'self-icon-check-circle')
+                toggleClass(el, 'self-icon-circle-o', 'self-icon-check-circle')
                 this.planToPayData.push(this.data[index])
             } else {
-                toggleClass(el, 'self-icon-check-circle', 'check')
+                toggleClass(el, 'self-icon-check-circle', 'self-icon-circle-o')
                 removeArrayelement(this.planToPayData, this.data[index])
             }            
             //购物车数据全部选中
@@ -137,7 +137,7 @@ export default {
             this.planToPayData = this.isAllSelected ? this.data.concat() : []
             this.dataCalc()
             //样式修改
-            let newClass = this.isAllSelected ? 'self-icon-check-circle' : 'check'
+            let newClass = this.isAllSelected ? 'self-icon-check-circle' : 'self-icon-circle-o'
             document.getElementsByName("checkbox").forEach(element => {
                 element.className = newClass
             })
@@ -151,7 +151,7 @@ export default {
                     if (hasClass(checkbox[i], 'self-icon-check-circle')) {
                         checked.push(i)
                     }
-                    checkbox[i].className = 'check'
+                    checkbox[i].className = 'self-icon-circle-o'
                 }
             }
             let deleteItem = this.data.splice(index, 1)
@@ -211,13 +211,13 @@ export default {
 <style lang="scss" scoped>
 @import "../../common/css/index.scss";
 
-.check { 
-    border: 2px solid $border-color-d;  /*no*/
-    @include border-radius(50%);
-    display: inline-block;
-    width: 25px; height: 25px;
-    vertical-align: -5%;
-}
+// .check { 
+//     border: 2px solid $border-color-d;  /*no*/
+//     @include border-radius(50%);
+//     display: inline-block;
+//     width: 25px; height: 25px;
+//     vertical-align: -5%;
+// }
 .cart {
     height: 100%;
     position: relative;
@@ -258,7 +258,10 @@ export default {
                     padding-right: 50px;
                     @include flex-between; 
                     align-items: center;
-                    i { color: $text-color-orange; font-size: 1.5em; }
+                    i { 
+                        color: $text-color-ll; font-size: 1.5em;
+                        &.self-icon-check-circle { color: $text-color-orange } 
+                    }
                     div {
                         text-align: center;
                         height: 100%;
@@ -346,8 +349,9 @@ export default {
                 min-width: 130px;
                 i { 
                     vertical-align: -8%; 
-                    color: $text-color-orange; 
+                    color: $text-color-ll;
                     font-size: 1.5em; 
+                    &.self-icon-check-circle { color: $text-color-orange }
                 }
                 .self-icon-check { border:0; } 
             }

@@ -21,6 +21,8 @@ export default {
         state.userInfo.score = userInfo.score
         state.userInfo.uid = userInfo.uid
         
+        state.token = userInfo.token || 'mock_token'
+        sessionStorage.setItem('zd_access_token', JSON.stringify(state.token))
         sessionStorage.setItem('ZDKJ_USERINFO', JSON.stringify(userInfo))
     }
 }

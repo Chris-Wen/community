@@ -1,57 +1,47 @@
 <template>
-    <div class="order-confirm" v-if="data">
-        <!-- 支付弹窗 -->
-        <div v-if="paymentToastShow" class="mask payment-mask" @click="canclePayment">
-            <div class="payment-toast">
-                <div>收银台</div>
-                <div class="item-price">
-                    <i class="zd-icon-score"></i> <span>{{8888}}</span> <span>+ ￥{{888}}</span>
+    <div class="order-info">
+        <div class="status">
+            <div><em>订单状态:</em> {{'配送中'}}</div>
+            <div><em>物流单号:</em> {{12345648877845456}}</div>
+            <a href="#" class="needsClick">查看物流</a>
+        </div>
+        <div class="address-info">
+            <h1>收货信息：</h1>
+            <ul>
+                <li>
+                    <div>姓名：</div>
+                    <div>{{'卡卡西'}}</div>
+                </li>
+                <li>
+                    <div>手机：</div>
+                    <div>{{'18845456123'}}</div>
+                </li>
+                <li>
+                    <div>地址：</div>
+                    <div>{{'火影村马拉多纳西康路欧洲印象，复制忍者超查克拉无敌天才社区1888栋B座19楼1901号'}}</div>
+                </li>
+            </ul>
+        </div>
+        <div class="goods-info">
+            <div>
+                <img src="http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172503958.jpg" alt="图片">
+            </div>
+            <div>
+                <div>
+                    <h2>商品标题商品标题商品标题商品标题商品标题</h2>
+                    <div>
+                        <span class="zd-icon-score"></span> 积分 <em>8888</em>  
+                        <span class="price" v-if="true"> + ￥ <em>555</em></span>
+                    </div>
+                    <span class="amount">x 1</span>
                 </div>
-                <ul>
-                    <li>
-                        <img src="" /> <span>支付宝支付</span> <i class="self-icon-check-o"></i>
-                    </li>
-                    <li>
-                        <img src="" /> <span>微信支付</span> <i class="self-icon-check-o"></i>
-                    </li>
-                </ul>
-                <div class="payment color-grad-btn" @click="showPayment">立即付款</div>
+                <p>订单号: 124546456464654444444</p>
             </div>
         </div>
-        <!-- 订单信息 -->
-        <div class="main">
-            <div @click="selectAddress" class="top"> 选择收货地址 <i class="self-icon-angle-right"></i></div>
-            <div class="address-info">
-                <ul v-if="true">
-                    <li>
-                        <em>姓名：</em> <span>{{'王尼玛'}}</span>
-                    </li>
-                    <li>
-                        <em>手机：</em><span>{{'18723456411'}}</span>
-                    </li>
-                    <li>
-                        <em>地址：</em> <div>浙江省杭州市滨江区 滨盛路17777号萧宏大厦19楼浙江省杭州市滨江区 滨盛路17777号萧宏大厦19楼</div>
-                    </li>
-                </ul>
-                <div v-else>还没有地址呦！去新建</div>
-            </div>
-            <div class="goods-info">
-                <ul>
-                    <li v-for="(item, key) in data.goods" :key="key">
-                        <div><img :src="item.pic" /></div>
-                        <div>
-                            <h2>{{item.title}}</h2>
-                            <p><i class="zd-icon-score"></i>积分 <span> 8888</span> <span>+ ￥ {{5000}}</span> </p>
-                            <p class="refer">市场参考价：{{8888 +'元'}}</p>
-                            <span> x {{item.number}} </span>
-                        </div>
-                    </li>
-                </ul>
-                <p>运费： <span>{{'15元'}}</span></p>
-            </div>
+        <div class="payment-info">
+            <div>积分： <span>88888 积分</span></div>
+            <div>实付款(含运费)：<span>8888 元</span></div>
         </div>
-        <div class="btn-pay color-grad-btn">立即支付</div>
-        
     </div>
 </template>
 
@@ -62,11 +52,11 @@ export default {
     data() {
         return {
             titleInfo: {
-                title: '订单确认',
+                title: '订单详情',
                 showIcon: true,
                 icon: 'self-icon-headphones fa-lg',
                 link: '/',
-                showBottomTab: true
+                showBottomTab: false
             },
             data: {
                 goods: [
@@ -99,9 +89,6 @@ export default {
             showBottomTab: this.titleInfo.showBottomTab
         })
     },
-    watch: {
-
-    }
 }
 </script>
 
@@ -109,75 +96,100 @@ export default {
 <style lang="scss" scoped>
 @import "../../common/css/index.scss";
 
-.order-confirm {
-    width: 100%;
+.order-info {
     font-size: $font-size-small;  /*no*/
-    .main {
-        width: 100%;
+    position: relative;
+    .status {
+        @include color-background;
+        height: 100px;
+        padding: 20px 60px;
         @include box-sizing;
-        .top { height: 85px; line-height: 85px; i{ float: right; font-size: 1.3em } padding: 0 70px; }
-        .address-info {
-            @include color-background;
-            padding: 30px 70px;
-            line-height: 1.4em;
-            margin-bottom: 18px;
-            ul {
-                text-align: justify;
-                em { display:inline-block; width: 3em; min-width: 3em;  }
-                li {display: flex; }
-            }
+        position: relative;
+        >a {  
+            position: absolute;
+            top: 35%;
+            right: 60px;
+            border: 1px solid $text-color-orange; /*no*/ 
+            color: $text-color-orange;
+            padding: 0 0.5em;
+            line-height: 1.3;
+            font-size: $font-size-min;  /*no*/
+            @include border-radius(1em);
+            @include expand-click;
         }
-        .goods-info {
-            >p { 
-                padding: 0 70px; 
-                @include color-background; 
-                margin-top: 5px; 
-                line-height: 2em;
-                span { float: right; }
-            }
-            ul {
-                li {
-                    padding: 18px 70px;
-                    @include color-background;
-                    @include box-sizing;
-                    display: flex;
-                    // border-bottom: 1px solid $border-color-d;  /*no*/
-                    div {
-                        height: 100px;
-                        &:first-child {
-                            margin-right: 50px;
-                            img { width: 100px; @include border-radius(0.5em) }
-                        }
-                        &:last-child {
-                            position: relative;
-                            width: 100%;
-                            @include box-sizing;
-                            h2 { @include no-wrap; }
-                            p {
-                                i {  }
-                                span {
-                                    &:nth-of-type(1) {
-                                        color: $text-color-orange;
-                                    }
-                                }
-                            }
-                            .refer { color: $text-color-l; font-size: $font-size-min; /*no*/ }
-                            >span { 
-                                position: absolute;
-                                right: 0;
-                                margin: auto;
-                                top: 0;
-                                bottom: 0;
-                                line-height: 100px;
-                                color: red;
-                            }
-                        }
+        div {
+            color: $text-color-dark;
+            em { font-size: $font-size-normal; /*no*/ font-weight: 800; color: black}
+            &:nth-of-type(1) { margin-bottom: 5px; }
+        }
+    }
+    .address-info {
+        @include color-background;
+        padding: 20px 60px;
+        margin: 8px 0;
+        ul {
+            margin-top: 10px;    
+            li {
+                display: flex;
+                div {
+                    line-height: 1.3;
+                    &:nth-child(1) {
+                        width: 3em;
+                        min-width: 3em;
                     }
+                    text-align: justify;
                 }
             }
         }
     }
-    .color-grad-btn { height: 65px; margin-top: 15px; line-height: 65px; font-size: $font-size-normal; /*no*/ } 
+    .goods-info {
+        @include color-background;
+        padding: 20px 60px;
+        display: flex;
+        align-items: center;
+        >div {
+            &:first-child {
+                width: 150px;
+                img { width: 100px; height: 100px; @include border-radius(1em); }
+                min-width: 150px;
+            }
+            &:nth-child(2) {
+                >div {
+                    margin-bottom: 5px;
+                    border-bottom: 1px solid $border-color-d; /*no*/
+                    position: relative;
+                    div {
+                        margin: 10px 0;
+                        color: $text-color-orange;
+                        em { font-size: $font-size-large;  /*no*/ }
+                        .price { color: red; }
+                    }
+                    >span { position: absolute; right: 0; color: red; bottom: 20%; }
+                }
+                >p {
+                    color: $text-color-dark;
+                    font-size: $font-size-min;  /*no*/
+                    
+                    line-height: 2em;
+                }
+            }
+        }
+    }
+    .payment-info {
+        margin: 8px 0;
+        @include color-background;
+        height: 100px;
+        padding: 20px 60px;
+        @include box-sizing;
+        div {
+            color: $text-color-dark;
+            &:first-child { 
+                margin-bottom: 10px; 
+                span { color: $text-color-orange; }
+            }
+            span { float: right; color: red; }
+        }
+    }
 }
 </style>
 
