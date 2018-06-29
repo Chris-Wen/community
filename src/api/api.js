@@ -7,7 +7,7 @@ import router from '../router/index'
 // http request 拦截器
 axios.interceptors.request.use(
     config => {
-        console.log(config)
+        // console.log(config)
         if (store.state.token) {
             config.headers.Authorization = `token ${store.state.token}`
         }
@@ -21,7 +21,7 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
     response => {
-        console.log(response)
+        // console.log(response)
         return response
     },
     err => {

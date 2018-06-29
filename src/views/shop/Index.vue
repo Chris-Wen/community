@@ -17,7 +17,7 @@
                 <p> <span>我的积分</span> <i>{{this.$store.state.userInfo.score || '***'}}</i></p>  
             </div>
             <ul class="score-bar">
-                <router-link tag="li" to="/shop/strategy">  <div><span class="zd-shop-r3"></span></div>  <p>赚积分</p>    </router-link >
+                <router-link tag="li" to="/shop/strategy">  <i></i>  <p>赚积分</p>    </router-link >
                 <router-link tag="li" to="/">    <i></i>  <p>积分抽奖</p>  </router-link >
                 <router-link tag="li" to="order">    <i></i> <p>我的订单</p>  </router-link >
                 <router-link tag="li" to="/shop/address">  <i></i> <p>地址管理</p>  </router-link >
@@ -161,19 +161,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../common/css/zd-icon-sprite.css";
+// @import "../../common/css/zd-icon-sprite.css";
 @import "../../common/css/index.scss";
 
-[class*="zd-shop-"] {
-    /* width:25px;
-    height: 25px; */
-    background: url('../../common/images/shop/icons/img.png');
-    background-repeat: no-repeat;
-    vertical-align: top;
-    display: inline-block !important; 
-    /* margin: 0 5px; */
-    background-size: 923px 315px;
-  }
+// [class*="zd-shop-"] {
+//     /* width:25px;
+//     height: 25px; */
+//     background: url('../../common/images/shop/icons/img.png');
+//     background-repeat: no-repeat;
+//     vertical-align: top;
+//     display: inline-block !important; 
+//     /* margin: 0 5px; */
+//     background-size: 923px 315px;
+//   }
 
 .shop-index {
     width: 100%;

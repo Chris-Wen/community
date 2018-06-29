@@ -62,7 +62,11 @@ export default {
         initEmojiEvent() {
             this.$refs.emoji.addEventListener('click', e => {
                 let ev = e || window.event
-                this.$emit('emojiEvent', e.target)
+                let key = e.target.className
+                if (key && key.match(/zd-sprite-(\S*)/)) {
+                    key = ":" + key.match(/zd-sprite-(\S*)/)[1] + ":"
+                    this.$emit('emojiEvent', key)
+                }
             })
         }
     },

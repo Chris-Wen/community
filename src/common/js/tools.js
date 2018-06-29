@@ -52,3 +52,17 @@ export function transformDate(time) {       //时间戳转换时间    格式：
 }
 
 
+//字符数计算
+export function calcStrLength(str) {
+    const reg = /[\u4e00-\u9fa5]{1}/g,             //中文
+        otherReg = /\w{1}/g;                      //非中文
+
+    let length,
+        resultCn = str.match(reg),
+        resultEn = str.match(otherReg);
+
+    let cn = resultCn ?　resultCn.length*2　: 0
+    let nonCn = resultEn ? resultEn.length : 0
+
+    return cn + nonCn
+}

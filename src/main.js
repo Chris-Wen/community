@@ -17,10 +17,10 @@ Vue.config.productionTip = false
 
 import fastclick from 'fastclick'
 import 'lib-flexible'
+import './common/js/reset'
 
 Vue.use(Vuex)
 
-import './common/js/reset'
 
 import './common/css/self-icons.css'
 import './common/css/reset.css'

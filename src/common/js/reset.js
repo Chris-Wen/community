@@ -19,6 +19,8 @@ function initBodyClientSize() {
     }
 }
 
+
+// repeat() 函数 es5转换
 if (!String.prototype.repeat) {
     String.prototype.repeat = function(count) {
       'use strict';

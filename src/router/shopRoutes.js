@@ -1,4 +1,4 @@
-import ShopIndex from '@/views/shop/Index'
+// import ShopIndex from '@/views/shop/Index'
 import ShopList from '@/views/shop/List'
 import ShopDetails from '@/views/shop/Details'
 import ShopCart from '@/views/shop/Cart'
@@ -12,7 +12,7 @@ import OrderInfo from '@/views/shop/OrderInfo'
 export const shopRoutes = [
     {
         path: '/shop',
-        component:　ShopIndex
+        component: () => import('@/views/shop/Index')
     },
     {
         path: '/shop/list',

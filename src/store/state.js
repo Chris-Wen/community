@@ -8,7 +8,7 @@ const  state = {
 		link: ''			//跳转目标页
 	},
 	bottomTab: { showBottomTab: '' },
-	token: null,
+	token: true,
 	userInfo: {
 			uname: '',		
 			score: '',
