@@ -11,6 +11,7 @@ import { fictionRoutes } from './fictionRoutes.js'
 import { forumRoutes } from './forumRoutes.js'
 import { centerRoutes } from './centerRoutes.js'
 
+import Test from '@/views/common/Ztest'
 
 import store from '../store/index'
 
@@ -48,7 +49,11 @@ const routes = [
   ...shopRoutes,
   ...fictionRoutes,
   ...forumRoutes,
-  ...centerRoutes
+  ...centerRoutes,
+  {
+    path: '/test',
+    component: Test
+  }
 ]
 
 const router = new Router({

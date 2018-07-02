@@ -1,6 +1,6 @@
 <template>
     <div class="forum-index">
-        <div class="top-tab">
+        <div class="top-tab" id="forumTab">
             <p :class="{ active: showIndex=='index' }" > <router-link to="/forum">交流讨论</router-link> </p>
             <p :class="{ active: showIndex=='activity' }" ><router-link to="/forum/activity">社区活动</router-link></p>
             <p :class="{ active: showIndex=='news' }" ><router-link to="/forum/news">掌动爆料站</router-link> </p>

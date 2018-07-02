@@ -1,82 +1,115 @@
 <template>
-    <div class="topiclist">
-        <ul class="recommend">
-            <router-link tag="li" to="/forum/topic">
-                <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
-                <div>
-                    <span><i></i> 用户id</span>
-                    <span ><i class="self-icon-comment-o"></i> 999</span>
-                    <span ><i class="self-icon-clock"></i> 4-26</span>
-                </div>
-            </router-link>
-            <router-link tag="li" to="/forum/topic">
-                <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
-                <div>
-                    <span><i></i> 用户id</span>
-                    <span><i class="self-icon-comment-o"></i> 999</span>
-                    <span><i class="self-icon-clock"></i> 4-26</span>
-                </div>
-            </router-link>
-        </ul>
-        <p class="part"> 用户帖子 </p>
-        <ul class="article">
-            <router-link tag="li" to="/forum/topic">
-                <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur </p>
-                <div>
-                    <span><i></i> 用户id</span>
-                    <span ><i class="self-icon-comment-o"></i> 999</span>
-                    <span ><i class="self-icon-clock"></i> 4-26</span>
-                </div>
-            </router-link>
-            <router-link tag="li" to="/forum/topic">
-                <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
-                <div>
-                    <span><i></i> 用户id</span>
-                    <span ><i class="self-icon-comment-o"></i> 999</span>
-                    <span ><i class="self-icon-clock"></i> 4-26</span>
-                </div>
-            </router-link>
-            <router-link tag="li" to="/forum/topic">
-                <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
-                <div>
-                    <span><i></i> 用户id</span>
-                    <span ><i class="self-icon-comment-o"></i> 999</span>
-                    <span ><i class="self-icon-clock"></i> 4-26</span>
-                </div>
-            </router-link>
-            <router-link tag="li" to="/forum/topic">
-                <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
-                <div>
-                    <span><i></i> 用户id</span>
-                    <span ><i class="self-icon-comment-o"></i> 999</span>
-                    <span ><i class="self-icon-clock"></i> 4-26</span>
-                </div>
-            </router-link>
-            <router-link tag="li" to="/forum/topic">
-                <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
-                <div>
-                    <span><i></i> 用户id</span>
-                    <span ><i class="self-icon-comment-o"></i> 999</span>
-                    <span ><i class="self-icon-clock"></i> 4-26</span>
-                </div>
-            </router-link>
-            <router-link tag="li" to="/forum/topic">
-                <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
-                <div>
-                    <span><i></i> 用户id</span>
-                    <span ><i class="self-icon-comment-o"></i> 999</span>
-                    <span ><i class="self-icon-clock"></i> 4-26</span>
-                </div>
-            </router-link>
-        </ul>
+    <div class="topiclist" ref="topiclist">
+        <scroll :pullup="openPullUp" :pulldown="openPullDown" @pulldownFresh="refreshPage" @scrollToEnd="loadmore" :data="dataList">
+            <div class="scroll">
+                <ul class="recommend">
+                    <router-link tag="li" to="/forum/topic">
+                        <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
+                        <div>
+                            <span><i></i> 用户id</span>
+                            <span ><i class="self-icon-comment-o"></i> 999</span>
+                            <span ><i class="self-icon-clock"></i> 4-26</span>
+                        </div>
+                    </router-link>
+                    <router-link tag="li" to="/forum/topic">
+                        <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
+                        <div>
+                            <span><i></i> 用户id</span>
+                            <span><i class="self-icon-comment-o"></i> 999</span>
+                            <span><i class="self-icon-clock"></i> 4-26</span>
+                        </div>
+                    </router-link>
+                </ul>
+                <p class="part"> 用户帖子 </p>
+                <ul class="article">
+                    <router-link tag="li" to="/forum/topic">
+                        <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur </p>
+                        <div>
+                            <span><i></i> 用户id</span>
+                            <span ><i class="self-icon-comment-o"></i> 999</span>
+                            <span ><i class="self-icon-clock"></i> 4-26</span>
+                        </div>
+                    </router-link>
+                    <router-link tag="li" to="/forum/topic">
+                        <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
+                        <div>
+                            <span><i></i> 用户id</span>
+                            <span ><i class="self-icon-comment-o"></i> 999</span>
+                            <span ><i class="self-icon-clock"></i> 4-26</span>
+                        </div>
+                    </router-link>
+                    <router-link tag="li" to="/forum/topic">
+                        <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
+                        <div>
+                            <span><i></i> 用户id</span>
+                            <span ><i class="self-icon-comment-o"></i> 999</span>
+                            <span ><i class="self-icon-clock"></i> 4-26</span>
+                        </div>
+                    </router-link>
+                    <router-link tag="li" to="/forum/topic">
+                        <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
+                        <div>
+                            <span><i></i> 用户id</span>
+                            <span ><i class="self-icon-comment-o"></i> 999</span>
+                            <span ><i class="self-icon-clock"></i> 4-26</span>
+                        </div>
+                    </router-link>
+                    <router-link tag="li" to="/forum/topic">
+                        <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
+                        <div>
+                            <span><i></i> 用户id</span>
+                            <span ><i class="self-icon-comment-o"></i> 999</span>
+                            <span ><i class="self-icon-clock"></i> 4-26</span>
+                        </div>
+                    </router-link>
+                    <router-link tag="li" to="/forum/topic">
+                        <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
+                        <div>
+                            <span><i></i> 用户id</span>
+                            <span ><i class="self-icon-comment-o"></i> 999</span>
+                            <span ><i class="self-icon-clock"></i> 4-26</span>
+                        </div>
+                    </router-link>
+                </ul>
+            </div>
+        </scroll>
     </div>
 </template>
 
 <script>
+import Scroll from 'base/Scroll/Scroll'
+import { getScrollHeight } from 'common/js/dom'
+
 export default {
+    components: { Scroll },
     data() {
         return {
-            dataList: []
+            dataList: [1,2,3],
+            openPullUp: true,  //开启上拉拉加载更多
+            openPullDown: true,  //开启下拉刷新
+        }
+    },
+    mounted() {
+        this.$nextTick( () => {
+            let scrollHeight = getScrollHeight() - document.getElementById('forumTab').clientHeight
+            console.log()
+            document.getElementById('wrapper').style.height = scrollHeight + 1 + 'px' 
+        })
+
+        setTimeout(() => {
+            this.dataList = [1,23,1,4,5,2]
+        }, 1500);
+    },
+    methods: {
+        loadmore() {
+            console.log('加载更多')
+        },
+        refreshPage(scrollObj) {
+            setTimeout(() => {
+                // this.dataList = [1,2,3,4,5,6];
+                console.log('更新成功');
+                scrollObj.finishPullUp();
+            }, 1500);
         }
     }
 }
@@ -86,6 +119,7 @@ export default {
 @import "../../../common/css/index.scss";
 
 .topiclist {
+    width: 100%;
     ul li {
         height: 142px;
         width: 100%;

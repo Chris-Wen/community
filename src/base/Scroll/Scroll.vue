@@ -1,12 +1,13 @@
 <template>
-    <div ref="wrapper">
+    <div ref="wrapper" id="wrapper">
+        <!-- <div v-if="showPulldownMsg">下拉刷新</div> -->
         <slot></slot>
+        <div v-if="showPullupMsg">上拉加载更多</div>
     </div>    
 </template>
 
 <script>
 import BScroll from 'better-scroll'
-// import { setClientHeight } from 'common/js/dom'
 
 export default {
     props: {
@@ -27,8 +28,8 @@ export default {
             type: Boolean,
             default: false
         },
-        data: {
-            type: Array,
+        data: {             //用于判断数据更新后重置BScroll
+            // type: Array,
             default: null
         },
         pullup: {
@@ -36,9 +37,16 @@ export default {
             default: false
         },
         pulldown: {
-            type: Boolean,
+            type: Boolean,  
             default: false
         },
+    },
+    data() {
+        return {
+            scroll: null,
+            showPulldownMsg: false,
+            showPullupMsg: false
+        }
     },
     methods: {
         initScroll() {
@@ -46,29 +54,37 @@ export default {
             this.scroll = new BScroll(this.$refs.wrapper, {
                 probeType: this.probeType,
                 click: this.click,
-                pullUpLoad: {           // 配置上啦加载
-                    threshold: -80      //上啦80px的时候加载
+                pullUpLoad: {           // 配置上拉加载
+                    threshold: -60,      //上啦60px的时候加载
+                    stop: 30
                 },
                 mouseWheel: {           // pc端同样能滑动
                     speed: 20,
                     invert: false
                 },
-                useTransition: false,  // 防止iphone微信滑动卡顿
+                pullDownRefresh: {      //下拉刷新配置
+                    threshold: 60,
+                    stop: 30
+                },
+                // useTransition: false,  // 防止iphone微信滑动卡顿
             });
 
             // this.scroll.on('pullingUp', ()=>{           //上拉加载更多事件
             //     this.scrollFinish = false;
             //     // 防止一次上拉触发两次事件,不要在ajax的请求数据完成事件中调用下面的finish方法,否则有可能一次上拉触发两次上拉事件
-            //     this.scroll.finishPullUp();
+            //     // this.scroll.finishPullUp();
             //     // 加载数据
-            //     this.getIncomeDetail(this.nextPage);
-            // });
+            //     this.$emit('')
 
+            // });
             // 是否派发滚动到底部事件，用于上拉加载
             if (this.pullup) {
-                this.scroll.on('scrollEnd', () => {
-                        // 滚动到底部
+                this.scroll.on('scrollEnd', () => {     
+                    // console.log(this.scroll.y)   
+                    console.log(this.scroll.maxScrollY)          
                     if (this.scroll.y <= (this.scroll.maxScrollY + 50)) {
+                        // this.scrollFinish = false;
+                        this.showPullupMsg = true
                         this.$emit('scrollToEnd')
                     }
                 })
@@ -76,10 +92,11 @@ export default {
 
             // 是否派发顶部下拉事件，用于下拉刷新
             if (this.pulldown) {
-                this.scroll.on('touchend', (pos) => {
+                this.scroll.on('touchEnd', pos => {
                         // 下拉动作
                     if (pos.y > 50) {
-                        this.$emit('pulldown')
+                        this.showPulldownMsg = true
+                        this.$emit('pulldownFresh', this.scroll)
                     }
                 })
             }
@@ -115,14 +132,20 @@ export default {
     },
     watch: {
         data() {
-            setTimeout(() => {      //数据更新后，延时刷新BScroll
-                this.refresh()
-            }, 20);
+            //数据更新后，延时刷新BScroll
+            this.$nextTick().then(() => {
+                this.refresh();
+                this.showPulldownMsg = false
+                this.showPullupMsg = false
+            })
         }
     }
 }
 </script>
 
 <style lang="scss" scoped>
-
+.wrapper {
+    width: 100%;
+    overflow: hidden;
+}
 </style>

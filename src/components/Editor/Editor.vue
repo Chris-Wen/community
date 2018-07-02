@@ -137,9 +137,23 @@ export default {
             this.targetImage = this.userInputParams.previewImages[index]
             this.showScaleContainer = true
         },
-        handleScale() {
+        handleScale() {         //收起图片预览
             this.targetImage = ''
             this.showScaleContainer = false
+        },
+        transformEmoji(str) {
+            let Reg = /:[a-zA-Z_]+:/g
+            let data = EMOJI_RULE.emoji
+
+            return str.replace(Reg, key => {
+                if (data[key]) {
+                    // return `<img src="../../../static/${data[key]}" />`
+                    let url = require('../../../static/emoji/' + data[key])
+                    return `<img style="width: 1.3em; margin: 0 3px" src="${url}"  />`
+                } else {
+                    return key
+                }
+            })
         }
     },
     beforeRouteLeave (to, from, next) {
@@ -166,20 +180,7 @@ export default {
         }
 
         // this.test = textUnformat(this.test)
-        console.log(this.test)
-        let Reg = /:[a-zA-Z_]+:/g
-        let data = EMOJI_RULE.emoji
 
-        this.test.replace(Reg, key => {
-            if (data[key]) {
-                console.log(key)
-
-                return `<img src="../../../static/${data[key]}" />`
-            } else {
-                return key
-            }
-        })
-        this.test1 = this.test
     },
     watch: {
         userInputParams: {      //判断用户是否已编辑数据

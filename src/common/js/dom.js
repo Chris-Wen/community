@@ -36,8 +36,6 @@ export function toggleClass(el, oldClass, newClass) {
     el.className = nowClass.join(' ')
 }
 
-
-
 export function autoTextAreaHeight(dom) {         //textarea height auto set
     dom.style.height = dom.scrollTop + dom.scrollHeight + "px";  
 }
@@ -59,7 +57,20 @@ export function setClientHeight( isBottomShow = true ) {
         if ( isBottomShow ) {
             return h - 2*document.querySelector('.ct-top-header').offsetHeight
         } else {
-            return h - 2*document.querySelector('.ct-top-header').offsetHeight
+            return h - document.querySelector('.ct-top-header').offsetHeight
         }
     }
 }
+
+export function getScrollHeight( isBottomShow = true ) {
+    let h = document.documentElement.clientHeight || document.body.clientHeight 
+    
+    if ( document.querySelector('.ct-top-header') ) {
+        if ( isBottomShow ) {
+            return h - 2*document.querySelector('.ct-top-header').offsetHeight
+        } else {
+            return h - document.querySelector('.ct-top-header').offsetHeight
+        }
+    }
+}
+
