@@ -8,7 +8,7 @@ const  state = {
 		link: ''			//跳转目标页
 	},
 	bottomTab: { showBottomTab: '' },
-	token: true,
+	token: null,
 	userInfo: {
 			uname: '',		
 			score: '',
@@ -16,7 +16,6 @@ const  state = {
 			attents:　'',				//关注数量
 			fans: '',					//粉丝
 		},
-
 	
 }
 

@@ -80,10 +80,10 @@ export default {
         }
     },
     created() {
-        // api.get('/home/member/session_data').then( res => {
-        //     console.log(res)
+        api.get('/lottery/index').then( res => {
+            console.log(res)
 
-        // })
+        })
     },
     computed: {
         ...mapGetters(['token'])

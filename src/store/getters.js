@@ -8,8 +8,8 @@ const getters = {
     },
     
     userInfo (state) {
-        // return state.userInfo || JSON.parse(sessionStorage.getItem('ZDKJ_USERINFO'))
-        return true
+        return state.userInfo || JSON.parse(sessionStorage.getItem('ZDKJ_USERINFO'))
+        // return true
     },
 
     token (state) {

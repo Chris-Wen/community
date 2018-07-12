@@ -38,7 +38,6 @@
 import { mapMutations, mapActions } from 'vuex'
 import { initClientHeight } from 'common/js/dom'
 import { hex_md5 } from 'common/js/md5'
-window.hex_md5 = hex_md5
 
 export default {
     data() {
@@ -71,7 +70,7 @@ export default {
 					duration: 3000
                 })
                 return ;
-            } else if (this.isCodeShow && !this.login_code){
+            } else if (this.isCodeShow && !this.loginParams.login_code){
                 Toast({
 					message: '请输入验证码',
 					position: 'middle',
@@ -81,8 +80,9 @@ export default {
             }
             // console.log(this.loginParams)
 
-            // this.loginParams.login_pwd = hex_md5(this.loginParams.login_pwd)     
-            this.login(this.loginParams).then( res => {
+            let postParmas = { ...this.loginParams }
+            postParmas.login_pwd = hex_md5(this.loginParams.login_pwd)     
+            this.login(postParmas).then( res => {
                 console.log(res)
                 if (res.code==200) {
 					let instance = Toast('登录成功')

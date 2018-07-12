@@ -19,12 +19,12 @@
 				</div>  
 			</div>
 			<div class="buy-btn">
-				<a href="javascript:;" @click="addCart">加入购物车</a>
-				<a href="javascript:;" @click="buyNow">立即购买</a>
+				<a class="ripple" href="javascript:;" @click="addCart">加入购物车</a>
+				<a class="ripple" href="javascript:;" @click="buyNow">立即购买</a>
 			</div>
 		</div>
         <!-- 商品信息 -->
-        <section >
+        <section class="ripple">
 			<div class="info-title">
 				<span>商品详情</span> 
 				<p class="dotted">{{ '······'.repeat(30) }}</p>

@@ -12,16 +12,20 @@ export default {
     },
 
     [types.SET_USERINFO] (state, payload) {
+        let data = payload.data[0]          //用户常用信息
+        
         let userInfo = {
-            uname: payload.nickname || payload.username || payload.passport,
-            score: payload.score,
-            uid: payload.uid
+            uname: data.nickname || data.username || data.passport,
+            score: data.score,
+            uid: data.uid
         }
+        state.token = payload.token         //token存储
+
         state.userInfo.uname = userInfo.uname
         state.userInfo.score = userInfo.score
         state.userInfo.uid = userInfo.uid
         
-        state.token = userInfo.token || 'mock_token'
+        state.token = userInfo.token
         sessionStorage.setItem('zd_access_token', JSON.stringify(state.token))
         sessionStorage.setItem('ZDKJ_USERINFO', JSON.stringify(userInfo))
     }

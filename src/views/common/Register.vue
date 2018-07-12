@@ -49,7 +49,7 @@
 			<div class="compact">
 				<p ><input type="checkbox" v-model="inputParams.checkbox" checked/> 我已阅读并同意<a class="needsclick" href="http://www.baidu.com" >《掌动用户社区注册协议》</a> </p>
 			</div>	
-			<p><button :class="{'dark': !clickable}" @click="handleRegister" disabled>注 &nbsp;册</button></p>
+			<p><button :class="{'dark': !clickable}" @click="handleRegister">注 &nbsp;册</button></p>
 		</form>
   	</div>
 </template>
@@ -128,9 +128,11 @@ export default {
 			if (!this.clickable) return;
 			
 			this.clickable = false			//防短时重复注册
-			// this.inputParams.password = hex_md5(this.inputParams.password)
-			// this.inputParams.confirm = hex_md5(this.inputParams.confirm)
-            api.post('/login/user_register', this.inputParams).then( res => {	
+			let postParmas = { ...this.inputParams }		//es6 对象深拷贝
+
+			postParmas.password = hex_md5(this.inputParams.password)
+			postParmas.confirm = hex_md5(this.inputParams.confirm)
+            api.post('/login/user_register', postParmas).then( res => {	
 				this.clickable = true
 
 				console.log(res)

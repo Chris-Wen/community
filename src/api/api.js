@@ -5,11 +5,12 @@ import qs from 'qs'
 import store from '../store/index'
 import router from '../router/index'
 // http request 拦截器
+//token验证登录机制
 axios.interceptors.request.use(
     config => {
         // console.log(config)
         if (store.state.token) {
-            config.headers.Authorization = `token ${store.state.token}`
+            config.headers.Authorization = `zdkj${store.state.token}`
         }
         return config
     },
@@ -21,13 +22,11 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
     response => {
-        // console.log(response)
         return response
     },
     err => {
-        console.log(3)
         if (err.response) {
-            console.log(4)
+            console.log(err.response)
             switch (err.response.status) {
                 case 401:       //清除登录相关信息并跳转登录页面
                     store.commit(types.LOGOUT)
@@ -37,7 +36,6 @@ axios.interceptors.response.use(
                         path: 'login',
                         query: { redirect: router.currentRoute.path },
                     })
-
             }
         }
         return Promise.reject(err.response.data)
@@ -63,9 +61,12 @@ export function post(url, data) {
 
 
 export function get(url, data) {
+    Indicator.open()
+
     return new Promise( (resolve, reject) => {
         axios.get( url, data).then(  response => {
-            console.log(response)
+            Indicator.close()
+
             resolve(response.data)
         }).catch( err => reject(err) ) 
     })

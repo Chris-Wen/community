@@ -13,9 +13,8 @@ export default {
     login ({commit}, payload){				
         return new Promise((resolve, reject) => {    
             axios.post('/login/login', qs.stringify(payload) ).then( response => {
-                // console.log(response)
                 let res = response.data
-                if (res.code == 200) commit( types.SET_USERINFO, res.data[0]);
+                if (res.code == 200) commit( types.SET_USERINFO, res)
                 
                 resolve(res) 
             }).catch( err =>  reject(err) )
