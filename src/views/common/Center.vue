@@ -3,8 +3,8 @@
         <div class="top">
             <div><img src="../../common/images/global/user.jpg" ></div>
             <div>
-                <h2>{{this.$store.state.userInfo.uname || '未登录'}}</h2>
-                <p><span>关注：{{this.$store.state.userInfo.attent || 0}}</span> <span>粉丝：{{this.$store.state.userInfo.fans || 0}}</span></p>
+                <h2>{{userInfo.uname || '未登录'}}</h2>
+                <p><span>关注：{{userInfo.attent || 0}}</span> <span>粉丝：{{userInfo.fans || 0}}</span></p>
             </div>
         </div>
         <ul class="icon-group">
@@ -53,7 +53,7 @@
 
         <div class="personal">
             <div class="score">
-                <p>{{this.$store.state.userInfo.score || '******'}}</p>
+                <p>{{userInfo.score}}</p>
                 <p>我的积分</p>
             </div>
             <div class="transform-goods">
@@ -71,14 +71,15 @@
 </template>
 
 <script>
-import { mapMutations, mapActions } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 
 export default {
     data() {
         return {
             titleInfo: {
                 title: "个人中心",
-                showIcon: false
+                showIcon: false,
+                hideReturnIcon: true
             },
             data: []
         }
@@ -94,8 +95,12 @@ export default {
     mounted() {
         this.handleTitle({
             title:    this.titleInfo.title, 
+            hideReturnIcon: this.titleInfo.hideReturnIcon,
             showIcon: this.titleInfo.showIcon,
         });
+    },
+    computed: {
+        ...mapGetters(['userInfo']),
     }
 }
 </script>

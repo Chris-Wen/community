@@ -5,13 +5,13 @@ import Draw from '@/views/common/Draw'
 import Center from '@/views/common/Center'
 import Login from '@/views/common/Login'
 import Register from '@/views/common/Register'
+// import Test from '@/views/common/test'
 
 import { shopRoutes } from './shopRoutes.js'
 import { fictionRoutes } from './fictionRoutes.js'
 import { forumRoutes } from './forumRoutes.js'
 import { centerRoutes } from './centerRoutes.js'
 
-import Test from '@/views/common/Ztest'
 
 import store from '../store/index'
 
@@ -22,6 +22,10 @@ const routes = [
     path: '/',
     redirect: '/draw'
   },
+  // {
+  //   path: '/test',
+  //   component: Test,
+  // },
   {
     path: '/draw',
     component: Draw
@@ -50,15 +54,11 @@ const routes = [
   ...fictionRoutes,
   ...forumRoutes,
   ...centerRoutes,
-  {
-    path: '/test',
-    component: Test
-  }
 ]
 
 const router = new Router({
   routes,
-  // linkExactActiveClass: 'linkClickStyle',
+  linkActiveClass: 'linkClickStyle',
   scrollBehavior(to, from, savedPosition) {   
     if (savedPosition) {
       return savedPosition
@@ -78,7 +78,7 @@ const router = new Router({
 // 路由判断进行登录拦截
 router.beforeEach((to, from, next) => {
   if (to.meta.requireAuth) {          // 判断该路由是否需要登录权限
-      if (store.state.token) {        // 通过vuex state获取当前的token是否存在
+      if (store.getters.token) {        // 通过vuex getters获取当前的token是否存在
           next();
       } else {
           Toast({

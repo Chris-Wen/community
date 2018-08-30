@@ -2,7 +2,7 @@
     <div class="topic">
         <!-- 右上icon及下拉菜单 -->
         <div class="nav">
-            <router-link tag="i" :to="{ name: 'editor', params: { type: 'theme' } }" class="self-icon-comment-o fa-2x"></router-link>
+            <router-link tag="i" :to="{ name: 'editor', params: { type: 'theme', targetPostId: topic.id } }" class="self-icon-comment-o fa-2x"></router-link>
             <i @click="navDropDown = !navDropDown" class="self-icon-more_vert fa-2x"></i>
         </div>
         <div v-if="navDropDown" class="mask" @click.stop="navDropDown = false">
@@ -15,52 +15,65 @@
         </div>
         <!-- 页面内容、帖子主题 -->
         <mt-loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore">
-            <div class="theme">
-                <h1>{{topic.title}}</h1>
+            <div class="theme" v-if="topic">
+                <h1> {{topic.title}} </h1>
                 <div class="theme-top">
-                    <div> <router-link to="/center/friend/info"> <img :src="topic.avatar"></router-link> </div>
+                    <router-link to="/center/friend/info" tag="div"> 
+                        <img :src="topic.avatar || defaultAvatar" />
+                    </router-link>
                     <div>
                         <div class="more" @click=" showTopDrop = !showTopDrop ">
                             <i class="self-icon-more_horiz fa-lg"></i>
                         </div>
-                        <p>{{topic.name}}</p>
-                        <p>{{topic.time}}</p>
+                        <p>{{topic.nickname || topic.username}}</p>
+                        <p>{{topic.post_time | formatDate}}</p>
                     </div>
                 </div>
                 <div>
-                    <drop-down v-show="showTopDrop" 
-                        :userId="userId" :itemId="topic.topicId" 
-                        :itemUserId="topic.id" :isStored="topic.isStored" 
-                        @store="_store" @reply="_reply"
-                    />
-                    <div class="content" v-html="topic.content"></div>
+                    <ul class="forum-drop-down" v-show="showTopDrop">
+                        <li @click="_store(itemId, isStored)">{{ topic.isStored ? '已收藏' : '收藏'}}</li>
+                        <router-link tag="li" :to="{ name: 'editor', params: { type: 'theme', targetPostId: topic.id } }">回复</router-link>
+                        <li v-if="userInfo.uid==topic.uid">删除</li>
+                    </ul>
+                        
+                    <div class="article-content" >
+                        <div v-html="transfromEmoji(topic.content)"></div>
+                        <div v-for="(img, i) in topic.images" :key="i">
+                            <img class="image" v-lazy="host+img" />
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- 评论 -->
-            <div class="list">
+            <div class="list" v-if="commentList && commentList.length !==0">
                 <ul>
                     <li v-for="(item, index) in commentList" :key="index">
                         <div class="item">
-                            <div> <router-link to="/center/friend/info"> <img :src="item.avatar"></router-link> </div>
+                            <div> <router-link :to="'/center/friend/info/'+ item.uid"> <img :src="item.avatar || defaultAvatar"></router-link> </div>
                             <div>
                                 <div>
                                     <div class="more" @click="showMenu(index)">
                                         <i class="self-icon-more_horiz fa-lg"></i>
                                     </div>
-                                    <p>{{item.name}}</p>
-                                    <p>{{item.time}}</p>
+                                    <p>{{item.nickname || item.username}}</p>
+                                    <p>{{item.reply_time | formatDate}}</p>
                                 </div>
                                 <div class="content-box">
-                                    <drop-down v-show="indexShow == index" :userId="userId" :itemId="item.listId" :itemUserId="item.id" :isStored="item.isStored"></drop-down>
+                                    <drop-down v-show="indexShow == index" :userId="userInfo.uid" 
+                                        :itemId="item.rid" :itemUserId="item.uid" 
+                                        :uname="item.nickname || item.username" 
+                                        @reply="replyComment"
+                                        :isStored="item.isStored"/>
                                     <div class="content">
-                                        <div v-html="item.content"></div>
-                                        <ul class="reply" v-if="item.total>0">
-                                            <li v-for="(val, key) in item.reply" :key="key" @click.stop.capture="replyComment('commentId', 'replyUserid')">
-                                                <router-link to="/center/friend/info">{{val.name}}</router-link>:
+                                        <div class="article-content" v-html="transfromEmoji(item.content)"></div>
+                                        <!-- 二级评论 -->
+                                        <ul class="reply" v-if="item.reply_num>0">
+                                            <li v-for="(val, key) in item.second_reply_data" :key="key" @click.stop.capture="replyComment(val.id, val.uid, val.nickname || val.username)">
+                                                <router-link :to="'/center/friend/info'+val.uid">{{val.nickname || val.username}}</router-link>:
                                                 <span >回复<router-link to="/center/friend/info"> {{val.name}}</router-link>：</span>
                                                 {{val.content}}
                                             </li>
-                                            <router-link :to="{ name: 'forum_comment_list', params: { commentId: 123 } }" class="bottom" v-if="item.total>=3">还有{{ item.total-2 }}条评论 <span class="self-icon-caret-up"></span> </router-link>
+                                            <router-link :to="{ path: '/forum_comment_list', query: { commentId: item.rid } }" class="bottom" v-if="item.reply_num>5">还有{{ item.reply_num-2 }}条评论 <span class="self-icon-caret-up"></span> </router-link>
                                         </ul>
                                     </div>
                                 </div>
@@ -68,20 +81,20 @@
                         </div>
                     </li>
                 </ul>
-                <ol>
-                    <li></li>
-                </ol>
             </div>
+            <div style="margin: 20px 0; text-align:center" v-else>暂无评论</div>
         </mt-loadmore>
     </div>
 </template>
 
 <script>
-import { mapMutations, mapActions } from 'vuex'
+import { mapMutations, mapActions, mapGetters } from 'vuex'
 import  DropDown from 'components/ForumDropDown/ForumDropDown'
 import { Loadmore } from 'mint-ui'
+import * as api from 'api/api' 
+import { postTime, formateEmoji } from 'common/js/tools'
+import { HOST } from 'common/js/config'
 // import Scroll from 'base/Scroll/Scroll'
-
 
 export default {
     components: { DropDown, mtLoadmore : Loadmore },
@@ -92,93 +105,16 @@ export default {
                 showIcon: false
             },
             userId: 123,
-
             showEditor: true,
             editorType: '',
-
+            defaultAvatar: require('../../common/images/global/user.jpg'),
             navDropDown: false,
             showTopDrop: false,
             indexShow: -1,
             topic: {
-                topicId: 1,
-                id: 123,
-                isStored: true,
-                title:　'帖子主题帖子主题帖子主题帖子主题帖子主题帖子主题帖子主题',
-                name:　'我是谁',
-                time: '2017-11-12',
-                avatar: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
-                content:　`有人说三代火影很弱，没什么招牌忍术，不要跟我说尸鬼封禁，那是旋涡一族的术。<br> 三代作为影，他没有血继限界，可以说他是靠怒力上位的。<br> 他的查克拉量应该很大，招牌术就是猿魔、手里剑影分身、一次放五种遁术、火龙岩弹。<br> 可以说三代强在查克拉量和战斗经验上。毕竟看到初代和二代不慌的能有几个。<br> 三代牛的还是活得长，得有七八十岁吧。<br>`
-            },
-            commentList:  [
-                    {
-                        id: 123,
-                        listId: 1001,
-                        name:　'我是谁',
-                        time: '5-12 12:30',
-                        isStored: true,
-                        avatar: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
-                        content:　`有人说三代火影很弱，没什么招牌忍术，不要跟我说尸鬼封禁，那是旋涡一族的术。`,
-                        total: 13,  /**总回复数量*/
-                        reply: [
-                            {
-                                id: 1,
-                                name:　'我在哪',
-                                time: '5-12 12:30',
-                                avatar: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
-                                content:　`没什么招牌忍术`,
-                                to: ''
-                            },
-                            {
-                                id: 23,
-                                name:　'我是谁',
-                                time: '5-12 12:30',
-                                avatar: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
-                                content:　`怎么可能，会所有忍术不是盖的。猿魔也是啊`,
-                                to: { id: 1, name: '我在哪' }
-                            }
-                        ]
-                    },
-                    {
-                        id: 123,
-                        listId: 1002,
-                        isStored: false,
-                        name:　'我是谁',
-                        time: '5-12 16:40',
-                        avatar: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
-                        content:　`三代火影很弱，没什么招牌忍术`,
-                        total: 0,  /**总回复数量*/
-                    },
-                    {
-                        id: 123,
-                        listId: 1003,
-                        isStored: false,
-                        name:　'谁',
-                        time: '5-12 12:30',
-                        avatar: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
-                        content:　`有人说三代火影很弱，没什么招牌忍术，不要跟我说尸鬼封禁，那是旋涡一族的术。`,
-                        total: 2,  /**总回复数量*/
-                        reply: [
-                            {
-                                id: 1,
-                                name:　'我在哪',
-                                time: '5-12 12:30',
-                                avatar: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
-                                content:　`没什么招牌忍术`,
-                                to: ''
-                            },
-                            {
-                                id: 23,
-                                name:　'谁',
-                                time: '5-12 12:30',
-                                avatar: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
-                                content:　`怎么可能，会所有忍术不是盖的。猿魔也是啊`,
-                                to: { id: 1, name: '我在哪' }
-                            }
-                        ]
-                    },
-                ],
-            datalist: [],
-
+                // isStored: true,  是否已收藏
+                           },
+            commentList:  [],
             allLoaded: false
         }
     },
@@ -197,9 +133,8 @@ export default {
         _reply(itemId) {
             console.log('弹出填写页面，进行编辑')
         },
-        replyComment(commentId, replyUserid) {         //回复评论
-
-            this.$router.push({ path: '/editor', params: { type: 123 } })
+        replyComment(commentId, replyUserid, uname) {         //回复评论
+            this.$router.push({ name: 'editor', params: { type: 'reply', commentId, replyUserid, uname } })
         },
         //上、下拉刷新加载
         loadTop() {
@@ -211,24 +146,61 @@ export default {
 
             this.allLoaded = true;  // 若数据已全部获取完毕
             this.$refs.loadmore.onBottomLoaded();
-        }
+        },
+        getReply(page) {
+            let id = this.$route.params.id
+            if (id) {
+                api.get('/forum/getPostInfo', {params: {id, page}}).then( data => {
+                    if (data.code==200) {
+                        let list = data.data
+                        if (list.info) this.topic = list.info;
+                        this.commentList = list.reply;
+                    }
+                })
+            }
+        },
+        transfromEmoji(html) { return formateEmoji(html) },
+    },
+    created() {
+        this.getReply();
     },
     mounted() {
         this.handleTitle({
             title:    this.titleInfo.title, 
             showIcon: this.titleInfo.showIcon
         });
-
-        setTimeout(() => {   
-            this.datalist = [1,3,4]
-        }, 1000);
+    },
+    computed: {
+        ...mapGetters(['userInfo']),
+        host() {
+            return HOST
+        }
+    },
+    filters: {
+        formatDate(time) {
+            return postTime(time)
+        }
     }
 }
 </script>
 
 <style lang="scss" scoped>
 @import "../../common/css/index.scss";
-
+.forum-drop-down {
+    position: absolute;
+    top: -30px;
+    right: 0;
+    @include color-background;
+    width: 150px;
+    border: 1px solid $border-color-d;  /*no*/
+    li {
+        height: 54px;
+        line-height: 54px;
+        border-bottom: 1px solid $border-color-d;  /*no*/
+        text-align: center;
+        &:last-child { border: 0; }
+    }
+}
 .topic {
     font-size: $font-size-small;  /*no*/
     @include color-background;
@@ -290,9 +262,9 @@ export default {
         >div:last-child {
             position: relative;
             line-height: 1.4em;
-            .content {
-                img { margin-top: 15px auto; width: auto; max-width: 95% }
-            }
+            // .content {
+            //     img { margin-top: 15px auto; width: auto; max-width: 95% }
+            // }
         }
     }
     .list {

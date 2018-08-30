@@ -3,6 +3,7 @@ const  state = {
 	author: 'Chris-Wen',
 	titleGroup: {			//公共头部
 		title: '',
+		hideReturnIcon: false,	//返回按钮显隐
 		showIcon: false,	//是否显示头部右侧图标	
 		icon: '',  			//icon 
 		link: ''			//跳转目标页
@@ -10,13 +11,16 @@ const  state = {
 	bottomTab: { showBottomTab: '' },
 	token: null,
 	userInfo: {
-			uname: '',		
-			score: '',
-			uid: '',
-			attents:　'',				//关注数量
-			fans: '',					//粉丝
+			uid: null,
+			uname: null,		
+			score: null,
+			uid: null,
+			attents:　null,				//关注数量
+			fans: null,					//粉丝
+			lottery_tickets: null,
 		},
 	
+	editType: 1,			//设置发帖目标板块  1：社区交流活动板块，  2：社区活动板块
 }
 
 

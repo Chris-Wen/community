@@ -1,76 +1,71 @@
 <template>
     <div class="topiclist">
-        <ul class="recommend">
-            <li>
-                <h1> ★★★★★<i>【限时任务】</i>★★★★★</h1>
-                <p>显示任务内容显示任务内容显示任务内容</p>
-            </li>
-            <li>
-                <h1> ★★★★★<i>【日常任务】</i>★★★★★ </h1>
-                <p>日常任务内容日常任务内容日常任务内容日常任务内容日常任务内容日常任务内容</p>
-            </li>
-            <li>
-                <h1> ★★★★★<i>【特殊任务】</i>★★★★★ </h1>
-                <p>日常任务内容日常任务内容日常任务内容日常任务内容日常任务内容日常任务内容内容日常任务内容内容日常任务内容</p>
-            </li>
+        <ul class="recommend" v-if="datalist.activity && datalist.activity.length !==0">
+            <router-link tag="li" :to="'/forum/article/'+ item.acid" v-for="(item, index) in datalist.activity" :key="index">
+                <h1 v-if="item.type==1"> ★★★★★<i>【限时任务】</i>★★★★★</h1>
+                <h1 v-if="item.type==2"> ★★★★★<i>【日常任务】</i>★★★★★</h1>
+                <h1 v-if="item.type==3"> ★★★★★<i>【特殊任务】</i>★★★★★</h1>
+                <p>{{item.activity}}</p>
+            </router-link>
         </ul>
         <p class="part"> 用户帖子 </p>
-        <ul class="article">
-            <li>
-                <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
+        <ul class="article" v-if="datalist.posts && datalist.posts.length !==0">
+            <li v-for="(item, index) in datalist.posts" :key="index">
+                <p> {{item.title}}</p>
                 <div>
-                    <span><i></i> 用户id</span>
-                    <span ><i class="self-icon-comment-o"></i> 999</span>
-                    <span ><i class="self-icon-clock"></i> 4-26</span>
-                </div>
-            </li>
-            <li>
-                <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
-                <div>
-                    <span><i></i> 用户id</span>
-                    <span ><i class="self-icon-comment-o"></i> 999</span>
-                    <span ><i class="self-icon-clock"></i> 4-26</span>
-                </div>
-            </li>
-            <li>
-                <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
-                <div>
-                    <span><i></i> 用户id</span>
-                    <span ><i class="self-icon-comment-o"></i> 999</span>
-                    <span ><i class="self-icon-clock"></i> 4-26</span>
-                </div>
-            </li>
-            <li>
-                <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
-                <div>
-                    <span><i></i> 用户id</span>
-                    <span ><i class="self-icon-comment-o"></i> 999</span>
-                    <span ><i class="self-icon-clock"></i> 4-26</span>
-                </div>
-            </li>
-            <li>
-                <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
-                <div>
-                    <span><i></i> 用户id</span>
-                    <span ><i class="self-icon-comment-o"></i> 999</span>
-                    <span ><i class="self-icon-clock"></i> 4-26</span>
-                </div>
-            </li>
-            <li>
-                <p> <i>[分区]</i> Lorem ipsum dolor sit amet consectetur adipisicing elit.  aperiam fugiat. Nesciunt, deserunt.</p>
-                <div>
-                    <span><i></i> 用户id</span>
-                    <span ><i class="self-icon-comment-o"></i> 999</span>
-                    <span ><i class="self-icon-clock"></i> 4-26</span>
+                    <span><i></i> {{item.nickname || item.username}}</span>
+                    <span ><i class="self-icon-comment-o"></i> {{item.reply_num}}</span>
+                    <span ><i class="self-icon-clock"></i>{{item.post_time | formatDate}}</span>
                 </div>
             </li>
         </ul>
+        <div v-else style="text-align:center; margin: 10px">暂无帖子</div>
     </div>
 </template>
 
 <script>
+import * as api from 'api/api'
+import { formatDate, postTime } from 'common/js/tools'
+import { mapMutations} from 'vuex'
+
+
 export default {
-    
+    data() {
+        return {
+            datalist: {
+                activity: [],
+                posts: [],
+                hasCache: false
+            },
+        }
+    },
+    created() {
+        let data = sessionStorage.getItem('forum_activity_data')
+        this.dataList = data ? JSON.parse(data) : this.getPostList()
+        this.hasCache = data ? true: false
+    },
+    methods: {
+        ...mapMutations({setPostType : 'SET_EDITOR_TYPE'}),
+        getPostList (page=0) {  
+            api.get('/forum/activity', {page}).then( res => {
+                if (res.code==200) {
+                    this.datalist.activity = res.data['activity'] 
+                    this.datalist.posts = res.data['posts'] 
+
+                    !this.hasCache && sessionStorage.setItem('forum_activity_data', JSON.stringify(res.data))
+                }
+            })
+        }
+    },
+    mounted() {
+        //vuex  设置发帖模块 社区活动帖子
+        this.setPostType( 2 )
+    },
+    filters: {
+        formatDate(time) {
+            return postTime(time)
+        }
+    }
 }
 </script>
 

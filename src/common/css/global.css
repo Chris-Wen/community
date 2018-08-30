@@ -106,10 +106,10 @@ h2 { font-size: 14px;  /*no*/}
 
 
 /* v-html 引入代码片段 中图片处理 */
-.article-content { width: 100%; box-sizing: border-box; }
-.article-content img { max-width: 100%; margin: 1em 0; }
+.article-content { width: 100%; box-sizing: border-box; line-height: 1.5; }
+.article-content img { max-width: 100%; margin: 0.5em 0; }
 
-
+.article-content .tiny-emoji { width: 40px; margin: .05em .3em; }
 
 
 

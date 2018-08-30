@@ -21,7 +21,18 @@ export default {
         })
     },
     
-    
+    cookieLogin({commit}) {
+        return new Promise((resolve, reject) => {
+            axios.get('/login/cookie_login').then(  response => {
+                let res = response.data
+
+                if (res.code==200) commit( types.SET_USERINFO, res)
+
+                resolve(res)
+            }).catch( err => reject(err) )
+        })
+    },
+
 }
 
 

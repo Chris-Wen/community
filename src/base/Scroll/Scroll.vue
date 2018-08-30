@@ -81,7 +81,7 @@ export default {
             if (this.pullup) {
                 this.scroll.on('scrollEnd', () => {     
                     // console.log(this.scroll.y)   
-                    console.log(this.scroll.maxScrollY)          
+                    // console.log(this.scroll.maxScrollY)          
                     if (this.scroll.y <= (this.scroll.maxScrollY + 50)) {
                         // this.scrollFinish = false;
                         this.showPullupMsg = true

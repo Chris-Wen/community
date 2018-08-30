@@ -8,13 +8,16 @@ const getters = {
     },
     
     userInfo (state) {
-        return state.userInfo || JSON.parse(sessionStorage.getItem('ZDKJ_USERINFO'))
-        // return true
+        if (!state.userInfo.uid) {
+            return JSON.parse(sessionStorage.getItem('ZDKJ_USERINFO'))
+        }
+        return state.userInfo 
     },
 
     token (state) {
         return state.token || JSON.parse(sessionStorage.getItem('zd_access_token'))
     },
+
 }
 
 export default getters

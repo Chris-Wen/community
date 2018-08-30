@@ -2,7 +2,7 @@
 	<header class="ct-top-header">
 		{{ title }}
 		<div class="icon">
-			<a href="javascript:history.go(-1);" >
+			<a href="javascript:history.go(-1);" v-show="!hideReturnIcon">
 				<i class="self-icon-angle-left fa-2x"></i>
 			</a>
 			<router-link :to="link" v-if="showIcon" >
@@ -27,6 +27,7 @@ export default {
 	computed: {
 		...mapState({
 			title: 		state => state.titleGroup.title ,
+			hideReturnIcon: state => state.titleGroup.hideReturnIcon,
 			showIcon: 	state => state.titleGroup.showIcon ,
 			icon: 		state => state.titleGroup.icon ,
 			link: 		state => state.titleGroup.link

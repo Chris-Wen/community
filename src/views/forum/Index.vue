@@ -27,6 +27,7 @@ export default {
             titleInfo: {
                 title: '掌动论坛',
                 showIcon: true,
+                hideReturnIcon: true,
                 icon: 'self-icon-comment-o fa-lg',
                 link: '/editor',
             },
@@ -52,6 +53,7 @@ export default {
                 if (page) this.showIndex = page
                 this.handleTitle({
                     title:    this.titleInfo.title, 
+                    hideReturnIcon: this.titleInfo.hideReturnIcon,
                     showIcon: showEditIcon,
                     icon: this.titleInfo.icon,
                     link: this.titleInfo.link

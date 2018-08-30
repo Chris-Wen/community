@@ -33,12 +33,12 @@ export const forumRoutes = [
         component: () => import('@/views/forum/GameInfo')
     },
     {
-        path: '/forum/article',
+        path: '/forum/article/:acid',
         name: '论坛文章',
         component: () => import('@/views/forum/Article')
     },
     {
-        path: '/forum/topic',
+        path: '/forum/topic/:id',
         name: '帖子详情',
         component: () => import('@/views/forum/Topic')
     },

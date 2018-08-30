@@ -126,6 +126,7 @@ export default {
         return {
             titleInfo: {
                 title: '积分商城',
+                hideReturnIcon: true,
                 showIcon: false,
             },
             recommends: [
@@ -154,6 +155,7 @@ export default {
     mounted() {
         this.handleTitle({
             title:    this.titleInfo.title, 
+            hideReturnIcon: this.titleInfo.hideReturnIcon,
             showIcon: this.titleInfo.showIcon,
         });
     }

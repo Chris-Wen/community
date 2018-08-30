@@ -1,6 +1,6 @@
 <template>
     <div>
-        <input type="file" name="uploadFile"
+        <input type="file" name="file"
             accept="image/gif,image/jpeg,image/jpg,image/png" 
             style="display: none;" 
             @change="upload($event)" 
@@ -21,9 +21,7 @@ export default {
         },
         uploadFiles: {          //等待上传图片文件
             type:　Array,
-            default: function() {
-                return new Array()
-            }
+            default: () => new Array()
         },
         limitUploadFilesAmount: {     //限制上传图片数量
             type: Number,
@@ -31,7 +29,7 @@ export default {
         },
         limitFileSize: {               //限制图片大小
             type: Number,
-            default: 1024*1024*6
+            default: 1024*1024*3
         }
     },
     methods: {
@@ -41,6 +39,7 @@ export default {
             if (!files.length) return;  
             this.uploadFiles.push(files[0])
             if (this.uploadFiles.length > this.limitUploadFilesAmount) {
+                this.uploadFiles.pop()
                 return MessageBox('提示', `最多上传${this.limitUploadFilesAmount}张图片`, true)
             }
             this.imgPreview(files[0]);  
@@ -52,9 +51,8 @@ export default {
             // Exif.getData(file, function(){  
             //     Orientation = Exif.getTag(this, 'Orientation');  
             // });  
-            // 看支持不支持FileReader  
+            // 看支持不支持FileReader 
             if (!file || !window.FileReader) return;  
-            !/^image/.test(file.type) && console.log('目前只支持jpg.jpeg.png.gif结尾的文件上传')
             
             if (/^image/.test(file.type)) {  
                 // 创建一个reader  
@@ -67,20 +65,24 @@ export default {
                     let result = this.result;  
                     self.previewImgArray.push(result)
                     // console.log(self.previewImgArray)
-                    let img = new Image();  
-                    img.src = result;  
+                    // let img = new Image();  
+                    // img.src = result;  
+
                     //判断图片是否大于100K,是就直接上传，反之压缩图片  
-                    if (this.result.length <= (100 * 1024)) {  
-                        self.headerImage = this.result;  
-                        self.postImg();  
-                    }else {  
-                        img.onload = function () {  
-                            let data = self.compress(img,Orientation);  
-                            self.headerImage = data;  
-                            self.postImg();  
-                        }  
-                    }  
-                }   
+                    // if (this.result.length <= (100 * 1024)) {  
+                    //     self.headerImage = this.result;  
+                    //     self.postImg();  
+                    // }else {  
+                    //     img.onload = function () {  
+                    //         let data = self.compress(img,Orientation);  
+                    //         self.headerImage = data;  
+                    //         self.postImg();  
+                    //     }  
+                    // }  
+                }
+            } else {
+                this.uploadFiles.pop();
+                Toast('目前只支持jpg.jpeg.png.gif结尾的文件上传')
             }  
         },  
         postImg () {  
@@ -138,7 +140,7 @@ export default {
         compress(img,Orientation) {  
             let canvas = document.createElement("canvas");  
             let ctx = canvas.getContext('2d');  
-                //瓦片canvas  
+                //canvas  
             let tCanvas = document.createElement("canvas");  
             let tctx = tCanvas.getContext("2d");  
             let initSize = img.src.length;  

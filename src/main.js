@@ -8,6 +8,7 @@ import store from './store/index'
 import VueLazyload from 'vue-lazyload'
 
 
+
 Vue.use(VueLazyload, {
   preload: 1.3,
   loading: require('common/images/icons/LOGO(1).png')
@@ -32,8 +33,9 @@ window.Indicator = Indicator
 window.Toast = Toast
 
 
-
 Vue.prototype.preSrc = 'http://221.123.178.232/smallgamesdk/Public/Uploads/'
+Vue.prototype.HOST = process.env.NODE_ENV === 'development' ? 'http://shop-test.73776.com' : ''
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

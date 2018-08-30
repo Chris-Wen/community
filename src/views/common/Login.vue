@@ -83,7 +83,7 @@ export default {
             let postParmas = { ...this.loginParams }
             postParmas.login_pwd = hex_md5(this.loginParams.login_pwd)     
             this.login(postParmas).then( res => {
-                console.log(res)
+                // console.log(res)
                 if (res.code==200) {
 					let instance = Toast('登录成功')
 					setTimeout(() => {

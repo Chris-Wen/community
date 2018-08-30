@@ -36,7 +36,8 @@ export default {
         return {
             titleInfo: {
                 title: '掌动小说',
-                showIcon: false
+                showIcon: false,
+                hideReturnIcon: true,
             },
             tabIndex: 'original',
             recommends: [
@@ -80,6 +81,7 @@ export default {
     mounted() {
         this.handleTitle({
             title:    this.titleInfo.title, 
+            hideReturnIcon: this.titleInfo.hideReturnIcon,
             showIcon: this.titleInfo.showIcon,
         })
         this.initTabStatus()

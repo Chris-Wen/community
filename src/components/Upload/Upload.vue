@@ -46,16 +46,16 @@ export default {
         publish() {
             console.log('发表回复或文章')
 
-            localStorage.removeItem('editorPageThemeTitle').removeItem('editorPageTextInput')
+            // localStorage.removeItem('editorPageThemeTitle').removeItem('editorPageTextInput')
             // this.$router.go(-1)  
         }
     },
     watch: {
         textInput: function(val) {
-            window.localStorage.setItem('editorPageTextInput', escape(val))
+            // window.localStorage.setItem('editorPageTextInput', escape(val))
         },
         themeTitle: function(val) {
-            window.localStorage.setItem('editorPageThemeTitle', escape(val))
+            // window.localStorage.setItem('editorPageThemeTitle', escape(val))
         }
     },
     mounted() {

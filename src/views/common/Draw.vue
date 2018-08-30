@@ -50,6 +50,7 @@ export default {
         return {
             titleInfo: {
                 title:  '幸运大转盘',
+                hideReturnIcon: true,
                 showIcon:   false
             },
             lotteryTicket: 5,   //抽奖次数
@@ -80,52 +81,31 @@ export default {
         }
     },
     created() {
-        api.get('/lottery/index').then( res => {
-            console.log(res)
-
-        })
+        if (this.token) {
+           this.initLotteryTicket();
+        } else {
+            if (!sessionStorage.getItem('checkUserLogin')) {
+                this.cookieLogin().then( res => {
+                    if (res.code==403) {
+                        Toast('您还未登录')
+                    } else if (res.code==405) {
+                        Toast(res.msg)
+                    }
+                    sessionStorage.setItem('checkUserLogin', true) 
+                })
+            }
+        }
     },
     computed: {
-        ...mapGetters(['token'])
+        ...mapGetters(['token', 'userInfo'])
     },
     methods: {
-        ...mapActions([ 'handleTitle']),
-        initDraw() {
-
+        ...mapActions([ 'handleTitle', 'cookieLogin']),
+        initLotteryTicket() {       //获取抽奖次数
+           this.userInfo.lottery_tickets && (this.lotteryTicket = this.userInfo.lottery_tickets)
         },
-        startRotate() {
-            if (!this.token) {
-                let instance = Toast('您还未登录，请先登录');
-                setTimeout(() => {
-                    instance.close()
-                    this.$router.push('/login')
-                }, 2000);
-                return;
-            }
-            if (this.isRotating) {  
-                return Toast({
-                    message: '正在抽奖中',
-                    position: 'middle',
-                    duration: 1000,
-                    className: 'popup'
-                })  
-            }
-            if (this.lotteryTicket==0) { 
-                return Toast({
-                    message: '您今天抽奖次数用完了',
-                    position: 'middle',
-                    duration: 3000
-                }) 
-            }
-            // api.get('/lottery/getAwards').then( res => {
-            //     console.log(res)
-
-            // })
-
-            this.lotteryTicket --;
-            this.isRotating = true;
-            this.$refs.turnplate.style = "";
-            
+        mockDraw() {   
+            //模拟抽奖，用户未登录时使用
             let deg, index = Math.random(1);
             switch (true) {
                 case 0<= index < 1/6:   deg = 0; 
@@ -141,6 +121,39 @@ export default {
                 case 5/6<= index <= 1:  deg = 5;
                         break;
             }
+            return deg;
+        },
+        startRotate() {
+            if (this.isRotating) {  
+                return Toast({
+                    message: '正在抽奖中',
+                    position: 'middle',
+                    duration: 1000,
+                    className: 'popup'
+                })  
+            }
+            if (this.lotteryTicket==0) { 
+                return Toast({
+                    message: '您今天抽奖次数用完了',
+                    position: 'middle',
+                    duration: 3000
+                }) 
+            }
+            let deg;
+            
+            if (!this.token) {      //未登录，模拟抽奖结果
+                deg = this.mockDraw();
+            } else {                //后端获取抽奖结果
+                // api.get('/lottery/getAwards').then( res => {
+                //     console.log(res)
+    
+                // })
+                deg = this.mockDraw();
+            }
+            //抽奖状态改变
+            this.lotteryTicket --;
+            this.isRotating = true;
+            this.$refs.turnplate.style = "";
 
             let final_rotate_deg = 360/this.prizeList.length * deg;      //指针最终停止角度（奖品栏正中位置）
             //转动6个整圈后 停在最终位置
@@ -170,6 +183,7 @@ export default {
     mounted() {     
         this.handleTitle({
             title:    this.titleInfo.title, 
+            hideReturnIcon: this.titleInfo.hideReturnIcon,
             showIcon: this.titleInfo.showIcon, 
         });
     }

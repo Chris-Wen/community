@@ -6,12 +6,13 @@
         </div>
         <form>
             <input v-if="editorType=='theme'" v-model="userInputParams.themeTitle" class="top"  type="text" placeholder="加个标题，限40字符" name="title" maxlength="40">
+            <p class="top" style="height: 2em; line-height:2em" v-if="targetUname" >回复： <font color="blue">{{targetUname}}</font> </p>
             <textarea ref="textarea" id="textarea" class="textarea" v-model.lazy="userInputParams.textInput" style=" border: none;"/>
         </form>
         <div class="extentions">
             <div class="btn-group">
                 <span class="self-icon-smile-o" @click="showPart = 'emoji'"></span> 
-                <span class="self-icon-image" @click="uploadInput"></span>  
+                <span v-if="editorType=='theme'" class="self-icon-image" @click="uploadInput"></span>  
             </div>
             <div>
                 <!-- emoji -->
@@ -24,7 +25,7 @@
                     </li>
                     <li @click="activateUpload" v-show="userInputParams.previewImages.length<6"> + </li>
                 </ul>
-                <upload :previewImgArray="userInputParams.previewImages"></upload>
+                <upload v-if="editorType=='theme'" :previewImgArray="userInputParams.previewImages" :uploadFiles="uploadFiles"></upload>
             </div>
             <div v-html="test1"></div>
         </div>
@@ -32,13 +33,13 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 import { textareaFormat, textUnformat } from 'common/js/tools'
 import Emoji from 'base/Emoji/emoji'
 import Upload from 'base/Upload/Upload'
 import { MessageBox } from 'mint-ui'
 import * as api from 'api/api'
-import EMOJI_RULE from 'common/js/emoji-data'
+import { EMOJI_RULE } from 'common/js/emoji-data'
 
 export default {
     components: { Emoji, Upload },
@@ -56,60 +57,84 @@ export default {
                 textInput: '',
                 previewImages: [],
             },
+            uploadFiles: [],
             userInputing: false,            //用户是否已编辑
             showScaleContainer: false,      //全屏预览图片容器显隐
             targetImage: '',                 //全屏查看的图片
-            test: `你上课is发挥地方爱哭的爱看的就是付款没有my  love  :cold_sweat:where  you  are<br/><br/>我管你是贺岁<br/>沂水一看安康看<br/>啊看见对方假按揭:sunglasses:<br/>基尼你科技基尼看空间`,
-            test1: ''
+            targetUname: null,              //回复某人，nickname
+
         }
     },
     methods: {
         ...mapMutations({handleTitle : 'SET_TITLE'}),
         initEditor() {
-            let type = this.$route.params.type
+            //若接受到参数，则为发布回复 type, targetPostId
+            //type == theme  => 回复zhutie
+            //type == reply  => 回复评论
+            let type = this.$route.params.type;
             let title = type ? '发布回复' : '发布主题'
-            this.editorType = type ? type : 'theme' 
+            this.editorType = type ? 'reply' : 'theme' 
+            
+            console.log(this.$route.params)
+            this.targetUname = type == 'reply' ? this.$route.params.uname : null
             
             this.handleTitle({
                 title:  title, 
                 showIcon: this.titleInfo.showIcon
             })
-
-            let editPageInput = JSON.parse(sessionStorage.getItem('editPageInput'))
-            if (editPageInput) { 
-                this.userInputParams = editPageInput
-                this.userInputing = true
-            }
         },
         publish() {
             console.log('发表回复或文章')
             let textInput = this.userInputParams.textInput
-            if (!this.userInputParams.themeTitle) {
+            if (!this.userInputParams.themeTitle && this.editorType == 'theme') {
                 return Toast('请输入标题')
             } else if (!textInput){
                 return Toast('请输入主题内容')
             }
             this.userInputParams.textInput = textareaFormat(this.userInputParams.textInput)
+            let payload = new FormData(),url;
+            //页面参数
+            payload.append("content", this.userInputParams.textInput)
+
+            let reply_type = this.$route.params.type
+            if (this.editorType == 'reply' && reply_type) {        //发布回复主贴
+
+                payload.append('reply_type', reply_type)
+                if (reply_type=='reply') {      //二级回复
+                    payload.append('target_post_id', this.$route.params.commentId)
+                    payload.append('reply_target_uid', this.$route.params.replyUserid)
+                } else {
+                    payload.append('target_post_id', this.$route.params.targetPostId)
+                }
+                url = '/forum/reply'
+            } else {                                            //发布帖子  目标板块
+                payload.append('module', this.editType)
+                payload.append("title", this.userInputParams.themeTitle)
+                url = '/forum/post'
+            }
+
+            //批量上传图片
+            for(let i=0; i<this.uploadFiles.length; i++) {
+                payload.append("file"+i, this.uploadFiles[i])
+            }
 
             // submitUploadImage()    //图片，视频 上传提交
-            
-            api.post('/login/check_passport', this.userInputParams).then( response => {
-                console.log(response)
+            api.upload(url, payload).then( response => {
+                if (response.code == 403 || response.code==405) this.userInputing = false;
                 if (response.code == 200) {
-                    let popup = Toast({
-                        message: '发布成功',    
-                        position: 'top'
-                    })
+                    this.userInputing = false
+                    //清除帖子缓存
+                    sessionStorage.removeItem('forum_activity_data')
+                    sessionStorage.removeItem('forum_index_data')
 
+                    let popup = Toast(response.msg)
                     setTimeout(() => {
                         popup.close();
-                        // this.$router.go(-1)
-                    }, 2000)
+                        this.$router.go(-1)
+                    }, 1500)
                 } else if (response.code == 400) {
-                    Toast('服务器错误，请稍候重试')
-                } else if (response.code == 402) {
-                    Toast('图片过大，无法上传')
-                }
+                    Toast(response.msg)
+                } 
             })
         },
         uploadInput() {
@@ -128,12 +153,11 @@ export default {
         activateUpload() {      //触发图片上传
             return document.getElementById('uploadFile').click()
         },
-        cancleTargetImage(index) {      //取消上传图片（单张）
+        cancleTargetImage(index) {      //取消上传图片（单张） 
             this.userInputParams.previewImages.splice(index, 1)
-            this.userInputParams.holdFiles.splice(index, 1)
+            this.uploadFiles.splice(index, 1)
         },
         scaleImage(index) {     //全屏预览图片
-            console.log(index)
             this.targetImage = this.userInputParams.previewImages[index]
             this.showScaleContainer = true
         },
@@ -161,7 +185,7 @@ export default {
             MessageBox.confirm('当前页面数据尚未提交，退出页面数据将丢失，是否退出？').then(action => {
                 if (action) {
                     this.userInputParams = null
-                    sessionStorage.removeItem('editPageInput')
+                    window.onbeforeunload = null
                     next()
                 } else {
                     next(false)
@@ -175,12 +199,13 @@ export default {
         this.initEditor()
         
         // 刷新页面自动判断保存用户编辑数据
-        window.onbeforeunload = () => {     
-            this.userInputing && sessionStorage.setItem('editPageInput', JSON.stringify(this.userInputParams))
-        }
-
-        // this.test = textUnformat(this.test)
-
+        // window.onbeforeunload = () => {     
+        //     // this.userInputing && sessionStorage.setItem('editPageInput', JSON.stringify(this.userInputParams))
+        //     return Toast('刷新页面，已修改数据将丢失')
+        // }
+    },
+    computed: {
+        ...mapState({ editType: state => state.editType })
     },
     watch: {
         userInputParams: {      //判断用户是否已编辑数据
