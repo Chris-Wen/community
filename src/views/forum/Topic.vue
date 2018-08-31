@@ -19,7 +19,7 @@
                 <h1> {{topic.title}} </h1>
                 <div class="theme-top">
                     <router-link to="/center/friend/info" tag="div"> 
-                        <img :src="topic.avatar || defaultAvatar" />
+                        <img :src="topic.avatar || DefaultAvatar" />
                     </router-link>
                     <div>
                         <div class="more" @click=" showTopDrop = !showTopDrop ">
@@ -33,13 +33,13 @@
                     <ul class="forum-drop-down" v-show="showTopDrop">
                         <li @click="_store(itemId, isStored)">{{ topic.isStored ? '已收藏' : '收藏'}}</li>
                         <router-link tag="li" :to="{ name: 'editor', params: { type: 'theme', targetPostId: topic.id } }">回复</router-link>
-                        <li v-if="userInfo.uid==topic.uid">删除</li>
+                        <li v-if="userInfo && userInfo.uid==topic.uid">删除</li>
                     </ul>
                         
                     <div class="article-content" >
                         <div v-html="transfromEmoji(topic.content)"></div>
                         <div v-for="(img, i) in topic.images" :key="i">
-                            <img class="image" v-lazy="host+img" />
+                            <img class="image" v-lazy="HOST+img" />
                         </div>
                     </div>
                 </div>
@@ -49,7 +49,7 @@
                 <ul>
                     <li v-for="(item, index) in commentList" :key="index">
                         <div class="item">
-                            <div> <router-link :to="'/center/friend/info/'+ item.uid"> <img :src="item.avatar || defaultAvatar"></router-link> </div>
+                            <div> <router-link :to="'/center/friend/info/'+ item.uid"> <img :src="item.avatar || DefaultAvatar"></router-link> </div>
                             <div>
                                 <div>
                                     <div class="more" @click="showMenu(index)">
@@ -59,7 +59,7 @@
                                     <p>{{item.reply_time | formatDate}}</p>
                                 </div>
                                 <div class="content-box">
-                                    <drop-down v-show="indexShow == index" :userId="userInfo.uid" 
+                                    <drop-down v-show="indexShow == index" :userId="userInfo" 
                                         :itemId="item.rid" :itemUserId="item.uid" 
                                         :uname="item.nickname || item.username" 
                                         @reply="replyComment"
@@ -68,12 +68,12 @@
                                         <div class="article-content" v-html="transfromEmoji(item.content)"></div>
                                         <!-- 二级评论 -->
                                         <ul class="reply" v-if="item.reply_num>0">
-                                            <li v-for="(val, key) in item.second_reply_data" :key="key" @click.stop.capture="replyComment(val.id, val.uid, val.nickname || val.username)">
-                                                <router-link :to="'/center/friend/info'+val.uid">{{val.nickname || val.username}}</router-link>:
-                                                <span >回复<router-link to="/center/friend/info"> {{val.name}}</router-link>：</span>
-                                                {{val.content}}
+                                            <li v-for="(val, key) in item.second_reply_data" :key="key" @click.stop.capture="replyComment(item.rid, val.uid, val.nickname || val.username)">
+                                                <router-link :to="'/center/friend/info/'+val.uid"><font color="lightblue">{{val.nickname || val.username}}</font></router-link>:
+                                                <span >回复<a v-if="val.target_uid !== item.uid" href="javascript:;"> {{val.target_uname}}</a>：</span>
+                                                <span class="article-content" v-html="transfromEmoji(val.content)"></span> 
                                             </li>
-                                            <router-link :to="{ path: '/forum_comment_list', query: { commentId: item.rid } }" class="bottom" v-if="item.reply_num>5">还有{{ item.reply_num-2 }}条评论 <span class="self-icon-caret-up"></span> </router-link>
+                                            <router-link :to="{ path: '/forum/comment', query: { comment_id: item.rid, floor: index+1 } }" class="bottom" v-if="item.reply_num>5">还有{{ item.reply_num-5 }}条评论 <span class="self-icon-caret-up"></span> </router-link>
                                         </ul>
                                     </div>
                                 </div>
@@ -93,7 +93,7 @@ import  DropDown from 'components/ForumDropDown/ForumDropDown'
 import { Loadmore } from 'mint-ui'
 import * as api from 'api/api' 
 import { postTime, formateEmoji } from 'common/js/tools'
-import { HOST } from 'common/js/config'
+// import { HOST } from 'common/js/config'
 // import Scroll from 'base/Scroll/Scroll'
 
 export default {
@@ -107,7 +107,7 @@ export default {
             userId: 123,
             showEditor: true,
             editorType: '',
-            defaultAvatar: require('../../common/images/global/user.jpg'),
+            // DefaultAvatar: require('../../common/images/global/user.jpg'),
             navDropDown: false,
             showTopDrop: false,
             indexShow: -1,
@@ -172,9 +172,6 @@ export default {
     },
     computed: {
         ...mapGetters(['userInfo']),
-        host() {
-            return HOST
-        }
     },
     filters: {
         formatDate(time) {

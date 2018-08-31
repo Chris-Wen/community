@@ -1,42 +1,43 @@
 <template>
-    <div class="topic">
+    <div class="topic" v-if="commentList">
         <!-- 页面内容、帖子主题 -->
         <div class="comment">
             <div class="comment-top">
-                <div> <router-link to="/center/friend/info"> <img :src="commentList.avatar"></router-link> </div>
+                <div> <router-link to="/center/friend/info"> <img :src="commentList.avatar || DefaultAvatar"></router-link> </div>
                 <div>
-                    <p>{{commentList.name}}</p>
-                    <p>{{commentList.time}}</p>
+                    <p>{{commentList.nickname || commentList.username}}</p>
+                    <p>{{commentList.reply_time | formatDate}}</p>
                 </div>
             </div>
             <div>
-                <div class="content" v-html="commentList.content"></div>
+                <div class="article-content" v-html="formateEmoji(commentList.content)"></div>
             </div>
         </div>
         <!-- 评论 -->
         <div class="list">
-            <ul>
+            <div style="margin: .8em 0; font-size: 16px;">{{commentList.reply_num}}条回复</div>
+            <ul v-if="commentList">
                 <li v-for="(item, index) in commentList.reply" :key="index">
                     <div class="item">
-                        <div> <router-link to="/center/friend/info"> <img :src="item.avatar"></router-link> </div>
+                        <div> <router-link to="/center/friend/info"> <img :src="item.avatar || DefaultAvatar"></router-link> </div>
                         <div>
-                            <div>
-                                <p>{{item.name}}</p>
-                                <p>{{item.time}}</p>
+                            <div style="font-size:12px">
+                                <p>{{item.nickname || item.username}}</p>
+                                <p>{{item.reply_time | formatDate}}</p>
                             </div>
                             <div class="content-box">
                                 <div class="content">
-                                    <div @click="replyComment('commentId', 'replyUserid')" v-html="item.content"></div>
+                                    <div @click="replyComment('commentId', 'replyUserid')" class="article-content" >
+                                        <span style="font-size：15px;" v-if="commentList.uid !== item.target_uid">回复 {{item.target_uname}}：&nbsp;</span>
+                                        <div style="display:inline-block" v-html="formateEmoji(item.content)"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </li>
+                <li><div class="more">暂无更多回复</div></li>
             </ul>
-            <div class="more">暂无更多回复</div>
-            <ol>
-                <li></li>
-            </ol>
         </div>
     </div>
 </template>
@@ -45,6 +46,8 @@
 import { mapMutations, mapActions } from 'vuex'
 import  DropDown from 'components/ForumDropDown/ForumDropDown'
 import { Loadmore } from 'mint-ui'
+import { postTime, formateEmoji } from 'common/js/tools'
+import * as api from 'api/api'
 // import Scroll from 'base/Scroll/Scroll'
 
 
@@ -53,10 +56,8 @@ export default {
     data() {
         return {
             titleInfo: {
-                title: '2楼',
-                showIcon: true,
-                icon: 'self-icon-comment-o fa-lg',
-                link: '/editor'
+                title: '楼层',
+                showIcon: false,
             },
             userId: 123,
             showEditor: true,
@@ -64,35 +65,7 @@ export default {
             navDropDown: false,
             showTopDrop: false,
             indexShow: -1,
-            commentList: {
-                        id: 123,
-                        listId: 1001,
-                        name:　'我是谁',
-                        time: '5-12 12:30',
-                        isStored: true,
-                        avatar: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
-                        content:　`有人说三代火影很弱，没什么招牌忍术，不要跟我说尸鬼封禁，那是旋涡一族的术。`,
-                        total: 13,  /**总回复数量*/
-                        reply: [
-                            {
-                                id: 1,
-                                name:　'我在哪',
-                                time: '5-12 12:30',
-                                avatar: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
-                                content:　`没什么招牌忍术`,
-                                to: ''
-                            },
-                            {
-                                id: 23,
-                                name:　'我是谁',
-                                time: '5-12 12:30',
-                                avatar: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
-                                content:　`怎么可能，会所有忍术不是盖的。猿魔也是啊`,
-                                to: { id: 1, name: '我在哪' }
-                            }
-                        ]
-                    },
-            datalist: [],
+            commentList: [],
 
             allLoaded: false
         }
@@ -102,17 +75,41 @@ export default {
         replyComment(commentId, replyUserid) {         //回复评论
             this.$router.push({ path: '/editor', params: { type: 123 } })
         },
-
+        getTargetReplyInfo(page=0) {
+            if (!this.$route.query.comment_id) {
+                setTimeout(() => {
+                    this.$router.go(-1);
+                }, 2000);
+                return Toast('获取评论参数错误')
+            }
+            api.get('/forum/getTargetReplyInfo?target_reply_id='+this.$route.query.comment_id)
+                .then( response => {
+                    if (response.code==200) {
+                        this.commentList = response.data
+                    } else {
+                        Toast("获取内容失败，请稍候重试！")
+                        setTimeout(() => {
+                            this.$router.go(-1)
+                        }, 2000);
+                    }
+                })
+        },
+        formateEmoji(html) { return formateEmoji(html) },
+    },
+    created() {
+        this.getTargetReplyInfo()
     },
     mounted() {
         this.handleTitle({
-            title:    this.titleInfo.title, 
+            title:  `${this.$route.query.floor}楼` || this.titleInfo.title, 
             showIcon: this.titleInfo.showIcon,
-            icon: this.titleInfo.icon,
-            link: this.titleInfo.link,
-            showBottomTab: false
+            // showBottomTab: true
         });
-
+    },
+    filters: {
+        formatDate(time) {
+            return postTime(time)
+        }
     }
 }
 </script>

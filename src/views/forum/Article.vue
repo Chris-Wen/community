@@ -17,11 +17,11 @@
 
             <!-- 评论 -->
             <div class="comment">
-                <p class="comment-title">用户评论：</p>
+                <p class="comment-title">用户评论 <font color="#666" style="font-size: 12px;">({{datalist.reply_num}})</font>：</p>
                 <ul class="comment-list" v-if="comment">
                     <li v-for="(item, index) in comment" :key="index">
                         <div class="avatar">
-                            <img :src="item.avatar || defaultAvatar" >
+                            <img :src="item.avatar || DefaultAvatar" >
                         </div>
                         <div class="item">
                             <span >{{item.reply_time | formatDate}}</span>
@@ -52,12 +52,12 @@ export default {
     data() {
         return {
             titleInfo: {
-                title: '精品推荐',
+                title: '',
                 showIcon: false
             },
             datalist: null,
             comment: null,
-            defaultAvatar: require('../../common/images/global/user.jpg'),
+            // DefaultAvatar: require('../../common/images/global/user.jpg'),
             isThumbs: false,
             thumbsNum: '',
             commentInput: '',
@@ -74,6 +74,12 @@ export default {
             this.thumbsNum = data.likes
             this.comment = data.reply_num ?  data.reply_data : null
             this.likeStatus = data.like_status ? true : false
+            //更改页面title
+            this.titleInfo.title = data.module_title
+            this.handleTitle({
+                title:    this.titleInfo.title, 
+                showIcon: this.titleInfo.showIcon
+            });
         },
         handleThumbs() {
             this.isThumbs = !this.isThumbs
@@ -127,10 +133,7 @@ export default {
         }
     },
     mounted() {
-        this.handleTitle({
-            title:    this.titleInfo.title, 
-            showIcon: this.titleInfo.showIcon
-        });
+
     },
     computed: {
         ...mapGetters(['userInfo']),

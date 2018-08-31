@@ -39,7 +39,7 @@ export const forumRoutes = [
     },
     {
         path: '/forum/topic/:id',
-        name: '帖子详情',
+        name: 'postDetail',
         component: () => import('@/views/forum/Topic')
     },
     {

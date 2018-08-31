@@ -3,8 +3,20 @@
         <scroll :pullup="openPullUp" :pulldown="openPullDown" @pulldownFresh="refreshPage" @scrollToEnd="loadmore" :data="dataList">
             <div class="scroll">
                 <ul class="recommend" v-if="dataList['top_post']">
-                    <router-link tag="li" to="/forum/topic" v-for="(item, index) in dataList['top_post']" :key="index">
-                        <p> <i>[置顶]</i>{{item.title}}</p>
+                    <router-link tag="li" :to="'/forum/topic/'+ item.id" v-for="(item, index) in dataList['top_post']" :key="index">
+                        <div class="post-title">
+                            <p><i>[置顶]</i> {{item.title}} </p>
+                            <!-- <div class="flex-img post-img-show" v-if="item.upload_image_num>1">
+                                <div v-for="(image, i) in item.post_images" :key="i" >
+                                    <img :src="HOST + image" />
+                                </div>
+                            </div>
+                            <div v-if="item.upload_image_num == 1" class="post-img-show">
+                                <div class="post-index-image">
+                                    <img :src="HOST + item.post_images[0]" />
+                                </div>
+                            </div> -->
+                        </div>
                         <div>
                             <span><i></i> {{item.nickname || item.username}}</span>
                             <span ><i class="self-icon-comment-o"></i> {{item.reply_num}}</span>
@@ -13,8 +25,8 @@
                     </router-link>
                 </ul>
                 <p class="part"> 用户帖子 </p>
-                <ul class="article" v-if="dataList['post'] && dataList['post'].length !==0">
-                    <router-link tag="li" :to="'/forum/topic/'+ item.id" v-for="(item, index) in dataList['post']" :key="index" active-class="linkClickStyle">
+                <ul class="article" v-if="dataList.post">
+                    <router-link tag="li" :to="'/forum/topic/'+ item.id" v-for="(item, index) in dataList.post" :key="index" active-class="linkClickStyle">
                         <div class="post-title">
                             <p> {{item.title}} </p>
                             <div class="flex-img post-img-show" v-if="item.upload_image_num>1">
@@ -60,7 +72,11 @@ export default {
     },
     created() {
         let data = sessionStorage.getItem('forum_index_data')
-        this.dataList = data ? JSON.parse(data) : this.getPostList()
+        if (data) {
+            this.dataList = JSON.parse(data)
+        } else {
+            this.getPostList()
+        } 
     },
     mounted() {
         this.$nextTick( () => {
@@ -95,7 +111,13 @@ export default {
         formatDate(time) {
             return postTime(time)
         }
-    }
+    },
+    beforeRouteLeave (to, from, next) {
+        if (to.name !== 'postDetail') {
+            sessionStorage.removeItem('forum_index_data')
+        }
+        next()
+    },
 }
 </script>
 
@@ -131,18 +153,19 @@ export default {
                 }
             }
             .flex-img {
-                display: flex;
-                flex-flow: row nowrap;
-                justify-content: space-between;
-                align-items: center;
-                height: 250px;
+                width: 100%;
+                @include flex-between;
+                height: 150px;
                 overflow: hidden;
+                align-items: center;
                 &::after {
                     content: "";
-                    flex: auto;
+                    width: 30%;
+                    height: 150px;
+                    display: flex;
+                    justify-content: space-between;
                 }
                 div {
-                    line-height: 200px;
                     width: 32%;
                     img {
                         max-width: 100%;

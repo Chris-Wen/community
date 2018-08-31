@@ -35,6 +35,7 @@ window.Toast = Toast
 
 Vue.prototype.preSrc = 'http://221.123.178.232/smallgamesdk/Public/Uploads/'
 Vue.prototype.HOST = process.env.NODE_ENV === 'development' ? 'http://shop-test.73776.com' : ''
+Vue.prototype.DefaultAvatar = require('./common/images/global/user.jpg')
 
 /* eslint-disable no-new */
 new Vue({

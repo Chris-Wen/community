@@ -10,8 +10,10 @@
             
         </draw-popup>
         <div class="turnplate-box">
-            <div class="turnplate">
-                <div class="prize" ref="turnplate"></div>
+            <div style="position: relative">
+                <div :class="['turnplate', {'plate-rotate':!hasOperatePage}]">
+                    <div class="prize" ref="turnplate"></div>
+                </div>
                 <div class="btn-draw"  @click="startRotate"></div>
             </div>
         </div>
@@ -77,7 +79,8 @@ export default {
             toastSlot: {
                 pic: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
                 name: '物品名称'
-            }
+            },
+            hasOperatePage: false
         }
     },
     created() {
@@ -124,6 +127,7 @@ export default {
             return deg;
         },
         startRotate() {
+            this.hasOperatePage = true
             if (this.isRotating) {  
                 return Toast({
                     message: '正在抽奖中',
@@ -193,6 +197,13 @@ export default {
 <style lang="scss" scoped>
 @import "../../common/css/index.scss";
 
+@keyframes turn {
+    from{ transform: rotate(0deg) };
+    to{ transform: rotate(360deg) }
+}
+.plate-rotate {
+    animation: 50s linear infinite turn;
+}
 .draw {
     position: relative;
     padding-bottom: 45px;
@@ -213,16 +224,16 @@ export default {
             @include background-image(url('../../common/images/global/turnplate.png'));
             background-size: 436px 436px;
         }
-        .btn-draw {
-            width: 211px;
-            height: 211px;
-            position: absolute;
-            margin: auto;
-            left: 0;
-            right: 0;
-            top: 160px;
-            @include background-image(url('../../common/images/global/btn-draw.png'));
-        }
+    }
+    .btn-draw {
+        width: 211px;
+        height: 211px;
+        position: absolute;
+        margin: auto;
+        left: 0;
+        right: 0;
+        top: 160px;
+        @include background-image(url('../../common/images/global/btn-draw.png'));
     }
     .lottery-times {
         background: #ffd258;

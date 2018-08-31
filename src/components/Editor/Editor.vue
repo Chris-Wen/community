@@ -27,7 +27,6 @@
                 </ul>
                 <upload v-if="editorType=='theme'" :previewImgArray="userInputParams.previewImages" :uploadFiles="uploadFiles"></upload>
             </div>
-            <div v-html="test1"></div>
         </div>
     </div>
 </template>
@@ -75,7 +74,7 @@ export default {
             let title = type ? '发布回复' : '发布主题'
             this.editorType = type ? 'reply' : 'theme' 
             
-            console.log(this.$route.params)
+            // console.log(this.$route.params)
             this.targetUname = type == 'reply' ? this.$route.params.uname : null
             
             this.handleTitle({
@@ -103,6 +102,7 @@ export default {
                 if (reply_type=='reply') {      //二级回复
                     payload.append('target_post_id', this.$route.params.commentId)
                     payload.append('reply_target_uid', this.$route.params.replyUserid)
+                    payload.append('target_uname', this.$route.params.uname)
                 } else {
                     payload.append('target_post_id', this.$route.params.targetPostId)
                 }
@@ -296,7 +296,6 @@ export default {
         }
 
         .upload-input {
-            display: flex;
             width: 100%;
             @include box-sizing;
             padding: 20px;

@@ -1,10 +1,10 @@
 <template>
     <div class="center">
         <div class="top">
-            <div><img src="../../common/images/global/user.jpg" ></div>
+            <div><img :src="userInfo ? userInfo.avatar : DefaultAvatar" ></div>
             <div>
-                <h2>{{userInfo.uname || '未登录'}}</h2>
-                <p><span>关注：{{userInfo.attent || 0}}</span> <span>粉丝：{{userInfo.fans || 0}}</span></p>
+                <h2>{{userInfo ? userInfo.uname : '未登录'}}</h2>
+                <p><span>关注：{{userInfo ? userInfo.attent : 0}}</span> <span>粉丝：{{userInfo ? userInfo.fans : 0}}</span></p>
             </div>
         </div>
         <ul class="icon-group">
@@ -53,7 +53,7 @@
 
         <div class="personal">
             <div class="score">
-                <p>{{userInfo.score}}</p>
+                <p>{{userInfo ? userInfo.score : '*****'}}</p>
                 <p>我的积分</p>
             </div>
             <div class="transform-goods">
