@@ -1,81 +1,115 @@
 <template>
-    <div class="topiclist">
-        <ul class="recommend" v-if="datalist.activity && datalist.activity.length !==0">
-            <router-link tag="li" :to="'/forum/article/'+ item.acid" v-for="(item, index) in datalist.activity" :key="index">
-                <h1 v-if="item.type==1"> ★★★★★<i>【限时任务】</i>★★★★★</h1>
-                <h1 v-if="item.type==2"> ★★★★★<i>【日常任务】</i>★★★★★</h1>
-                <h1 v-if="item.type==3"> ★★★★★<i>【特殊任务】</i>★★★★★</h1>
-                <p>{{item.activity}}</p>
-            </router-link>
-        </ul>
-        <p class="part"> 用户帖子 </p>
-        <ul class="article" v-if="datalist.posts && datalist.posts.length !==0">
-            <router-link tag="li" :to="'/forum/topic/'+ item.id" v-for="(item, index) in datalist.posts" :key="index" active-class="linkClickStyle">
-                <div class="post-title">
-                    <p> {{item.title}} </p>
-                    <div class="flex-img post-img-show" v-if="item.upload_image_num>1">
-                        <div v-for="(image, i) in item.post_images" :key="i" >
-                            <img :src="HOST + image" />
+    <div class="topiclist" ref="topiclist">
+        <mt-loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" 
+        :bottomPullText="bottomPullText" :bottomDistance="50" :maxDistance="80" ref="loadmore"> 
+            <ul class="recommend" v-if="datalist.activity && datalist.activity.length !==0">
+                <router-link tag="li" :to="'/forum/article/'+ item.acid" v-for="(item, index) in datalist.activity" :key="index">
+                    <h1 v-if="item.type==1"> ★★★★★<i>【限时任务】</i>★★★★★</h1>
+                    <h1 v-if="item.type==2"> ★★★★★<i>【日常任务】</i>★★★★★</h1>
+                    <h1 v-if="item.type==3"> ★★★★★<i>【特殊任务】</i>★★★★★</h1>
+                    <p>{{item.activity}}</p>
+                </router-link>
+            </ul>
+            <p class="part"> 用户帖子 </p>
+            <ul class="article" v-if="datalist.posts && datalist.posts.length !==0">
+                <router-link tag="li" :to="'/forum/topic/'+ item.id" v-for="(item, index) in datalist.posts" :key="index" active-class="linkClickStyle">
+                    <div class="post-title">
+                        <p> {{item.title}} </p>
+                        <div class="flex-img post-img-show" v-if="item.upload_image_num>1">
+                            <div v-for="(image, i) in item.post_images" :key="i" >
+                                <img :src="HOST + image" />
+                            </div>
+                        </div>
+                        <div v-if="item.upload_image_num == 1" class="post-img-show">
+                            <div class="post-index-image">
+                                <img :src="HOST + item.post_images[0]" />
+                            </div>
                         </div>
                     </div>
-                    <div v-if="item.upload_image_num == 1" class="post-img-show">
-                        <div class="post-index-image">
-                            <img :src="HOST + item.post_images[0]" />
-                        </div>
+                    <div>
+                        <span><i></i> {{item.nickname || item.username}}</span>
+                        <span ><i class="self-icon-comment-o"></i> {{item.reply_num}}</span>
+                        <span ><i class="self-icon-clock"></i>{{item.post_time | formatDate}}</span>
                     </div>
-                </div>
-                <div>
-                    <span><i></i> {{item.nickname || item.username}}</span>
-                    <span ><i class="self-icon-comment-o"></i> {{item.reply_num}}</span>
-                    <span ><i class="self-icon-clock"></i>{{item.post_time | formatDate}}</span>
-                </div>
-            </router-link>
-        </ul>
-        <div v-else style="text-align:center; margin: 10px">暂无帖子</div>
+                </router-link>
+            </ul>
+            <div v-else style="text-align:center; margin: 10px">暂无帖子</div>
+        </mt-loadmore>
     </div>
 </template>
 
 <script>
-import * as api from 'api/api'
-import { formatDate, postTime } from 'common/js/tools'
 import { mapMutations} from 'vuex'
+import { Loadmore } from 'mint-ui'
+import { setClientHeight } from 'common/js/dom'
+import { formatDate, postTime } from 'common/js/tools'
+import * as api from 'api/api'
 
 
 export default {
+    components: { mtLoadmore : Loadmore },
     data() {
         return {
             datalist: {
-                activity: [],
-                posts: [],
+                // activity: [],
+                // posts: [],
             },
-            hasCache: false
+            page: 0,
+            allLoaded: false,
+            bottomPullText: '上拉加载更多',
+            maxPage: 0
         }
     },
     created() {
         let data = sessionStorage.getItem('forum_activity_data')
         if (data) {
-            let datalist = JSON.parse(data)
-            this.datalist.activity = datalist['activity'] 
-            this.datalist.posts = datalist['posts'] 
+            this.datalist = JSON.parse(data)
+            // this.datalist.activity = datalist['activity'] 
+            // this.datalist.posts = datalist['posts'] 
         } else {
             this.getPostList()
         } 
-        this.hasCache = data ? true: false
     },
     methods: {
         ...mapMutations({setPostType : 'SET_EDITOR_TYPE'}),
         getPostList (page=0) {  
-            api.get('/forum/activity', {page}).then( res => {
+            api.get('/forum/activity?page='+page).then( res => {
                 if (res.code==200) {
-                    this.datalist.activity = res.data['activity'] 
-                    this.datalist.posts = res.data['posts'] 
+                    if (this.page >0) {
+                        this.datalist.posts.push(res.data.posts)
 
-                    !this.hasCache && sessionStorage.setItem('forum_activity_data', JSON.stringify(res.data))
+                        this.$refs.loadmore.onBottomLoaded()
+                    } else {
+                        this.datalist = res.data
+                    }
+                    // this.datalist.activity = res.data['activity'] 
+                    // this.datalist.posts = res.data['posts'] 
+                    this.page ++
+                    sessionStorage.setItem('forum_activity_data', JSON.stringify(res.data))
                 }
             })
-        }
+        },
+        loadTop() {           //下拉刷新
+            this.getPostList();
+            this.$refs.loadmore.onTopLoaded();
+        },
+        loadBottom() {
+            // console.log('加载更多操作')
+            if (this.page >= this.maxPage) {
+                this.allLoaded = true;  // 若数据已全部获取完毕
+                this.bottomPullText = '没有更多了'
+                this.$refs.loadmore.onBottomLoaded();
+            } else {
+                this.bottomPullText = '上拉加载更多'
+                this.getPostList(this.page);
+            }
+        },
     },
     mounted() {
+        this.$nextTick( () => {
+            let scrollHeight = setClientHeight() - document.getElementById('forumTab').clientHeight
+            this.$refs.topiclist.style.height = scrollHeight + 'px' 
+        })
         //vuex  设置发帖模块 社区活动帖子
         this.setPostType( 2 )
     },
@@ -85,7 +119,6 @@ export default {
         }
     },
     beforeRouteLeave (to, from, next) {
-        console.log(222)
         if (to.name !== 'postDetail') {
             sessionStorage.removeItem('forum_activity_data')
         }

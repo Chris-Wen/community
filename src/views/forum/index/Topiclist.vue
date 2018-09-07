@@ -1,9 +1,10 @@
 <template>
     <div class="topiclist" ref="topiclist">
-        <scroll :pullup="openPullUp" :pulldown="openPullDown" @pulldownFresh="refreshPage" @scrollToEnd="loadmore" :data="dataList">
+        <mt-loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" 
+        :bottomPullText="bottomPullText" :topDistance="40" :bottomDistance="40" :maxDistance="55" ref="loadmore"> 
             <div class="scroll">
-                <ul class="recommend" v-if="dataList['top_post']">
-                    <router-link tag="li" :to="'/forum/topic/'+ item.id" v-for="(item, index) in dataList['top_post']" :key="index">
+                <ul class="recommend" v-if="datalist['top_post']">
+                    <router-link tag="li" :to="'/forum/topic/'+ item.id" v-for="(item, index) in datalist['top_post']" :key="index">
                         <div class="post-title">
                             <p><i>[置顶]</i> {{item.title}} </p>
                             <!-- <div class="flex-img post-img-show" v-if="item.upload_image_num>1">
@@ -25,8 +26,8 @@
                     </router-link>
                 </ul>
                 <p class="part"> 用户帖子 </p>
-                <ul class="article" v-if="dataList.post">
-                    <router-link tag="li" :to="'/forum/topic/'+ item.id" v-for="(item, index) in dataList.post" :key="index" active-class="linkClickStyle">
+                <ul class="article" v-if="datalist.post">
+                    <router-link tag="li" :to="'/forum/topic/'+ item.id" v-for="(item, index) in datalist.post" :key="index" active-class="linkClickStyle">
                         <div class="post-title">
                             <p> {{item.title}} </p>
                             <div class="flex-img post-img-show" v-if="item.upload_image_num>1">
@@ -49,39 +50,40 @@
                 </ul>
                 <div v-else style="text-align:center; margin: 10px">暂无帖子</div>
             </div>
-        </scroll>
+        </mt-loadmore>
     </div>
 </template>
 
 <script>
 import { mapMutations } from 'vuex'
-import Scroll from 'base/Scroll/Scroll'
-import { getScrollHeight } from 'common/js/dom'
+import { Loadmore } from 'mint-ui'
+import { setClientHeight } from 'common/js/dom'
 import { postTime } from 'common/js/tools'
 import *as api from 'api/api'
 
 export default {
-    components: { Scroll },
+    components: { mtLoadmore : Loadmore },
     data() {
         return {
-            dataList: {},
-            openPullUp: true,       //开启上拉拉加载更多
-            openPullDown: true,     //开启下拉刷新
+            datalist: {},
             page: 0,                //当前页
+            allLoaded: false,
+            bottomPullText: '上拉加载更多',
+            maxPage: 0
         }
     },
     created() {
         let data = sessionStorage.getItem('forum_index_data')
         if (data) {
-            this.dataList = JSON.parse(data)
+            this.datalist = JSON.parse(data)
         } else {
             this.getPostList()
         } 
     },
     mounted() {
         this.$nextTick( () => {
-            let scrollHeight = getScrollHeight() - document.getElementById('forumTab').clientHeight
-            document.getElementById('wrapper').style.height = scrollHeight + 1 + 'px' 
+            let scrollHeight = setClientHeight() - document.getElementById('forumTab').clientHeight
+            this.$refs.topiclist.style.height = scrollHeight + 'px' 
         })
 
         //vuex  设置发帖模块 交流讨论区帖子
@@ -89,20 +91,34 @@ export default {
     },
     methods: {
         ...mapMutations({setPostType : 'SET_EDITOR_TYPE'}),
-        loadmore() {
-            // console.log('加载更多')
+        loadTop() {           //下拉刷新
+            this.getPostList();
+            this.$refs.loadmore.onTopLoaded();
         },
-        refreshPage(scrollObj) {
-            setTimeout(() => {
-                console.log('更新成功');
-                scrollObj.finishPullUp();
-            }, 1500);
+        loadBottom() {
+            console.log('加载更多操作')
+            if (this.page >= this.maxPage) {
+                // this.allLoaded = true;  // 若数据已全部获取完毕
+                this.bottomPullText = '没有更多了'
+                this.$refs.loadmore.onBottomLoaded();
+            } else {
+                this.bottomPullText = '上拉加载更多'
+                this.getPostList(this.page);
+            }
         },
-        getPostList(page) {
+        getPostList(page=0) {
             api.get('/forum/index', { params:{page} }).then( res => {
                 if (res.code==200) {
-                    this.dataList = res.data;
-                    sessionStorage.setItem('forum_index_data', JSON.stringify(res.data))
+                    if (this.page>0) {          //分页加载操作
+                        this.datalist.post.push(res.data.post)
+
+                        this.$refs.loadmore.onBottomLoaded();
+                        this.page ++
+                    } else {                    //初始化获取数据操作
+                        this.datalist = res.data;
+                        this.maxPage = res.totalPage
+                    }
+                    sessionStorage.setItem('forum_index_data', JSON.stringify(this.datalist))
                 }
             })
         }
@@ -126,6 +142,7 @@ export default {
 
 .topiclist {
     width: 100%;
+    overflow: auto;
     ul li {
         min-height: 142px;
         height: auto;

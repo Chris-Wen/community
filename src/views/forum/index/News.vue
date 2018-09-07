@@ -1,71 +1,82 @@
 <template>
-    <!-- <scroll :data='datalist'> -->
     <div class="news">
-        <div class="top-news">
-            <p class="mark"><i>游民资讯</i></p>
-            <p class="dotted">{{`......`.repeat(30)}}</p>
-            <ul>
-                <router-link tag="li" to="/forum/article">
-                    <div class="info">
-                        <h2 class="lines-nowrap">{{"游民资讯游民资讯游民资讯游民资讯游民资讯游民资讯游民资讯"}}</h2>
-                        <div>
-                            <p class="lines-nowrap">{{"内容简介内容简介内容简介内容简介内容简介内容简介内容简介"}}</p>
-                            <p>{{'2018-05-01'}}   <span> <i class="self-icon-eye"></i> {{299999 | exchangeNumber }}</span> </p>
+        <div v-if="datalist">
+            <div class="top-news" v-if="datalist.spec_gamenews">
+                <p class="mark"><i>游民资讯</i></p>
+                <p class="dotted">{{`......`.repeat(30)}}</p>
+                <ul>
+                    <router-link tag="li" v-for="(spec, index) in datalist.spec_gamenews" :key="index" :to="'/forum/article/'+spec.acid">
+                        <div class="info">
+                            <h2 class="lines-nowrap">{{spec.activity}}</h2>
+                            <div>
+                                <p class="lines-nowrap">{{spec.intro}}</p>
+                                <p>{{spec.creattime}}   <span> <i class="self-icon-eye"></i> {{spec.views | exchangeNumber }}</span> </p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="img"><img src="../../../common/images/fiction/BANNER.jpg" alt=""></div>
-                </router-link>
-                <router-link tag="li" to="/forum/article">
-                    <div class="info">
-                        <h2>{{"游民资讯游民资讯"}}</h2>
-                        <div>
-                            <p class="lines-nowrap">{{"内容简介内容简"}}</p>
-                            <p>{{'2018-05-01'}}   <span> <i class="self-icon-eye"></i> {{99999 | exchangeNumber }}</span> </p>
+                        <div class="img" v-if="spec.cover"><img :src="HOST + spec.cover" /></div>
+                    </router-link>
+                    <!-- <router-link tag="li" to="/forum/article">
+                        <div class="info">
+                            <h2>{{"游民资讯游民资讯"}}</h2>
+                            <div>
+                                <p class="lines-nowrap">{{"内容简介内容简"}}</p>
+                                <p>{{'2018-05-01'}}   <span> <i class="self-icon-eye"></i> {{99999 | exchangeNumber }}</span> </p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="img"><img src="../../../common/images/fiction/BANNER.jpg" alt=""></div>
-                </router-link>
-            </ul>
+                        <div class="img"><img src="../../../common/images/fiction/BANNER.jpg" alt=""></div>
+                    </router-link> -->
+                </ul>
+            </div>
+            <div class="game-news" v-if="datalist.normal_gamenews">
+                <p class="mark"><i>泛游戏</i></p>
+                <p class="dotted">{{`......`.repeat(30)}}</p>
+                <ul>
+                    <router-link tag="li" v-for="(item, index) in datalist.normal_gamenews" :key="index" :to="'/forum/article/'+item.acid">
+                        <div class="info">
+                            <h2 class="lines-nowrap">{{item.activity}}</h2>
+                            <div>
+                                <p class="lines-nowrap">{{item.intro}}</p>
+                                <p>{{item.creattime}}   <span> <i class="self-icon-eye"></i> {{item.views | exchangeNumber }}</span> </p>
+                            </div>
+                        </div>
+                        <div class="img" v-if="item.cover"><img :src="HOST + item.cover" /></div>
+                    </router-link>
+                    <!-- <li>
+                        <div class="info">
+                            <h2>{{"游民资讯游民资讯"}}</h2>
+                            <div>
+                                <p>{{"内容简介内容简介内容简介内容简"}}</p>
+                                <p>{{'2018-05-01'}}   <span> <i class="self-icon-eye"></i> {{99999 | exchangeNumber }}</span> </p>
+                            </div>
+                        </div>
+                        <div class="img"><img src="../../../common/images/fiction/BANNER.jpg" alt=""></div>
+                    </li> -->         
+                </ul>
+            </div>
         </div>
-        <div class="game-news">
-            <p class="mark"><i>泛游戏</i></p>
-            <p class="dotted">{{`......`.repeat(30)}}</p>
-            <ul>
-                <li>
-                    <div class="info">
-                        <h2 class="lines-nowrap">{{"游民资讯游民资讯游民资讯游民资讯游民资讯游民资讯游民资讯"}}</h2>
-                        <div>
-                            <p class="lines-nowrap">{{"内容简介内容简介内容简介内容简介内容简介内容简介内容简介"}}</p>
-                            <p>{{'2018-05-01'}}   <span> <i class="self-icon-eye"></i> {{299999 | exchangeNumber }}</span> </p>
-                        </div>
-                    </div>
-                    <div class="img"><img src="../../../common/images/fiction/BANNER.jpg" alt=""></div>
-                </li>
-                <li>
-                    <div class="info">
-                        <h2>{{"游民资讯游民资讯"}}</h2>
-                        <div>
-                            <p>{{"内容简介内容简介内容简介内容简"}}</p>
-                            <p>{{'2018-05-01'}}   <span> <i class="self-icon-eye"></i> {{99999 | exchangeNumber }}</span> </p>
-                        </div>
-                    </div>
-                    <div class="img"><img src="../../../common/images/fiction/BANNER.jpg" alt=""></div>
-                </li>
-            </ul>
-        </div>
+        <div v-else style="margin-top: 1em; text-align:center">暂无资讯内容</div>
     </div>    
-    <!-- </scroll> -->
 </template>
 
 <script>
-import Scroll from 'base/Scroll/Scroll'
+import * as api from 'api/api'
 
 export default {
-    components: { Scroll },
     data() {
-        return{
-            datalist: []
-         }
+        return {
+            datalist: null
+        }
+    },
+    methods: {
+        
+        
+    },
+    created() {
+        api.get("/forum/pubStand").then(res => {
+            if (res.code==200) {
+                this.datalist = res.data
+            }
+        })
     },
     filters: {
         exchangeNumber: function(value) {
@@ -73,10 +84,6 @@ export default {
             return number
         }
     },
-    methods: {
-        setDotsStyle() { return '......'.repeat(30) }
-
-    }
 }
 </script>
 
@@ -141,8 +148,12 @@ export default {
                     }
                 }
             }
-            .img { img { width: 200px; height: 150px } }
+            .img { 
+                width: 200px; height: 150px; overflow: hidden;
+                img { width: 100% } 
+            }
             &:last-child { border: 0; }
+            &:first-child { border-bottom: 1px solid $text-color-orange;  /*no*/ }
         }
     }
 }

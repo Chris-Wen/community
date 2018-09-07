@@ -9,7 +9,10 @@ const getters = {
     
     userInfo (state) {
         if (!state.userInfo.uid) {
-            return JSON.parse(sessionStorage.getItem('ZDKJ_USERINFO'))
+            let userInfo = sessionStorage.getItem('ZDKJ_USERINFO')
+            if (userInfo) {
+                return JSON.parse(userInfo)
+            }
         }
         return state.userInfo 
     },

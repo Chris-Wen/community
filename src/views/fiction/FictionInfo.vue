@@ -5,24 +5,25 @@
                 <img src="../../common/images/fiction/fiction.jpg" />
             </div>
             <div>
-                <div>
-                    <p><span>{{'网游之三国无双'}}</span>  {{'天残土豆'}}</p>
-                    <p><span>最后更新：{{'2018-05-05 15:30'}}</span></p>
-                </div>
-                <div>
-                    小说简介小说简介小说简介小说简介小说简介小说简介
-                    小说简介小说简介小说简介小说简介小说简介小说简介
-                    小说简介小说简介小说简介小说简介小说简介小说简介
-                </div>
-                <p>总字数：{{'11万字'}}</p>
+                <p>作者：{{'天残土豆'}}</p>
+                <p><span>更新：{{'2018-05-05 15:30'}}</span></p>
+                <p>类别：{{'同人'}}</p>
+                <p>状态：{{'连载中'}}</p>
+                <P>最新章节：{{123}}</P>
+                <!-- <p>总字数：{{'11万字'}}</p> -->
             </div>
+        </div>
+        <div class="intro article-content">
+            小说简介小说简介小说简介小说简介小说简介小说简介
+            小说简介小说简介小说简介小说简介小说简介小说简介
+            小说简介小说简介小说简介小说简介小说简介小说简介
         </div>
         <div class="record">
             <span><i class="self-icon-eye"></i>点击：</span>{{132151}}
             <span><i class="self-icon-star-full"></i>收藏：</span>{{123333}}
         </div>
         <div class="fiction-list">
-            <h2>章节目录</h2>
+            <h2>最新章节 &nbsp;&nbsp;&nbsp;&nbsp;<span>更新：{{'2018-05-05 15:30'}}</span> </h2>
             <ul>
                 <router-link tag="li" :to="'/fiction/chapter/0'">第1233章：谁知道是啥标题</router-link>
                 <router-link tag="li" :to="'/fiction/chapter/0'">第1章：爱谁谁</router-link>
@@ -64,7 +65,7 @@ export default {
     data() {
         return {
             titleInfo: {
-                title: '某本小说',
+                title: '某本小说名称',
                 showIcon: false
             },
             commentInput: '',
@@ -147,6 +148,12 @@ export default {
                 }
             }
         }      
+    }
+    .intro {
+        margin: 15px 0;
+        @include color-background;
+        padding: 15px 50px;
+        line-height: 1.5;
     }
     .record {
         margin: 15px 0;

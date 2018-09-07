@@ -62,15 +62,4 @@ export function setClientHeight( isBottomShow = true ) {
     }
 }
 
-export function getScrollHeight( isBottomShow = true ) {
-    let h = document.documentElement.clientHeight || document.body.clientHeight 
-    
-    if ( document.querySelector('.ct-top-header') ) {
-        if ( isBottomShow ) {
-            return h - 2*document.querySelector('.ct-top-header').offsetHeight
-        } else {
-            return h - document.querySelector('.ct-top-header').offsetHeight
-        }
-    }
-}
 

@@ -2,9 +2,9 @@
     <div class="record-page">
         <div class="calendar-block">
             <div class="user-info">
-                <img src="http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg" alt=""> 
-                {{'昵称昵称昵称昵称'}}
-                <div class="record-date">已连续签到<span>{{22}}</span>天</div>
+                <img :src="DefaultAvatar" /> 
+                {{userInfo.uname}}
+                <div class="record-date" v-if="serialCount">已连续签到<span>{{serialCount}}</span>天</div>
             </div>
             <div class="calendar" >
                 <h1>{{formateDate()}}</h1>
@@ -17,10 +17,10 @@
                     </tr>
                 </table>
             </div>
-            <div class="color-grad-btn">签 到</div>
+            <div class="color-grad-btn" @click="dailySign">{{isSigned ? '已签到' : '签 到'}} </div>
         </div>
         <div class="award">
-            <h1>{{5}}月签到特殊奖励</h1>
+            <h1>{{(new Date()).getMonth()+1}}月签到特殊奖励</h1>
             <ul>
                 <li>签到1天：+1朵虚拟鲜花</li>
                 <li>签到1天：+1朵虚拟鲜花</li>
@@ -33,9 +33,10 @@
 </template>
 
 <script>
-import { mapMutations, mapActions } from 'vuex'
+import { mapMutations, mapGetters} from 'vuex'
 import { getMonthDays } from 'common/js/tools'
 import { addClass } from 'common/js/dom'
+import * as api from 'api/api'
 
 export default {
     data() {
@@ -44,49 +45,123 @@ export default {
                 title: '我的签到',
                 showIcon: false
             },
-            calendar: []
+            calendar: [],
+            signRecord: [],
+            isSigned: false,
+            serialCount: 0,        //连续签到天数
         }
     },
     methods: {
-        ...mapActions([ 'handleTitle']),
-        formateDate () {
+        ...mapMutations({'handleTitle': 'SET_TITLE'}),
+        formateDate (type=1) {
             const date = new Date();
-            return date.getFullYear() + '年' + (date.getMonth()+1) + '月'
+            if (type==1) {
+                return date.getFullYear() + '年' + (date.getMonth()+1) + '月'
+            } else {
+                return date.getFullYear()+String(date.getMonth())
+            }
         },
         initCalendarTable() {
             const date = new Date()
-            let month = date.getMonth() + 1
-
-            let days = getMonthDays(month)                  //当前月份天数
-            let lastMonthDays = getMonthDays( month-1 )     //上月月份天数
-            let monthStartWeekday= new Date(date.getFullYear(), date.getMonth(), 1).getDay()     //月初星期几  
+            let month = date.getMonth() + 1, year = date.getFullYear();
+            
+            let days = getMonthDays(month),                 //当前月份天数
+                lastMonthDays = getMonthDays( month-1 ),     //上月月份天数
+                monthStartWeekday= new Date(date.getFullYear(), date.getMonth(), 1).getDay();     //月初星期几  
 
             let calendarTable = []
             monthStartWeekday = monthStartWeekday==0 ? 7 : monthStartWeekday
+
             for (let i=0; i<7; i++) {
                 calendarTable[i] = new Array() 
             }
             for( let i=0; i<42; i++ ) {
-                let j = Math.floor(i/7)
                 let dateObject = { }
-                dateObject.isSigned = false     //是否已签到    
+                let j = Math.floor(i/7)
                 dateObject.row = j              //列
-                dateObject.key = i              
-
-                if (j==1 && i==10) dateObject.isSigned = true;
+                dateObject.key = i             
+                dateObject.isSigned = false     //是否签到    
                 if (i<monthStartWeekday) {
                     dateObject.isCurrentMonth = false           //是否为当前月
-                    dateObject.day = lastMonthDays - (monthStartWeekday - i - 1)
+                    dateObject.day = lastMonthDays - (monthStartWeekday - i - 1)               
                 } else {
                     dateObject.isCurrentMonth = !(i+1-monthStartWeekday > days)
+                    dateObject.isNextMonth = true 
                     dateObject.day = i+1-monthStartWeekday > days 
                         ?   i +1 - monthStartWeekday - days
                         :   i + 1 - monthStartWeekday 
+                } 
+                //当天
+                let currentDay = date.getDate()
+                if (dateObject.isCurrentMonth && dateObject.day == currentDay) {
+                    dateObject.isCurrentDay = true
+                }
+
+                let day = dateObject.day > 9 ? dateObject.day : ("0"+dateObject.day)
+                if (!dateObject.isCurrentMonth && !dateObject.isNextMonth) {       //上月
+                    if (month==1) {
+                        dateObject.formateDate = String(year-1) + 12 + day
+                    } else if (month<10){
+                        dateObject.formateDate = year + "0" + (month-1) + day
+                    } else {
+                        dateObject.formateDate = String(year) + month + day
+                    }
+                } else if(dateObject.isCurrentMonth) {                                //本月
+                    if (month<10){
+                        dateObject.formateDate = year + "0" + month + day
+                    } else {
+                        dateObject.formateDate = String(year) + month + day
+                    }
                 }
                 calendarTable[j].push(dateObject)
             }
-            this.calendar = calendarTable.slice()
+            this.calendar = calendarTable.slice()       //深拷贝
+        },
+        handleHasSigned() {             //处理已签到样式calendar
+            this.calendar.forEach(array => {
+                let count = array.length;
+                for (let i=0; i<count; i++) {
+                    if (this.signRecord.indexOf(array[i].formateDate) != -1) {
+                        array[i].isSigned = true
+                    }
+                }
+            });
+        
+        },
+        dailySign() {           //签到
+            if (!this.isSigned) {
+                api.get("/member/dailySign").then( res =>{
+                    if (res.code==200) {
+                        this.isSigned = true
+                        this.serialCount ++
+                        this.calendar.forEach(array => {
+                            let count = array.length;
+                            for (let i=0; i<count; i++) {
+                                if (array[i].isCurrentDay) {
+                                    array[i].isSigned = true
+                                    return;
+                                }
+                            }
+                        });
+                        Toast('签到成功');
+                    } else {
+                        Toast(res.msg)
+                    }
+                })
+            }
         }
+    },
+    created() {
+        api.get("/member/dailySignShow").then(res => {
+            if (res.code==200) {
+                let data = res.data
+                this.isSigned = data.sign_status == 1
+                this.serialCount = data.serial_count
+                this.signRecord = data.sign_times
+
+                this.handleHasSigned()
+            }
+        })
     },
     mounted() {
         this.handleTitle({
@@ -95,6 +170,9 @@ export default {
         })
 
         this.initCalendarTable()
+    },
+    computed: {
+        ...mapGetters(['userInfo']),
     }
 }
 </script>

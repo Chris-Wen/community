@@ -12,12 +12,13 @@ const  state = {
 	token: null,
 	userInfo: {
 			uid: null,
-			uname: null,		
+			uname: '未登录',		
 			score: null,
 			uid: null,
 			attents:　null,				//关注数量
 			fans: null,					//粉丝
 			lottery_tickets: null,
+			avatar: '',
 		},
 	
 	editType: 1,			//设置发帖目标板块  1：社区交流活动板块，  2：社区活动板块

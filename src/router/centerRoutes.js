@@ -17,6 +17,7 @@ export const centerRoutes = [
     {
         path: '/center/msg',
         name: '消息',
+        meta: { requireAuth: true },
         component:　Message
     },
     {
@@ -24,6 +25,7 @@ export const centerRoutes = [
         children: [
             {
                 path:　'',
+                meta: { requireAuth: true },
                 component: FriendList
             },
             {
@@ -35,26 +37,31 @@ export const centerRoutes = [
     {
         path: '/center/account',
         name:　'账号切换',
+        meta: { requireAuth: true },
         component: ToggleAccount
     },
     {
         path: '/center/mark',
         name: '我的收藏/帖子',
+        meta: { requireAuth: true },
         component: Mark
     },
     {
         path: '/center/record',
         name: '签到',
+        meta: { requireAuth: true },
         component: Record
     },
     {
         path: '/center/recharge',
         name: '充值',
+        meta: { requireAuth: true },
         component: Recharge
     },
     {
         path: '/center/repository',
         name: '仓库',
+        meta: { requireAuth: true },
         component: Repository
     },
 

@@ -31,7 +31,7 @@ module.exports = {
       'api': resolve('src/api'),
       'base': resolve('src/base'),
       'components': resolve('src/components'),
-      'cube-ui': 'cube-ui/lib'
+      // 'cube-ui': 'cube-ui/lib'
     }
   },
   module: {
@@ -54,7 +54,7 @@ module.exports = {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
         options: {
-          limit: 10000,
+          limit: 6000,
           name: utils.assetsPath('img/[name].[hash:7].[ext]')
         }
       },
