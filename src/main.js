@@ -6,8 +6,8 @@ import Vuex from 'vuex'
 import router from './router'
 import store from './store/index'
 import VueLazyload from 'vue-lazyload'
-
-
+import * as api from 'api/api'
+Vue.prototype.api = api
 
 Vue.use(VueLazyload, {
   preload: 1.3,

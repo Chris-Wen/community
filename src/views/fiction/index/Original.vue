@@ -1,13 +1,13 @@
 <template>
     <div class="original">
-        <div class="recommend">
+        <div class="recommend" v-if="original && original.length">
             <div class="recommend-img">精品力荐•原创</div>
             <ul :class="{'unfold': isUnfold }">
-                <router-link tag="li" v-for="(item, index) in data" :to="'/fiction/info/'+ index" :key="index"> 
+                <router-link tag="li" v-for="(item, index) in original" :to="'/fiction/info/'+ item.nid + '/' + item.name" :key="index"> 
                     <div class="img"><img src="../../../common/images/fiction/fiction.jpg" alt=""></div>
                     <div>
-                        <p>《斗破苍穹》</p>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas odio maxime eveniet eligendi </p>
+                        <p>《{{item.name}}》</p>
+                        <p>{{item.intro}}</p>
                     </div>
                 </router-link>
             </ul>
@@ -15,14 +15,17 @@
                     更多<i class="self-icon-angle-right fa-lg"></i>
             </div>
         </div>
+        <div v-else>暂无数据</div>
     </div>
 </template>
 
 <script>
 export default {
+    props: {
+        original: { type: Array }
+    },
     data() {
         return {
-            data: [1,2,3,4,5,6,7,8,9,10,11],
             isUnfold: true  
         }
     }

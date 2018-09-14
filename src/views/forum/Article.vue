@@ -57,7 +57,6 @@ export default {
             },
             datalist: null,
             comment: null,
-            // DefaultAvatar: require('../../common/images/global/user.jpg'),
             isThumbs: false,
             thumbsNum: '',
             commentInput: '',
@@ -71,7 +70,7 @@ export default {
             autoTextAreaHeight(this.$refs.textarea)
         },
         initPage(data) {
-            this.thumbsNum = data.likes
+            this.thumbsNum = Number.parseInt(data.likes)
             this.comment = data.reply_num ?  data.reply_data : null
             this.likeStatus = data.like_status ? true : false
             //更改页面title
@@ -83,7 +82,7 @@ export default {
         },
         handleThumbs() {
             this.isThumbs = !this.isThumbs
-            this.thumbsNum = this.isThumbs ? this.thumbsNum++ : this.thumbsNum--
+            this.thumbsNum = this.isThumbs ? this.thumbsNum+=1 : this.thumbsNum-=1
         }, 
         submitComment() {
             let acid = this.$route.params.acid, content;
@@ -145,7 +144,7 @@ export default {
     },
     beforeRouteLeave (to, from, next) {
         if (this.likeStatus !== this.isThumbs) {    //退出页面时发送点赞状态
-            api.get("/forum/showActivityLike");
+            api.get("/forum/showActivityLike?acid="+this.$route.params.acid);
         }
         next();
     },

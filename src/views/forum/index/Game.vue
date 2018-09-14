@@ -54,14 +54,15 @@
 </template>
 
 <script>
+import {formatNumber} from 'common/js/tools'
+
 export default {
     data() {
         return{ }
     },
     filters: {
         exchangeNumber: function(value) {
-            let number = value<100000 ? value : Math.floor(value/10000) + '万+'
-            return number
+            return formatNumber(value)
         }
     },
     methods: {

@@ -23,11 +23,11 @@
             <h1 class="rule-name">抽奖规则</h1>
             <div>
                 <ul class="decoration-bg">
-                    <li class=""></li>
-                    <li class=""></li>
-                    <li class=""></li>
-                    <li class=""></li>
-                    <li class=""></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
                 </ul>
                 <div>
                     <p>规则1:每天抽奖次数最多为5次</p>
@@ -77,7 +77,7 @@ export default {
                 showToast: false,
             },
             toastSlot: {
-                pic: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
+                pic: '',
                 name: '物品名称'
             },
             hasOperatePage: false

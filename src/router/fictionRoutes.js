@@ -38,6 +38,7 @@ export const fictionRoutes = [
     },
     {
         path: '/fiction/recommend',
+        name: '推文/书单',
         component: Recommend
     },
     {
@@ -46,15 +47,18 @@ export const fictionRoutes = [
         component: Article
     },
     {
-        path: '/fiction/info/:fictionId',
+        path: '/fiction/info/:fictionId/:novelName',
+        name: '小说详情',
         component: FictionInfo
     },
     {
-        path: '/fiction/novel_list/:novelId',
+        path: '/fiction/novel_list/:novelId/:novelName',
+        name: '小说目录',
         component: NovelList
     },
     {
         path: '/fiction/chapter/:chapterId',
+        name: 'chapter',
         component: Chapter
     },
 ]

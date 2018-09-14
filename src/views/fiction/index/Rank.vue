@@ -1,6 +1,6 @@
 <template>
-    <ul class="list">
-        <li v-for="(item, index) in data" :key="index">
+    <ul class="list" v-if="rank && rank.length">
+        <li v-for="(item, index) in rank" :key="index">
             <span class="status">连载中</span>
             <div>
                 <h2>《斗破苍穹》</h2>
@@ -9,15 +9,12 @@
             </div>
         </li>
     </ul>
+    <div v-else>暂无数据</div>
 </template>
 
 <script>
 export default {
-    data() {
-        return {
-            data: [1,2,3,45,6,8,98,12,123]
-        }
-    }
+    props: { rank: {type: Array} }
 }
 </script>
 

@@ -1,5 +1,5 @@
 import {EMOJI_RULE} from './emoji-data'
-import {HOST}  from './config'
+const HOST = process.env.NODE_ENV === 'development' ? 'http://shop-test.73776.com' : ''
 
 
 export function removeArrayelement(arr, el) {
@@ -103,6 +103,7 @@ export function postTime(time) {
 }
 
 
+//表情转换
 export function formateEmoji(html) {
     if (html) {
         return html.replace(/:[a-z]+:/g, function (word) {
@@ -114,4 +115,9 @@ export function formateEmoji(html) {
             }
         })
     }
+}
+
+//数字转换
+export function formatNumber(value) {
+    return value<100000 ? value : Math.floor(value/10000) + '万+'
 }

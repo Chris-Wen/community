@@ -1,53 +1,42 @@
 <template>
-    <div class="fiction-info">
+    <div class="fiction-info" v-if="datalist">
         <div class="top">
             <div>
-                <img src="../../common/images/fiction/fiction.jpg" />
+                <img :src="HOST + datalist.info.img" />
             </div>
             <div>
-                <p>作者：{{'天残土豆'}}</p>
-                <p><span>更新：{{'2018-05-05 15:30'}}</span></p>
-                <p>类别：{{'同人'}}</p>
-                <p>状态：{{'连载中'}}</p>
-                <P>最新章节：{{123}}</P>
-                <!-- <p>总字数：{{'11万字'}}</p> -->
+                <p>作者：{{datalist.info.author}}</p>
+                <p><span>更新：{{datalist.info.update_time | postTime}}</span></p>
+                <p>类别：{{datalist.info.type==1 ? '原创' : '同人'}}</p>
+                <p>状态：{{datalist.info.state ? '完结' : '连载中'}}</p>
+                <P>最新章节：{{datalist.info.total_chapter}}</P>
+                <!-- <p>总字数：{{}}</p> -->
             </div>
         </div>
-        <div class="intro article-content">
-            小说简介小说简介小说简介小说简介小说简介小说简介
-            小说简介小说简介小说简介小说简介小说简介小说简介
-            小说简介小说简介小说简介小说简介小说简介小说简介
-        </div>
+        <div class="intro article-content" v-html="datalist.info.intro"></div>
         <div class="record">
-            <span><i class="self-icon-eye"></i>点击：</span>{{132151}}
-            <span><i class="self-icon-star-full"></i>收藏：</span>{{123333}}
+            <span><i class="self-icon-eye"></i>点击：</span>{{datalist.info.views | transformNumber}}
+            <span><i class="self-icon-star-full"></i>收藏：</span>{{datalist.info.add_num | transformNumber}}
         </div>
-        <div class="fiction-list">
-            <h2>最新章节 &nbsp;&nbsp;&nbsp;&nbsp;<span>更新：{{'2018-05-05 15:30'}}</span> </h2>
+        <div class="fiction-list" v-if="datalist.chapter">
+            <h2>最新章节 &nbsp;&nbsp;&nbsp;&nbsp;<span>更新：{{datalist.info.update_time | transformDate}}</span> </h2>
             <ul>
-                <router-link tag="li" :to="'/fiction/chapter/0'">第1233章：谁知道是啥标题</router-link>
-                <router-link tag="li" :to="'/fiction/chapter/0'">第1章：爱谁谁</router-link>
-                <router-link tag="li" :to="'/fiction/chapter/0'">第2章：爱谁谁</router-link>
-                <router-link tag="li" :to="'/fiction/chapter/0'">第3章：爱谁谁</router-link>
-                <router-link tag="li" :to="'/fiction/chapter/0'">第4章：爱谁谁</router-link>
+                <router-link tag="li" v-for="(item, key) in datalist.chapter" :key="key" :to="'/fiction/chapter/'+item.id">{{item.chapter_name}}</router-link>
             </ul>
-            <router-link tag="p" :to="'/fiction/novel_list/1'" class="more" >更多 >></router-link>
+            <router-link  tag="p" :to="'/fiction/novel_list/'+datalist.info.nid + '/'+ datalist.info.name" class="more" >更多 >></router-link>
         </div>
         <div class="comment">
             <h2>读者评论</h2>
-            <ul>
-                <li v-for="(item, index) in data" :key="index">
-                    <div><img src="../../common/images/fiction/fiction.jpg" alt=""></div>
+            <ul v-if="datalist.comment">
+                <li v-for="(item, index) in datalist.comment" :key="index">
+                    <div><img :src="item.avatar || DefaultAvatar" /></div>
                     <div>
-                        <p>用户昵称  <span>{{'2018-05-10'}}</span></p>
-                        <div>
-                            评论内容 评论内容 评论内容 评论内容 评论内容 评论内容
-                            评论内容 评论内容 评论内容 评论内容 评论内容 评论内容
-                            评论内容 评论内容
-                        </div>
+                        <p>{{item.nickname || item.username}}  <span>{{item.create_time}}</span></p>
+                        <div v-html="item.comment"></div>
                     </div>
                 </li>
             </ul>
+            <div style="text-indent: 3em" v-else>暂无评论</div>
         </div>
 
         <!-- 评论输入栏 -->
@@ -60,37 +49,50 @@
 <script>
 import { mapMutations, mapActions } from 'vuex'
 import { autoTextAreaHeight } from 'common/js/dom'
+import {formatDate, postTime, formatNumber} from 'common/js/tools'
+import * as api from 'api/api'
 
 export default {
     data() {
         return {
             titleInfo: {
-                title: '某本小说名称',
+                title: '',
                 showIcon: false
             },
             commentInput: '',
-            data: [
-                {}
-            ],
+            datalist: null,
+            data: ''
         }
     },
     methods: {
         ...mapActions([ 'handleTitle']),
-        handleThumbs() {
-            console.log('点赞')
-            this.isThumbs = !this.isThumbs
-            this.thumbsNum = this.isThumbs ? this.thumbsNum+1 : this.thumbsNum-1
-        },
         setHeight() {
             autoTextAreaHeight(this.$refs.textarea)
         } 
     },
+    created() {
+        api.get("/novel/fictionInfo?id="+this.$route.params.fictionId).then( response => {
+            if (response.code==200) {
+                this.datalist = response.data
+            }
+        })
+    },
     mounted() {
         this.handleTitle({
-            title:    this.titleInfo.title, 
+            title:    this.$route.params.novelName, 
             showIcon: this.titleInfo.showIcon,
         })
-
+    },
+    filters: {
+        transformDate(time) {
+            return formatDate("yyyy-MM-dd hh:mm", time)
+        },
+        postTime(time) {
+            return postTime(time)
+        },
+        transformNumber(val) {
+            return formatNumber(val)
+        }
     }
 }
 </script>
@@ -172,8 +174,8 @@ export default {
     .fiction-list {
         padding: 20px 60px;
         @include color-background;
-        line-height: 1.5em;
-        h2 { margin-bottom: 15px; } 
+        line-height: 1.8;
+        ul { margin-top: 10px }
         .more { text-align: center; color:$text-color-orange; font-size: $font-size-min; /*no*/ }
     }
     .comment {

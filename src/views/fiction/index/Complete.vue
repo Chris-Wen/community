@@ -1,24 +1,21 @@
 <template>
-    <ul class="list">
-        <li v-for="(item, index) in data" :key="index">
+    <ul class="list" v-if="complete && complete.length">
+        <li v-for="(item, index) in complete" :key="index">
             <span class="status">已完结</span>
             <div>
                 <h2>《斗破苍》</h2>
                 <p>一个个个个个打的技术监督局发哦激动I就爱的风景</p>
                 <p> <span>作者：EZ</span> <span>字数：121313213212</span> </p>
             </div>
-            
+
         </li>
     </ul>
+    <div v-else>暂无数据</div>
 </template>
 
 <script>
 export default {
-    data() {
-        return {
-            data: [1,2,3,45,6,8,98,12,123]
-        }
-    }
+    props: { complete: { type: Array } },
 }
 </script>
 

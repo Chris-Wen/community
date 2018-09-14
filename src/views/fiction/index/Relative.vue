@@ -1,9 +1,9 @@
 <template>
     <div class="original">
-        <div class="recommend">
+        <div class="recommend" v-if="relative && relative.length">
             <div class="recommend-img">精品力荐•同人</div>
-            <ul :class="{'unfold': isUnfold }">
-                <li v-for="(item, index) in data" :key="index"> 
+            <ul>
+                <li v-for="(item, index) in relative" :key="index"> 
                     <div class="img"><img src="../../../common/images/fiction/fiction.jpg" alt=""></div>
                     <div>
                         <p>《斗破苍穹》</p>
@@ -11,27 +11,14 @@
                     </div>
                 </li>
             </ul>
-            <div v-if="!isUnfold" class="more" @click="isUnfold = true">
-                    更多<i class="self-icon-angle-right fa-lg"></i>
-            </div>
         </div>
+        <div v-else>暂无数据</div>
     </div>
 </template>
 
 <script>
 export default {
-    data() {
-        return {
-            data: [1,2,3,4],
-            recommends: [
-                {linkUrl: '#1', picUrl: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109173040544.jpg'},
-                {linkUrl: '#2', picUrl: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109173040544.jpg'},
-                {linkUrl: '#2', picUrl: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109173040544.jpg'}
-            ],
-            data: [1,2,3,4, 5],
-            isUnfold: false
-        }
-    }
+    props: { relative: { type: Array } }
 }
 </script>
 
@@ -58,15 +45,15 @@ export default {
             top: 0;
             right: 55px;
         }
-        .more {
-            text-align: center;
-            padding-bottom: 10px;
-            color: $text-color-orange;
-            font-size: $font-size-min;  /*no*/
-            line-height: 1.3em;
-            i {  vertical-align: top; margin-left: 10px; }
+        // .more {
+        //     text-align: center;
+        //     padding-bottom: 10px;
+        //     color: $text-color-orange;
+        //     font-size: $font-size-min;  /*no*/
+        //     line-height: 1.3em;
+        //     i {  vertical-align: top; margin-left: 10px; }
             
-        }
+        // }
         ul {
             width: 100%;
             height: 100%;

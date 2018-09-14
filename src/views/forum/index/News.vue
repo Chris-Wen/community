@@ -10,21 +10,11 @@
                             <h2 class="lines-nowrap">{{spec.activity}}</h2>
                             <div>
                                 <p class="lines-nowrap">{{spec.intro}}</p>
-                                <p>{{spec.creattime}}   <span> <i class="self-icon-eye"></i> {{spec.views | exchangeNumber }}</span> </p>
+                                <p>{{spec.creattime | transformTime}}   <span> <i class="self-icon-eye"></i> {{spec.views | exchangeNumber }}</span> </p>
                             </div>
                         </div>
                         <div class="img" v-if="spec.cover"><img :src="HOST + spec.cover" /></div>
                     </router-link>
-                    <!-- <router-link tag="li" to="/forum/article">
-                        <div class="info">
-                            <h2>{{"游民资讯游民资讯"}}</h2>
-                            <div>
-                                <p class="lines-nowrap">{{"内容简介内容简"}}</p>
-                                <p>{{'2018-05-01'}}   <span> <i class="self-icon-eye"></i> {{99999 | exchangeNumber }}</span> </p>
-                            </div>
-                        </div>
-                        <div class="img"><img src="../../../common/images/fiction/BANNER.jpg" alt=""></div>
-                    </router-link> -->
                 </ul>
             </div>
             <div class="game-news" v-if="datalist.normal_gamenews">
@@ -36,21 +26,11 @@
                             <h2 class="lines-nowrap">{{item.activity}}</h2>
                             <div>
                                 <p class="lines-nowrap">{{item.intro}}</p>
-                                <p>{{item.creattime}}   <span> <i class="self-icon-eye"></i> {{item.views | exchangeNumber }}</span> </p>
+                                <p>{{item.creattime | transformTime}}   <span> <i class="self-icon-eye"></i> {{item.views | exchangeNumber }}</span> </p>
                             </div>
                         </div>
                         <div class="img" v-if="item.cover"><img :src="HOST + item.cover" /></div>
-                    </router-link>
-                    <!-- <li>
-                        <div class="info">
-                            <h2>{{"游民资讯游民资讯"}}</h2>
-                            <div>
-                                <p>{{"内容简介内容简介内容简介内容简"}}</p>
-                                <p>{{'2018-05-01'}}   <span> <i class="self-icon-eye"></i> {{99999 | exchangeNumber }}</span> </p>
-                            </div>
-                        </div>
-                        <div class="img"><img src="../../../common/images/fiction/BANNER.jpg" alt=""></div>
-                    </li> -->         
+                    </router-link>     
                 </ul>
             </div>
         </div>
@@ -60,6 +40,7 @@
 
 <script>
 import * as api from 'api/api'
+import {formatDate} from 'common/js/tools'
 
 export default {
     data() {
@@ -82,6 +63,9 @@ export default {
         exchangeNumber: function(value) {
             let number = value<100000 ? value : Math.floor(value/10000) + '万+'
             return number
+        },
+        transformTime: function(time) {
+            return formatDate(time, "yyyy-MM-dd")
         }
     },
 }
