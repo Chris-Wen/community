@@ -40,7 +40,7 @@
 						<em>验证码</em>：
 						<div>
 							<input type="text" placeholder="验证码" v-model.trim="inputParams.verifycode" />
-							<img class="verify" :src="verify" @click="changeVerify" alt="验证码图片">
+							<img class="verify" :src="HOST + '/index.php/home/login/verify/'" @click="changeVerify" alt="验证码图片">
 						</div> 
 					</div>
 					<p>{{ warning.verifycode }}</p>
@@ -67,7 +67,7 @@ export default {
                 showIcon: false,
                 showBottomTab: true,  				/*true表示底部不显示*/
 			},
-			verify: 'http://shop.73776.com/index.php/home/login/verify',
+			// verify:  '/index.php/home/login/verify/',
 			warning: {
 				passport: '',
 				password: '',
@@ -124,7 +124,7 @@ export default {
     methods: {
         ...mapActions([ 'handleTitle']),
         handleRegister() {
-			console.log(123)
+			// console.log(123)
 			if (!this.clickable) return;
 			
 			this.clickable = false			//防短时重复注册
@@ -135,7 +135,7 @@ export default {
             api.post('/login/user_register', postParmas).then( res => {	
 				this.clickable = true
 
-				console.log(res)
+				// console.log(res)
 				if (res.code==200) {
 					let instance = Toast('注册成功,跳转登录页面')
 					setTimeout(() => {
@@ -161,7 +161,7 @@ export default {
 		changeVerify(ev) {
 			ev = ev || event
 			let target = event.currentTarget
-			target.src = this.verify + '/?timestamp=' + new Date().getTime()
+			target.src += Math.floor(Math.random()*10 + 1)
 		},
 		fastCheck(payload) {
 			// if (this.warning.passport || this.warning.mobile || this.warning.nickname) return;
@@ -176,9 +176,9 @@ export default {
 					break;
 			}
 			if (this.inputParams[payload] && !this.warning[payload]) {
-				console.log(data)
+				// console.log(data)
 				api.post('/login/check_' + payload, data ).then( res => {
-					console.log(res.code==200)
+					// console.log(res.code==200)
 					this.warning[payload] = res.code == 401 ? res.msg : ''
 					this.edited[payload] = res.code === 200
 				})
@@ -252,7 +252,7 @@ export default {
 			this.warning.mobile = msg
 		},
 		'inputParams.nickname'(val) {
-			console.log(escape(val))
+			// console.log(escape(val))
 			let msg;
 			if (val.length<2 || val.length>8) {
 				msg = this.rule.nickname.tip

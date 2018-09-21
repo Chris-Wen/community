@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/mook': {
-        target: 'http://shop-test.73776.com/index.php/home',
+        target: 'http://localhost/shop.73776.com/index.php/home',
         changeOrigin: true,
         pathRewrite: {
           '^/mook': ''

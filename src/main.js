@@ -6,12 +6,14 @@ import Vuex from 'vuex'
 import router from './router'
 import store from './store/index'
 import VueLazyload from 'vue-lazyload'
-import * as api from 'api/api'
-Vue.prototype.api = api
+import * as axios from 'api/api'
+Vue.prototype.axios = axios
 
+const DefaultLogo = require('common/images/icons/LOGO(1).png')
+Vue.prototype.DefaultLogo = DefaultLogo
 Vue.use(VueLazyload, {
   preload: 1.3,
-  loading: require('common/images/icons/LOGO(1).png')
+  loading: DefaultLogo
 })
 
 Vue.config.productionTip = false

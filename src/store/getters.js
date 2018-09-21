@@ -21,6 +21,12 @@ const getters = {
         return state.token || JSON.parse(sessionStorage.getItem('zd_access_token'))
     },
 
+
+    score (state) {
+        return state.score
+    },
+
+
 }
 
 export default getters

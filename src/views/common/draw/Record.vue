@@ -1,15 +1,15 @@
 <template>
     <div class="prize-record" >
-        <ul>
-            <li v-for="(item, index) in data" :key="index" @touchstart="touchStart" @touchend="touchEnd">
+        <ul class="user-prize">
+            <li v-for="(item, index) in userPrize" :key="index" @touchstart="touchStart" @touchend="touchEnd">
                 <slider-delete @handleDelete="deleteItem(index)">
                     <div class="prize-item">
                         <div class="img">
-                            <img src="http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg" >
+                            <img v-lazy="HOST + item.logo"/>
                         </div>
                         <div>
-                            <h2>{{'物品名称'}} x {{1}}</h2>
-                            <p>{{'2018-06-06 12:00'}}</p>
+                            <h2>{{item.prize}}</h2>
+                            <p>{{item.win_time | transformDate}}</p>
                         </div>
                     </div>
                 </slider-delete>
@@ -19,7 +19,7 @@
         <div class="roll-msg">
             <ul v-if="list.length" ref="wrapper">
                 <li v-for="(item, index) in list" :key="index">
-                    {{item.name}} 获得 <span>{{'40米长屠龙刀一把'}}</span>   
+                    {{item.nickname || item.username}} 获得 <span>{{item.prize}}</span>   
                 </li>
             </ul>
         </div>
@@ -30,6 +30,7 @@
 import { mapMutations, mapActions } from 'vuex'
 import SliderDelete from 'base/SliderDelete/SliderDelete'
 import { removeClass } from 'common/js/dom'
+import { formatDate } from 'common/js/tools'
 
 export default {
     components: { SliderDelete },
@@ -39,23 +40,17 @@ export default {
                 title: '中奖记录',
                 showIcon: false
             },
-            data: [12,34,1,5],
+            userPrize: [
+                {logo: this.DefaultLogo, prize: '物品名称', win_time: ''},
+                {logo: this.DefaultLogo, prize: '物品名称', win_time: ''},
+                {logo: this.DefaultLogo, prize: '物品名称', win_time: ''},
+                {logo: this.DefaultLogo, prize: '物品名称', win_time: ''},
+            ],
             sliderDeleteParams: {
                 lastTouch: '',     
                 targetTouch: ''
             },
-            list: [
-                {name: '1', prize: '40米长屠龙刀一把'},
-                {name: '1', prize: '40米长屠龙刀一把'},
-                {name: '1', prize: '40米长屠龙刀一把'},
-                {name: '1', prize: '40米长屠龙刀一把'},
-                {name: '1', prize: '40米长屠龙刀一把'},
-                {name: '1', prize: '40米长屠龙刀一把'},
-                {name: '1', prize: '40米长屠龙刀一把'},
-                {name: '1', prize: '40米长屠龙刀一把'},
-                {name: '1', prize: '40米长屠龙刀一把'},
-                {name: '1', prize: '40米长屠龙刀一把'},
-            ]
+            list: []
         }
     },
     methods: {
@@ -73,21 +68,38 @@ export default {
             }   
         },
         deleteItem(index) {
-            this.data.splice(index, 1)
+            this.userPrize.splice(index, 1)
         },
         initRollList() {
-            if (this.list.length == 10) {
-                this.$refs.wrapper.className = 'animate'
-            }
+            if (this.list.length == 10) this.$refs.wrapper.className = 'animate'
         }
     },
+    created() {
+        this.axios.get('/lottery/getPrizeInfo').then(res=>{
+            if (res.code ==200) {
+                var arr = res.data.user_prize ? res.data.user_prize : [];
+                var len = arr.length;
+                if (len>=4) {
+                    this.userPrize = arr
+                } else{
+                    this.userPrize = arr.concat(this.userPrize.slice(0, -len))
+                }
+                this.list = res.data.prize
+                this.$nextTick(()=>this.initRollList())
+            }
+        })
+    },
     mounted() {
-        this.initRollList()
-
         this.handleTitle({
             title:    this.titleInfo.title, 
             showIcon: this.titleInfo.showIcon
         });
+    },
+    filters: {
+        transformDate(time) {
+            if (!time) return " "
+            return formatDate(time, 'yyyy-MM-dd hh:mm')
+        }
     }
 }
 </script>
@@ -99,6 +111,10 @@ export default {
     font-size: $font-size-small;  /*no*/
     padding-top: 20px;
     >ul {
+        &.user-prize {
+            height: 600px;
+            overflow: auto;   
+        }
         li {
             width: 100%;
             @include color-background;

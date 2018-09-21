@@ -57,7 +57,7 @@ export default {
                 login_code: ''
             },
             isCodeShow: false,
-            verify: 'http://shop.73776.com/index.php/home/login/verify',
+            verify: "http://shop-test.73776.com/index.php/home/login/verify/"
         }
     },
     methods: {
@@ -111,7 +111,7 @@ export default {
         changeVerify(ev) {
             ev = ev || event
 			let target = event.currentTarget
-			target.src = this.verify + '/?timestamp=' + new Date().getTime()
+			target.src += Math.floor(Math.random()*10 + 1)
         }
     },
     mounted() {

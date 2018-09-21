@@ -8,6 +8,15 @@ import Friend from '@/views/common/center/friend/Friend'
 import FriendList from '@/views/common/center/friend/FriendList'
 import FriendInfo from '@/views/common/center/friend/FriendInfo'
 
+import SettingIndex from '@/views/common/center/settings/Index'
+import Personal from '@/views/common/center/settings/Personal'
+
+import Security from '@/views/common/center/settings/security/Index'
+import SecurityIndex from '@/views/common/center/settings/security/Security'
+import SecurityMobile from '@/views/common/center/settings/security/Mobile'
+import SecurityEmail from '@/views/common/center/settings/security/Email'
+import SecurityPassword from '@/views/common/center/settings/security/Password'
+
 
 import DrawRecord from '@/views/common/draw/Record'
 
@@ -64,7 +73,47 @@ export const centerRoutes = [
         meta: { requireAuth: true },
         component: Repository
     },
-
+    {
+        path: '/center/settings',
+        name: '设置',
+        component: SettingIndex
+    },
+    {
+        path:　'/center/settings/personal',
+        name: '个人资料',
+        meta: { requireAuth: true },
+        component: Personal
+    },
+    {
+        path: '/center/settings/security',
+        component: Security,
+        children: [
+            {
+                path:　'',
+                name: '安全中心',
+                meta: { requireAuth: true },
+                component: SecurityIndex
+            },
+            {
+                path:　'mobile',
+                name: '密保手机',
+                meta: { requireAuth: true },
+                component: SecurityMobile
+            },
+            {
+                path:　'email',
+                name: '密保邮箱',
+                meta: { requireAuth: true },
+                component: SecurityEmail
+            },
+            {
+                path:　'pwd',
+                name: '修改密码',
+                meta: { requireAuth: true },
+                component: SecurityPassword
+            },
+        ]
+    },
     {
         path: '/draw/record',
         name: '中奖记录',

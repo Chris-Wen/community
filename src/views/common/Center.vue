@@ -1,9 +1,9 @@
 <template>
     <div class="center">
-        <div class="top">
+        <div class="top" @click="judgeLogin">
             <div><img :src="userInfo.avatar || DefaultAvatar" ></div>
             <div>
-                <h2>{{userInfo.uname}}</h2>
+                <h2>{{userInfo.uname || '未登录'}}</h2>
                 <p><span>关注：{{userInfo.attent || 0}}</span> <span>粉丝：{{userInfo.fans || 0}}</span></p>
             </div>
         </div>
@@ -37,7 +37,7 @@
                     <img style="margin-top: 15px;" class="spe-icon" src="../../common/images/icons/icon-img.png" /> 
                     <p>仓库</p>
             </router-link>
-            <router-link  tag="li" to="/"> 
+            <router-link  tag="li" to="/center/settings"> 
                     <img src="../../common/images/icons/icon-set.png" /> 
                     <p>设置</p>
             </router-link>
@@ -53,7 +53,7 @@
 
         <div class="personal">
             <div class="score">
-                <p>{{userInfo.score || '******'}}</p>
+                <p>{{score || '******'}}</p>
                 <p>我的积分</p>
             </div>
             <div class="transform-goods">
@@ -81,16 +81,20 @@ export default {
                 showIcon: false,
                 hideReturnIcon: true
             },
-            data: []
+            data: [],
         }
     },
     created() {
-        //  api get params
-
+        this.getUserData();
         this.data = []
     },
     methods: {
-        ...mapActions([ 'handleTitle']) 
+        ...mapActions([ 'handleTitle', 'getUserData']),
+        judgeLogin() {
+            if (!this.token) {
+                this.$router.push("/login")
+            }
+        } 
     },
     mounted() {
         this.handleTitle({
@@ -100,7 +104,7 @@ export default {
         });
     },
     computed: {
-        ...mapGetters(['userInfo']),
+        ...mapGetters(['userInfo', 'score', 'token']),
     }
 }
 </script>

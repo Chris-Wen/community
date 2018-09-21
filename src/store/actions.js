@@ -33,6 +33,20 @@ export default {
         })
     },
 
+
+    getUserData({commit}) {
+        return new Promise((resolve, reject) => {
+            axios.get('/member/getUserData').then( response => {
+                let res = response.data
+
+                if (res.code==200) commit(types.SET_USERDATA, res)
+
+                resolve(res)
+            }).catch( err => reject(err))
+        })
+    },
+
+
 }
 
 

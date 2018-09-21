@@ -1,13 +1,13 @@
 <template>
     <div class="draw">
         <draw-popup v-if="toastParams.showToast" 
-            leftBtn="存入仓库" 
-            rightBtn="申请邮寄" 
+            :leftBtn="toastParams.leftBtn" 
+            :rightBtn="toastParams.rightBtn" 
+            :showCancleBtn="toastParams.canleBtn"
             @handleClick="_handleClick" >
             <!-- 插槽奖品内容 -->
             <p>{{toastSlot.name}}</p>
-            <img :src="toastSlot.pic">
-            
+            <img :src="HOST + toastSlot.pic">
         </draw-popup>
         <div class="turnplate-box">
             <div style="position: relative">
@@ -30,10 +30,10 @@
                     <li></li>
                 </ul>
                 <div>
-                    <p>规则1:每天抽奖次数最多为5次</p>
-                    <p>规则1:每天抽奖次数最多为5次每天抽奖次数最多为5次每天抽奖次数最多为5次每天抽奖次数最多为5次</p>
-                    <p>规则1:每天抽奖次数最多为5次</p>
-                    <p>规则1:每天抽奖次数最多为5次</p>
+                    <p>（1）每天首次登陆，免费抽奖1次。</p>
+                    <p>（2）连续签到3天，额外免费抽奖3次。</p>
+                    <p>（3）可通过消耗商城积分进行抽奖，20积分每次。</p>
+                    <p>（4）抽奖次数达到30次，礼品池会刷新礼品类型。 </p>
                 </div>
             </div>    
         </div>
@@ -44,7 +44,6 @@
 <script>
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import DrawPopup from '../../components/DrawPopup/DrawPopup'
-import * as api from 'api/api'
 
 export default {
     components: { DrawPopup },
@@ -55,7 +54,7 @@ export default {
                 hideReturnIcon: true,
                 showIcon:   false
             },
-            lotteryTicket: 5,   //抽奖次数
+            lotteryTicket: '',   //抽奖次数
             prizeList: [
                 {
                     img: '',            //奖品图片
@@ -75,18 +74,29 @@ export default {
             isRotating: false,
             toastParams: {
                 showToast: false,
+                leftBtn: '存入仓库',
+                rightBtn: '申请邮寄',
+                canleBtn: true,
             },
             toastSlot: {
                 pic: '',
-                name: '物品名称'
+                name: ''
             },
-            hasOperatePage: false
+            hasOperatePage: false,      //正在进行抽奖操作
+            noticeUser: false,          //通知用户将使用积分进行抽奖
+            unaffordable: false,        //用户积分不足
         }
     },
     created() {
-        if (this.token) {
-           this.initLotteryTicket();
-        } else {
+        if (this.token) {           //登录状态，获取免费抽奖次数 , 积分不显示，由后台判断积分是否足够
+            this.axios.get('/lottery/index').then(response => {
+                if (response.code==200) {
+                    var data = response.data
+                    this.lotteryTicket = data.remain_times
+                    // this.score = data.score
+                } 
+            })
+        } else {                    //非登录状态，使用cookie登录，cookie失效，则提示未登录
             if (!sessionStorage.getItem('checkUserLogin')) {
                 this.cookieLogin().then( res => {
                     if (res.code==403) {
@@ -97,34 +107,42 @@ export default {
                     sessionStorage.setItem('checkUserLogin', true) 
                 })
             }
+            this.lotteryTicket = 5
         }
     },
     computed: {
-        ...mapGetters(['token', 'userInfo'])
+        ...mapGetters(['token', 'userInfo',])
     },
     methods: {
         ...mapActions([ 'handleTitle', 'cookieLogin']),
-        initLotteryTicket() {       //获取抽奖次数
-           this.userInfo.lottery_tickets && (this.lotteryTicket = this.userInfo.lottery_tickets)
-        },
-        mockDraw() {   
-            //模拟抽奖，用户未登录时使用
-            let deg, index = Math.random(1);
-            switch (true) {
-                case 0<= index < 1/6:   deg = 0; 
-                        break;
-                case 1/6<= index < 2/6: deg = 1;
-                        break;
-                case 2/6<= index < 3/6: deg = 2;
-                        break;
-                case 3/6<= index < 4/6: deg = 3;
-                        break;
-                case 4/6<= index < 5/6: deg = 4;
-                        break;
-                case 5/6<= index <= 1:  deg = 5;
-                        break;
-            }
-            return deg;
+        changeStatusAfterDraw( index=Math.floor(Math.random()) ) {  //默认为随机抽奖结果
+            //抽奖后状态改变
+            if (this.lotteryTicket > 0) this.lotteryTicket --;
+            this.isRotating = true;
+            this.$refs.turnplate.style = "";
+
+            // let final_rotate_deg = 360/this.prizeList.length * index;      //指针最终停止角度（奖品栏正中位置）
+            let final_rotate_deg = 360/10 * index;      //指针最终停止角度（奖品栏正中位置）
+            //转动6个整圈后 停在最终位置
+            let total_rotate_deg = 360*6 + final_rotate_deg;
+
+            setTimeout(()=>{              
+                this.$refs.turnplate.style = `transform: rotate(${total_rotate_deg}deg); transition: all 5s ease`
+            }, 30);
+            setTimeout(() => {
+                this.isRotating = false;
+                // this.toastParams.toast = true
+                if (!this.token) {
+                    Toast('您还未登录')
+                    setTimeout(() => {
+                        this.$router.push('/login')
+                    }, 3000);
+                    return;
+                }
+                this.toastParams.showToast = true
+                //积分-20
+
+            }, 5500);
         },
         startRotate() {
             this.hasOperatePage = true
@@ -136,9 +154,12 @@ export default {
                     className: 'popup'
                 })  
             }
-            if (this.lotteryTicket==0) { 
+            if (this.unaffordable) return Toast('您的积分不足');
+
+            if (this.lotteryTicket==0  && !this.noticeUser) { 
+                this.noticeUser = true
                 return Toast({
-                    message: '您今天抽奖次数用完了',
+                    message: '继续抽奖将耗费20积分每次',
                     position: 'middle',
                     duration: 3000
                 }) 
@@ -146,32 +167,29 @@ export default {
             let deg;
             
             if (!this.token) {      //未登录，模拟抽奖结果
-                deg = this.mockDraw();
+                this.changeStatusAfterDraw();   //随机抽奖结果
             } else {                //后端获取抽奖结果
-                // api.get('/lottery/getAwards').then( res => {
-                //     console.log(res)
-    
-                // })
-                deg = this.mockDraw();
+                this.axios.get('/lottery/getAwards', undefined, true).then( res => {
+                    if (res.code==200) {
+                        let result = res.data
+                        deg = result.sort 
+
+                        this.changeStatusAfterDraw(deg-1)
+                        this.toastSlot.name = result.prize
+                        this.toastSlot.pic = result.logo
+
+                        if (res.code.prize_type==3) {       //实物奖励
+                            this.toastParams.canleBtn = true
+                        } else {
+                            this.toastParams.canleBtn = false
+                        }
+                    } else if (res.code==201){          //积分不足
+                        this.unaffordable = true
+                        return Toast(res.msg)
+                    }
+                })
             }
-            //抽奖状态改变
-            this.lotteryTicket --;
-            this.isRotating = true;
-            this.$refs.turnplate.style = "";
 
-            let final_rotate_deg = 360/this.prizeList.length * deg;      //指针最终停止角度（奖品栏正中位置）
-            //转动6个整圈后 停在最终位置
-            let total_rotate_deg = 360*6 + final_rotate_deg;
-
-            setTimeout(()=>{              
-                this.$refs.turnplate.style = `transform: rotate(${total_rotate_deg}deg); transition: all 5s ease`
-            }, 30);
-            setTimeout(() => {
-                this.isRotating = false;
-
-                this.toastParams.toast = true
-                this.toastParams.showToast = true
-            }, 5500);
         },
         _handleClick(index) {
             if (index) {
@@ -197,12 +215,9 @@ export default {
 <style lang="scss" scoped>
 @import "../../common/css/index.scss";
 
-@keyframes turn {
-    from{ transform: rotate(0deg) };
-    to{ transform: rotate(360deg) }
-}
+
 .plate-rotate {
-    animation: 50s linear infinite turn;
+    @include animate-rotate(50s);
 }
 .draw {
     position: relative;
@@ -210,6 +225,9 @@ export default {
     background-image: url('../../common/images/global/bg-draw.jpg') ;
     background-size: 100% 100%;
     color: $text-color-w;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
     .turnplate-box { padding-top: 240px; }
     .turnplate {
         width: 547px;

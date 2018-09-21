@@ -165,4 +165,10 @@
 }
 
 
-// .test{ animation: move 6s ease-in-out infinite }
+@mixin animate-rotate($time) {
+    animation: $time linear infinite turn;
+    @keyframes turn {
+        from{ transform: rotate(0deg) };
+        to{ transform: rotate(360deg) }
+    }
+}

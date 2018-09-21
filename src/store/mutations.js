@@ -26,11 +26,12 @@ export default {
         
         let userInfo = {
             uname: data.nickname || data.username || data.passport,
-            score: data.score,
             uid: data.uid,
-            lottery_tickets: data.remain_times　
+            // lottery_tickets: data.remain_times　
         }
         state.token = payload.token         //token存储
+        state.score = data.score
+        state.lottery_tickets = data.remain_times
 
         for (let index in userInfo) {
             state.userInfo[index] = userInfo[index]
@@ -54,8 +55,19 @@ export default {
         sessionStorage.clear()
         localStorage.clear()
         clearAllCookie()
-        state.userInfo = null;
         state.token = null;
-    }
+        state.score = null;
+        for (var i in state.userInfo) {
+            state.userInfo[i] = null
+        }
+    },
+
+    //个人中心ajax获取到的数据
+    [types.SET_USERDATA] (state, payload) {
+        state.score = payload.data.score
+    },
+
+
+
 }
 

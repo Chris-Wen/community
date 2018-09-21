@@ -80,8 +80,8 @@ export function post(url, data) {
 }
 
 
-export function get(url, data) {
-    Indicator.open()
+export function get(url, data, hideLoading=false) {
+    if (!hideLoading) Indicator.open();
 
     return new Promise( (resolve, reject) => {
         axios.get( url, data).then(  response => {
@@ -138,11 +138,12 @@ export function upload(url, data) {
 
 
 
-function randomString(len = Math.ceil(Math.random()*10)) {
+function randomString(len = Math.ceil(Math.random()*10 + 1)) {
     let arr = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','0','1','2','3','4','5','6','7','8','9'];
     let str = "";
+    let size = arr.length-1;
     for (let i=0; i<len; i++) {
-        str += arr[Math.round(Math.random()*arr.length)];
+        str += arr[Math.floor(Math.random()*size +1)];
     }
     return str;
 }

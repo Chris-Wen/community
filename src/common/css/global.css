@@ -27,6 +27,17 @@ h2 { font-size: 14px;  /*no*/}
     flex-flow: row wrap;
     justify-content: space-evenly;
 }
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content:center;
+}
+.absolute-center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+}
 /* mint-ui  reset*/
 .popup span {
     margin: .3em 1em;

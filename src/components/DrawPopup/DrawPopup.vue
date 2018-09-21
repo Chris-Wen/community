@@ -12,13 +12,7 @@
         <div class="cover">
             <!-- 光束效果 -->
             <ul class="decoration-light">
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
+                <img src="../../common/images/global/light.png" style="max-width: 100%" alt="">
             </ul>
             <div class="container">
                <div class="popup-container">
@@ -28,10 +22,11 @@
                     </div>
                     <img src="../../common/images/global/cover.png">
                 </div> 
-                <div class="btn-group">
-                    <div @click="_handleClick(false)" :class="[{'active': showStyle=='leftBtn'}, selfClass]">{{leftBtn }}</div>
-                    <div @click="_handleClick(true)" :class="[{'active': showStyle=='rightBtn'}, selfClass]">{{rightBtn }}</div>
+                <div class="btn-group" v-if="showCancleBtn">
+                    <div @click="_handleClick(false)" :class="[ 'btn', {'active': showStyle=='leftBtn'}, selfClass]">{{leftBtn }}</div>
+                    <div @click="_handleClick(true)" :class="[ 'btn',{'active': showStyle=='rightBtn'}, selfClass]">{{rightBtn }}</div>
                 </div>
+                <div v-else class="btn-cancle btn " @click="_handleClick(false)">确定</div>
             </div>
         </div>
         
@@ -45,7 +40,8 @@ export default {
         leftBtn: { default: '取消' },
         rightBtn: { default: '确定' },
         selfClass: { default: '' },
-        showStyle: { default: 'rightBtn' }
+        showStyle: { default: 'rightBtn' },
+        showCancleBtn: { default: true, type: Boolean }
     },
     methods: {
         _handleClick(index) {
@@ -84,82 +80,53 @@ export default {
         position: absolute;     
         z-index: 5;
         @include background-image(url('../../common/images/icons/flash-star.png'));
+        animation: flash 1.5s ease-in-out infinite;
         width: 60px;
         height: 60px;
         &:nth-child(1) {
             top: 10%;
             left: 50%;
-            animation: flash 1.5s ease-in-out infinite;
+            animation-delay: 0.3s;
         }
         &:nth-child(2) {
             top: 16%;
             left: 11%;
             transform: scale(0.7);
-            animation: flash 1.2s ease-in-out infinite;
+            animation-delay: 0.5s;
         }
         &:nth-child(3) {
             top: 42%;
             left: 25%;
-            animation: flash 1.7s ease-in-out infinite;
+            animation-delay: 0.5s;
             transform: scale(0.9)
         }
         &:nth-child(4) {
             top: 46%;
             left: 70%;
-            animation: flash 1.6s ease-in-out infinite;
+            animation-delay: 0.7s;
             transform: scale(0.7)
         }
         &:nth-child(5) {
             top: 28%;
             left: 65%;
-            animation: flash 1.55s ease-in-out infinite;
+            animation-delay: 0.6s;
             transform: scale(0.7)
         }
         &:nth-child(6) {
             top: 20%;
             right: 7%;
-            animation: flash 1.9s ease-in-out infinite;
+            animation-delay: 0.1s;
             transform: scale(0.7)
         }
     }
     .cover {
         text-align: center;
         position: relative;
-        .decoration-light>li{
+        .decoration-light {
             position: absolute;
-            height: 500px;
-            width: 75px;
-            background: -webkit-gradient(linear, bottom, top, from(#FEDB2E), to(#543022)); 
-            background: linear-gradient(to top, #FEDB2E, #543022);
-            opacity: 0.7;
-            &:nth-child(1) {
-                transform: rotate(35deg) translateX(50px);
-                right: 0;
-            }
-            &:nth-child(2) {
-                transform: rotate(35deg) translateY(-100px);
-                right: 15%;
-            }
-            &:nth-child(3) {
-                transform: rotate(20deg) translateY(-150px);
-                right: 30%;
-            }
-            &:nth-child(4) {
-                transform: translateY(-150px);
-                right: 40%;
-            }
-            &:nth-child(5) {
-                transform: rotate(-5deg) translateY(-150px);
-                right: 60%;
-            }
-            &:nth-child(6) {
-                transform: rotate(-25deg) translateY(-100px);
-                right: 75%;
-            }
-            &:nth-child(7) {
-                transform: rotate(-35deg) translateX(-50px);
-                left: 0;
-            }
+            width: 100%;
+            text-align: center;
+            img { vertical-align: middle; transform: scale(1.2); @include animate-rotate(6s) }
         }
         .container {
             position: absolute;
@@ -190,7 +157,7 @@ export default {
                 font-size: $font-size-large;  /*no*/
                 line-height: 2em;
                 letter-spacing: 0.1em;
-                >img { width: 170px; @include border-radius(0.5em) }
+                >img { width: 170px; @include border-radius(0.5em); }
             }
             >img {
                 width: 100%;
@@ -202,21 +169,22 @@ export default {
             }
         }
     }
+    .btn { 
+            font-size: $font-size-normal;  /*no*/
+            background-color: #f25b51;
+            text-align: center;
+            letter-spacing: .2em;
+            @include border-radius(0.3em);
+     }
     .btn-group {
         width: 100%;
         margin-top: 30px;
         display: flex;
         justify-content: space-between;
         div {
-            display: inline-block;
-            width: 210px;
+            width: 180px;
             height: 80px;
             line-height: 80px;
-            font-size: $font-size-normal;  /*no*/
-            background-color: #f25b51;
-            text-align: center;
-            letter-spacing: .2em;
-            @include border-radius(0.3em);
             &.active { 
                 @include box-sizing;
                 border: 1px solid red;  /*no*/
@@ -224,6 +192,12 @@ export default {
             }
         }
     }
+    .btn-cancle {
+            width: 200px;
+            height: 70px;
+            margin: 30px auto 0;
+            line-height: 70px;
+        }
 }
 </style>
 
