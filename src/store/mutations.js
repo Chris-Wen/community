@@ -27,6 +27,7 @@ export default {
         let userInfo = {
             uname: data.nickname || data.username || data.passport,
             uid: data.uid,
+            avatar: data.avatar
             // lottery_tickets: data.remain_times　
         }
         state.token = payload.token         //token存储
@@ -36,9 +37,6 @@ export default {
         for (let index in userInfo) {
             state.userInfo[index] = userInfo[index]
         }
-        // state.userInfo.uname = userInfo.uname
-        // state.userInfo.score = userInfo.score
-        // state.userInfo.uid = userInfo.uid
 
         if (payload.token && userInfo) {
             sessionStorage.setItem('zd_access_token', JSON.stringify(payload.token))

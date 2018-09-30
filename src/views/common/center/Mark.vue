@@ -1,52 +1,63 @@
 <template>
     <div class="mark-page">
         <div class="flex-around tab">
-            <div :class="{ active: tab=='theme' }"  @click="changeTab('theme')">主题</div>
-            <div :class="{ active: tab=='reply' }" @click="changeTab('reply')">回复</div>
+            <div :class="{ 'active': tab=='theme' }"  @click="changeTab('theme')">主题</div>
+            <div :class="{ 'active': tab=='reply' }" @click="changeTab('reply')">回复</div>
         </div>
-        <ul v-if="tab=='reply'" class="list">
-            <li v-for="(item, index) in data" :key="index">
-                <div>
-                    <div class="item-top">
-                        <img :src="item.avatar" />    
-                         {{item.nickname}}
-                    </div> 
-                    <p>回复：{{item.reply}}</p>   
-                    <p>原帖：{{item.title}}</p>
-                    <div class="item-content">
-                        来自：{{item.form}}论坛   
-                        <span>{{item.time}}</span>
-                    </div>
-                </div>
-            </li>
-        </ul>
-        <ul class="list" v-else-if="tab='theme'"> 
-            <li v-for="(item, index) in data" :key="index">
-                <div>
-                    <div class="item-top theme">
-                        <img :src="item.avatar" />    
-                         {{item.nickname}}
-                        <span><i class="self-icon-bubbles2"></i> {{111}}</span>
-                        <span><i class="self-icon-eye"></i> {{111}}</span>
-                    </div> 
-                    <p>回复：{{item.reply}}</p>   
-                    <p>原帖：{{item.title}}</p>
-                    <div class="item-content">
-                        来自：{{item.form}}论坛   
-                        <span>{{item.time}}</span>
-                    </div>
-                </div>
-            </li>
-        </ul>
-        <div v-if="!data" class="none">
-            <img src="../../../common/images/icons/none.jpg">
-            <p>什么都没有</p>
+        <div v-if="tab=='reply'">
+            <ul class="list" v-if="data.reply.length>0"> 
+                <li v-for="(item, index) in data.reply" :key="index">
+                    <router-link tag="div" :to="'/forum/topic/'+ item.id">
+                        <div class="item-top">
+                            <img :src="userInfo.avatar || DefaultAvatar" />    
+                            {{userInfo.uname}}
+                        </div> 
+                        <p>回复：{{item.reply_num}}</p>   
+                        <p>原帖：{{item.title}}</p>
+                        <div class="item-content">
+                            来自：{{item.module==1 ? "交流讨论": "社区活动"}}论坛   
+                            <span>{{item.post_time | transformDate}}</span>
+                        </div>
+                    </router-link>
+                </li>
+            </ul>
+            <div v-else class="none">
+                <img :src="defaultError">
+                <p>什么都没有</p>
+            </div>
         </div>
+        <div v-if="tab=='theme'">
+            <ul class="list" v-if="data.post.length>0"> 
+                <li v-for="(item, index) in data.post" :key="index">
+                    <router-link tag="div" :to="'/forum/topic/'+ item.id">
+                        <div class="item-top theme">
+                            <img :src="userInfo.avatar || DefaultAvatar" />    
+                            {{userInfo.uname}}
+                            <span><i class="self-icon-bubbles2"></i> {{item.reply_num}}</span>
+                            <!-- <span><i class="self-icon-eye"></i> {{item.reply_num}}</span> -->
+                        </div> 
+                        <!-- <p>回复：{{item.reply_num}}</p>    -->
+                        <p>主题：{{item.title}}</p>
+                        <div class="item-content">
+                            来自：{{item.module==1 ? "交流讨论": "社区活动"}}论坛   
+                            <span>{{item.post_time | transformDate}}</span>
+                        </div>
+                    </router-link>
+                </li>
+            </ul>
+            <div v-else class="none">
+                <img :src="defaultError">
+                <p>什么都没有</p>
+            </div>
+        </div>
+
     </div>    
 </template>
 
 <script>
-import { mapMutations, mapActions } from 'vuex'
+
+import { mapMutations, mapActions, mapGetters } from 'vuex'
+import { formatDate } from 'common/js/tools'
 
 export default {
     data() {
@@ -56,41 +67,41 @@ export default {
                 showIcon: false
             },
             tab: 'theme',
-            data: '',
-            data1: [
-                { 
-                    avatar:　'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
-                    nickname: '我是谁我在哪', 
-                    reply: '我不知道你在说啥我不知道你在说啥我不知道你在说啥',
-                    title: '不知道是什么帖子的标题',
-                    form: '不知道哪来的帖子',
-                    time: '2018-05-30'
-                },
-                { 
-                    avatar:　'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg',
-                    nickname: '我是谁我在哪', 
-                    reply: '我不知道你在说啥我不知道你在说啥我不知道你在说啥',
-                    title: '不知道是什么帖子的标题',
-                    form: '不知道哪来的帖子',
-                    time: '2018-05-30'
-                }
-            ]
+            a: 1,
+            data: {
+                post: [],
+                reply: []
+            },
+            defaultError: require('../../../common/images/icons/none.jpg'),
         }
     },
-    methods: {
+    methods: {  
         ...mapActions([ 'handleTitle']),
-        changeTab (index) {
-            if (this.tab==index) return;
-            this.tab = index
-            this.data = this.data1      
-            // this.data = index=='reply' ? this.data1 : ''
-        }
+        changeTab (index) { this.tab = index },
+    },
+    created() {
+        this.axios.get("/member/getPostData")
+            .then( response => {
+                if (response.code==200) {
+                    var data = response.data
+                    this.data.post = data.post ? data.post : []
+                    this.data.reply = data.reply ? data.post : []
+                }
+            })
     },
     mounted() {
         this.handleTitle({
             title:    this.titleInfo.title, 
             showIcon: this.titleInfo.showIcon
         });
+    },
+    filters: {
+        transformDate(time) {
+            return formatDate(time, "yyyy-MM-dd")
+        }
+    },
+    computed:{
+        ...mapGetters(['userInfo'])
     }
 }
 </script>
@@ -130,7 +141,7 @@ export default {
                 .item-top {
                     color: black;
                     margin-bottom: 20px;
-                    font-weight: 800; 
+                    // font-weight: 800; 
                     img { vertical-align: middle; width: 35px; @include border-radius(50%); margin-right: 10px; display: inline-block; }
                 }
                 .theme {

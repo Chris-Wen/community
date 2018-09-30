@@ -9,6 +9,8 @@ import VueLazyload from 'vue-lazyload'
 import * as axios from 'api/api'
 Vue.prototype.axios = axios
 
+
+
 const DefaultLogo = require('common/images/icons/LOGO(1).png')
 Vue.prototype.DefaultLogo = DefaultLogo
 Vue.use(VueLazyload, {

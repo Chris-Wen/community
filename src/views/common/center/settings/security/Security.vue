@@ -2,23 +2,19 @@
     <div class="settings">
         
         <router-link tag="div" to="/center/settings/personal"  class="item-tab">
-            个人资料     
+            保密手机     
             <!-- <mt-badge v-if="unread" class="badge" type="error">{{unread}}</mt-badge> -->
             <i class=" self-icon-angle-right fa-lg "></i>
         </router-link>
 
         <router-link tag="div" to=""  class="item-tab">
-            账号安全     
+            保密邮箱     
             <i class=" self-icon-angle-right fa-lg "></i>
         </router-link>
         
-        <div  :class="['item-tab', {'active': msgIndex==3} ]">
-            隐私设置     
+        <div  class="item-tab">
+            修改密码     
             <i class=" self-icon-angle-right fa-lg "></i>
-        </div>
-
-        <div class="bottom-block">
-            <div class="bottom-btn" @click="changeUserState">{{token ? "退出登录": "登&nbsp;&nbsp;&nbsp;&nbsp;录"}}</div>
         </div>
     </div>    
 </template>

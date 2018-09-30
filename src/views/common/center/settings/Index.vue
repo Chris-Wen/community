@@ -7,15 +7,15 @@
             <i class=" self-icon-angle-right fa-lg "></i>
         </router-link>
 
-        <router-link tag="div" to=""  class="item-tab">
+        <router-link tag="div" to="/center/settings/security"  class="item-tab">
             账号安全     
             <i class=" self-icon-angle-right fa-lg "></i>
         </router-link>
         
-        <div  :class="['item-tab', {'active': msgIndex==3} ]">
-            隐私设置     
+        <router-link  tag="div" to="/shop/address" class="item-tab">
+            地址管理     
             <i class=" self-icon-angle-right fa-lg "></i>
-        </div>
+        </router-link>
 
         <div class="bottom-block">
             <div class="bottom-btn" @click="changeUserState">{{token ? "退出登录": "登&nbsp;&nbsp;&nbsp;&nbsp;录"}}</div>
@@ -25,7 +25,7 @@
 
 <script>
 import { mapMutations, mapActions, mapGetters } from 'vuex'
-import { hasClass, removeClass, setClientHeight } from 'common/js/dom'
+import { setClientHeight } from 'common/js/dom'
 
 export default {
     data() {

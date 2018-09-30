@@ -133,7 +133,7 @@ export default {
                 api.get("/member/dailySign").then( res =>{
                     if (res.code==200) {
                         this.isSigned = true
-                        this.serialCount ++
+                        this.serialCount = res.serial_count
                         this.calendar.forEach(array => {
                             let count = array.length;
                             for (let i=0; i<count; i++) {

@@ -4,7 +4,7 @@ import ShopDetails from '@/views/shop/Details'
 import ShopCart from '@/views/shop/Cart'
 import ShopStrategy from '@/views/shop/Strategy'
 import ManageAddress from '@/views/shop/ManageAddress'
-import NewAddress from '@/views/shop/NewAddress'
+// import NewAddress from '@/views/shop/NewAddress'
 import OrderConfirm from '@/views/shop/OrderConfirm'
 import OrderInfo from '@/views/shop/OrderInfo'
 
@@ -43,7 +43,7 @@ export const shopRoutes = [
         path: '/shop/new_address',
         name: 'new_address',
         meta: { requireAuth: true },
-        component: NewAddress
+        component: () => import('@/views/shop/NewAddress')
     },
     {
         path: '/order_confirm',

@@ -11,31 +11,31 @@ import { hasClass, removeClass, setClientHeight } from 'common/js/dom'
 export default {
     data() {
         return {
-            titleInfo: {
-                title: '账号安全',
-                showIcon: false,
-            },
-            msgIndex: 0,
+            // titleInfo: {
+            //     title: '账号安全',
+            //     showIcon: false,
+            // },
+            // msgIndex: 0,
         }
     },
     methods: {
-        ...mapActions([ 'handleTitle']),
-        // initTabStyle() {
-        //     let height = setClientHeight();
-        //     document.querySelector('.settings').style.minHeight = height +　'px'
-        // },
+        // ...mapActions([ 'handleTitle']),
+        initTabStyle() {
+            let height = setClientHeight();
+            document.querySelector('.settings').style.minHeight = height +　'px'
+        },
 
     },
     computed: {
-        ...mapGetters(['token'])
+        // ...mapGetters(['token'])
     },
     mounted() {
-        this.handleTitle({
-            title:    this.titleInfo.title, 
-            showIcon: this.titleInfo.showIcon
-        });
+        // this.handleTitle({
+        //     title:    this.titleInfo.title, 
+        //     showIcon: this.titleInfo.showIcon
+        // });
 
-        // this.$nextTick(()=> this.initTabStyle() )
+        this.$nextTick(()=> this.initTabStyle() )
     }
 }
 </script>

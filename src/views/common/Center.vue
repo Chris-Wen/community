@@ -12,8 +12,8 @@
                     <img src="../../common/images/icons/icon-sign.png" />
                     <p>签到</p> 
             </router-link>
-            <router-link  tag="li" to="/center/msg"> 
-                    <i class="badge">{{1}}</i>
+            <router-link  tag="li" :to="{path: '/center/msg', query: {system_count: tip.new_msg }}"> 
+                    <i class="badge" v-if="tip.new_msg">{{tip.new_msg}}</i>
                     <img style="margin-top: 15px;" class="spe-icon" src="../../common/images/icons/icon-msg.png" /> 
                     <p>消息</p>
             </router-link>
@@ -82,11 +82,16 @@ export default {
                 hideReturnIcon: true
             },
             data: [],
+            tip: ''
         }
     },
     created() {
-        this.getUserData();
         this.data = []
+        this.getUserData().then(response => {
+            if (response.code==200) {
+                this.tip = response.data.tip_summary
+            }
+        })
     },
     methods: {
         ...mapActions([ 'handleTitle', 'getUserData']),

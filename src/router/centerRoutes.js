@@ -2,7 +2,6 @@ import Message from '@/views/common/center/Message'
 import ToggleAccount from '@/views/common/center/ToggleAccount'
 import Mark from '@/views/common/center/Mark'
 import Repository from '@/views/common/center/Repository'
-import Record from '@/views/common/center/Record'
 import Recharge from '@/views/common/center/Recharge'
 import Friend from '@/views/common/center/friend/Friend'
 import FriendList from '@/views/common/center/friend/FriendList'
@@ -59,7 +58,7 @@ export const centerRoutes = [
         path: '/center/record',
         name: '签到',
         meta: { requireAuth: true },
-        component: Record
+        component: () => import('@/views/common/center/Record'),
     },
     {
         path: '/center/recharge',

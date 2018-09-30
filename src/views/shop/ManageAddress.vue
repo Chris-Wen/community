@@ -1,8 +1,8 @@
 <template>
-    <div class="address">
-        <ul v-if="addressData.length">
+    <div class="address" v-if="addressData">
+        <ul>
             <li v-for="(item, index) in addressData" :key="index" @touchstart="touchStart" @touchend="touchEnd">
-                <slider-delete @handleDelete="deleteItem(item.aid)" :index="index">
+                <slider-delete @handleDelete="deleteItem(item.aid, index)" :index="index">
                     <div class="item-content">
                         <div>
                             <p>姓名： <span>{{item.name}}</span></p>
@@ -12,17 +12,19 @@
                             </div>
                         </div>
                         <div class="item-bottom">
-                            <span @click="setDefaultAddress(item.aid)"> 
+                            <span @click="setDefaultAddress(item.aid, index, item.selected==1)"> 
                                 <i  name="check" class="fa-lg" :class="item.selected==1 ? 'self-icon-check-circle' : 'self-icon-circle-o'"></i> 
                                 默认地址
                             </span> 
-                            <router-link to="/shop/new_address"><i class="self-icon-pencil2"></i> 编辑</router-link>
+                            <router-link :to="{path: '/shop/new_address', query: { aid : item.aid }}">
+                                <i class="self-icon-pencil2"></i> 编辑
+                            </router-link>
                         </div>
                     </div>
                 </slider-delete>
             </li>
         </ul>
-        <div v-else class="default">
+        <div v-if="!addressData.length" class="default">
             <img src="../../common/images/shop/hold/home.jpg" alt="">
             <p>还没有收货地址呦!</p>
         </div>
@@ -44,11 +46,7 @@ export default {
                 showIcon: false,
                 showBottomTab: true
             },
-            addressData: [
-                {area: "朝阳区", city: "市辖区", province: "北京市", phone: "18812315645", address: "朝阳小区，张朝阳投资基地", aid: '35', name: '张朝阳', selected: '1'},
-                {area: "昌平区", city: "市辖区", province: "北京市", phone: "19915464522", address: "平昌小区，平川路张三丰故居平昌小区，平川路张三丰故", aid: '37', name: '张三丰', selected: '0'},
-                {area: "海淀区", city: "市辖区", province: "北京市", phone: "17712345624", address: "海定区海淀大厦1001", aid: '36', name: '张伟', selected: '0'}
-            ],
+            addressData: '',
             sliderDeleteParams: {
                 lastTouch: '',
                 targetTouch: ''
@@ -57,11 +55,28 @@ export default {
     },
     methods: {
         ...mapActions(['handleTitle']),
-        deleteItem(aid) {
-
+        deleteItem(aid, index) {
+            // this.addressData.splice(index, 1)
+            this.axios.post("/Mall/deleteAddress", {aid})
+                .then(response => {
+                    if (response.code == 200) {
+                        this.addressData.splice(index, 1)
+                    }
+                   Toast(response.msg)
+                })
         },
-        setDefaultAddress(aid) {
-            
+        setDefaultAddress(aid, index, isDefault) {
+            if (isDefault) return;
+            this.axios.post("/Mall/setDefaultAddress", {aid})
+                .then(response => {
+                    if (response.code == 200) {
+                        this.addressData.forEach(el => {
+                            el['selected'] = 0;
+                        });
+                        this.addressData[index]['selected'] = 1
+                    }
+                    Toast(response.msg)
+                })
         },
         touchStart(ev) {
             ev = ev || event;
@@ -75,6 +90,14 @@ export default {
                 removeClass(this.sliderDeleteParams.lastTouch.children[0].children[0], 'left-slider')
             }   
         }
+    },
+    created() {
+        this.axios.get("/Mall/getUserAddress")
+            .then(response => {
+                if (response.code == 200 && response.msg== "succ") {
+                    this.addressData = response.data;
+                } 
+        })
     },
     mounted() {
         this.handleTitle({

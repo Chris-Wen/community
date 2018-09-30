@@ -3,21 +3,17 @@
         
         <div @click="changeTab(1)" :class="['item-tab', {'active': msgIndex==1} ]">
             系统消息     
-            <mt-badge v-if="unread" class="badge" type="error">{{unread}}</mt-badge>
+            <mt-badge v-if="parseInt($route.query.system_count) " class="badge" type="error">{{$route.query.system_count}}</mt-badge>
             <i :class="[ msgIndex ==1 ? 'self-icon-angle-down' : 'self-icon-angle-right', 'fa-lg']"></i>
         </div>
         <div class="msg-container">
-            <ul v-if="msgIndex==1" class="content shrink-list" >
-                <li v-for="(item, index) in data" :key="index" @touchstart="touchStart" @touchend="touchEnd">
-                    <slider-delete>
-                        <div class="msg-list">
-                            <h2>消息标题消息标题消息标题消息标题</h2>
-                            <div class="msg">
-                                <p>消息内容消息内容消息内容消息内容消息内容消息内容消息内容</p>
-                            </div> 
-                            <p>{{'2018-05-29 12:30'}}</p>
-                        </div>
-                    </slider-delete>
+            <ul v-if="msgIndex==1 && systemMsg" class="content shrink-list" >
+                <li v-for="(item, index) in systemMsg" :key="index" >
+                    <div class="msg-list">
+                        <h2>{{item.title}}</h2>
+                        <div class="msg" v-html="item.content"></div> 
+                        <p>{{item.create_time | transformDate}}</p>
+                    </div>
                 </li>
             </ul>
         </div>
@@ -26,14 +22,12 @@
         <div class="msg-container"> 
            <ul v-if="msgIndex==2" class="content shrink-list">
                 <li>
-                    <slider-delete>
-                        <div class="msg-list">
-                            <h2>消息标题消息标题消息标题消息标题</h2>
-                            <div class="msg">
-                                <p>消息内容消息内容消息内容消息内容消息内容消息内容消息内容</p>
-                            </div> 
-                        </div>
-                    </slider-delete>
+                    <div class="msg-list">
+                        <h2>消息标题消息标题消息标题消息标题</h2>
+                        <div class="msg">
+                            <p>消息内容消息内容消息内容消息内容消息内容消息内容消息内容</p>
+                        </div> 
+                    </div>
                 </li>
             </ul> 
         </div>
@@ -42,14 +36,12 @@
         <div class="msg-container">
             <ul v-if="msgIndex==3" class="content shrink-list">
                 <li>
-                    <slider-delete>
-                        <div class="msg-list">
-                            <h2>消息标题消息标题消息标题消息标题</h2>
-                            <div class="msg">
-                                <p>消息内容消息内容消息内容消息内容消息内容消息内容消息内容</p>
-                            </div> 
-                        </div>
-                    </slider-delete>
+                    <div class="msg-list">
+                        <h2>消息标题消息标题消息标题消息标题</h2>
+                        <div class="msg">
+                            <p>消息内容消息内容消息内容消息内容消息内容消息内容消息内容</p>
+                        </div> 
+                    </div>
                 </li>
             </ul>
         </div>
@@ -59,11 +51,11 @@
 <script>
 import { Badge } from 'mint-ui'
 import { mapMutations, mapActions } from 'vuex'
-import SliderDelete from '../../../base/SliderDelete/SliderDelete'
 import { hasClass, removeClass, setClientHeight } from 'common/js/dom'
+import { formatDate } from 'common/js/tools'
 
 export default {
-    components: { SliderDelete, 'mt-badge': Badge },
+    components: { 'mt-badge': Badge },
     data() {
         return {
             titleInfo: {
@@ -76,7 +68,8 @@ export default {
                 targetTouch: ''
             },
             data: [1,2,3,4,5,6],
-            unread: 12
+            unread: 12,
+            systemMsg: ''
         }
     },
     methods: {
@@ -95,19 +88,25 @@ export default {
         changeTab (index, ev) {
             ev = ev || event;
             this.msgIndex = hasClass(ev.currentTarget, 'active') ? 0 : index
+
+            if (index == 1 && !this.systemMsg) {
+                this.axios.get("/member/getSystemMsg").then(response => {
+                    this.systemMsg = response.data
+                })
+            }
         },
-        touchStart(ev) {
-            ev = ev || event;
-            this.sliderDeleteParams.lastTouch = this.sliderDeleteParams.targetTouch;
-            this.sliderDeleteParams.targetTouch = ev.currentTarget;
-        },
-        touchEnd(ev) {
-            ev = ev || event;
-            //若上一个左滑项与当前触摸项不是同一个。上一个左滑项右滑，不再显示删除按钮
-            if ( this.sliderDeleteParams.lastTouch && (this.sliderDeleteParams.lastTouch !== this.sliderDeleteParams.targetTouch)) { 
-                removeClass(this.sliderDeleteParams.lastTouch.children[0].children[0], 'left-slider')
-            }   
-        } 
+        // touchStart(ev) {
+        //     ev = ev || event;
+        //     this.sliderDeleteParams.lastTouch = this.sliderDeleteParams.targetTouch;
+        //     this.sliderDeleteParams.targetTouch = ev.currentTarget;
+        // },
+        // touchEnd(ev) {
+        //     ev = ev || event;
+        //     //若上一个左滑项与当前触摸项不是同一个。上一个左滑项右滑，不再显示删除按钮
+        //     if ( this.sliderDeleteParams.lastTouch && (this.sliderDeleteParams.lastTouch !== this.sliderDeleteParams.targetTouch)) { 
+        //         removeClass(this.sliderDeleteParams.lastTouch.children[0].children[0], 'left-slider')
+        //     }   
+        // } 
     },
     mounted() {
         this.handleTitle({
@@ -115,9 +114,12 @@ export default {
             showIcon: this.titleInfo.showIcon
         });
 
-        setTimeout(() => {
-            this.initTabStyle()        
-        }, 20);
+        this.$nextTick().then(()=>{   this.initTabStyle()    })
+    },
+    filters: {
+        transformDate(time) {
+            return formatDate(time, "yyyy-MM-dd hh:mm")
+        }
     }
 }
 </script>

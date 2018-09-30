@@ -2,25 +2,25 @@
     <div class="new-address">
         <ul>
             <li>
-                <p><label for="name">收货人</label>：<input id="name" type="text" placeholder="请输入姓名"></p>  
+                <p><label for="name">收货人</label>：<input id="name" v-model="addressData.name" type="text" placeholder="请输入姓名"></p>  
             </li>
             <li>
-                <p><label for="phone">联系方式</label>：<input v-model.lazy="phone" id="phone" type="text" placeholder="请输入11位手机号"></p>
+                <p><label for="phone">联系方式</label>：<input v-model.lazy="addressData.phone" id="phone" type="text" placeholder="请输入11位手机号"></p>
             </li>
             <li class="selection">
                 <span>所在地区</span>：
-                <select name="province" v-model="selected.province" id="province">
+                <select name="province" v-model="addressData.province" id="province">
                     <option v-for="(val, index) in database.province" :value="index" :key="index">{{val}}</option>
                 </select>
-                <select name="city" v-model="selected.city" id="city">
+                <select name="city" v-model="addressData.city" id="city">
                     <option v-for="(val, index) in database.city" :value="index" :key="index">{{val}}</option>
                 </select>
-                <select name="area" v-model="selected.area" id="area">
-                    <option v-for="(val, index) in database.area" :value="index" :key="index">{{val}}</option>
+                <select name="area" v-model="addressData.area" id="area">
+                    <option v-for="(val, index) in database.area" :value="index" :key="index" >{{val}}</option>
                 </select>
             </li>
             <li>
-                <label for="address">详细地址</label>：<textarea id="address" rows="4" placeholder="请填写详细地址（如门牌号/楼层号，限100字）"></textarea>
+                <label for="address">详细地址</label>：<textarea id="address" rows="4" v-model="addressData.address" placeholder="请填写详细地址（如门牌号/楼层号，限100字）"></textarea>
             </li>
         </ul>
 
@@ -43,71 +43,94 @@ export default {
                 showIcon: false,
                 showBottomTab: true
             },
-            addressData: [
-                {area: "朝阳区", city: "市辖区", province: "北京市", phone: "18812315645", address: "朝阳小区，张朝阳投资基地", aid: '35', name: '张朝阳', selected: '1'},
-            ],
+            addressData: {
+                    area: '110101', 
+                    city: '110100', 
+                    province: '110000', 
+                    phone: "", 
+                    address: "", 
+                    aid: '', 
+                    name: '', 
+                    selected: ''
+                },
             sliderDeleteParams: {
                 lastTouch: '',
                 targetTouch: ''
             },
-            selected: {
-                province: 110000,
-                city: 110100,
-                area: 110101
-            },
-            database: {
+            database: {                 //具体地址选项数据
                 province: '',
                 city:　'',
                 area: ''
             },
-            phone: ''
         }
     },
     methods: {
         ...mapActions(['handleTitle']),
-        deleteItem(aid) {
-
-        },
-        setDefaultAddress(aid) {
-            
-        },
         _initAddressOption() {
+            var aid = this.$route.query.aid
+            if (aid) {        //已有地址编辑
+                this.titleInfo.title = "修改地址"
+                this.axios.get("/Mall/getAddressInfo?aid=" + aid)
+                    .then( response => {
+                        if (response.code == 200) {
+                            this.addressData = response.data
+                            this.addressData.province = response.data.province
+                            this.addressData.city = response.data.city
+                            this.addressData.area = response.data.area
+                        }
+                    })
+            } 
+            // 地址选项数据初始化
             this.database.province = addressDatabase['100000']
-            this.database.city = addressDatabase['110000']
-            this.database.area = addressDatabase['110100']
+            this.database.city = addressDatabase[this.addressData.province]
+            this.database.area = addressDatabase[this.addressData.city]
+
+            this.handleTitle({
+                title:  this.titleInfo.title,
+                showIcon: this.titleInfo.showIcon,
+                showBottomTab: this.titleInfo.showBottomTab
+            })
         },
         submit() {
-            console.log('submit')
+            if (!this.addressData.name || !this.addressData.phone || !this.addressData.address)  return Toast('请填写完整收货地址');
+
+            this.axios.post("/Mall/saveAddress", this.addressData)
+                .then( response => {
+                    if (response.code == 200) {
+                        let instance = Toast(response.msg);
+                        setTimeout(() => {
+                            instance.close();
+                            this.$router.go(-1)
+                        }, 2000);    
+                    } else {
+                        Toast(response.msg)
+                    } 
+                })
         }
     },
     mounted() {
-        this.handleTitle({
-            title:  this.titleInfo.title,
-            showIcon: this.titleInfo.showIcon,
-            showBottomTab: this.titleInfo.showBottomTab
-        })
 
         this._initAddressOption()
     },
     watch: {
-        'selected.province': function(newVal, oldVal) {
+        'addressData.province': function(newVal, oldVal) {
             let city = addressDatabase[newVal] || { "0": '暂无数据' }
             this.database.city = city
 
-            this.selected.city = Object.keys(city)[0]
-            if (this.selected.city==0) { this.selected.area = 0 }
+            // this.addressData.city = Object.keys(city)[0]
+            if (this.addressData.city==0) { this.addressData.area = 0 }
         },
-        'selected.city': function(newVal) {
+        'addressData.city': function(newVal) {
+            console.log(1)
             let area = addressDatabase[newVal] || { "0": '暂无数据' }
             this.database.area = area
 
-            this.selected.area = Object.keys(area)[0]  
-
+            // this.addressData.area = Object.keys(area)[0]  
         },
         phone: function(newVal) {
             let reg = /^1[3-9]\d{9}$/
             if (!newVal.match(reg)) {
-                console.log('弹窗手机号格式错误')
+                Toast('手机号格式错误')
             }
         }
     }

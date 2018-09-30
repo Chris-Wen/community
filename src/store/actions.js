@@ -34,9 +34,9 @@ export default {
     },
 
 
-    getUserData({commit}) {
+    getUserData({commit}) {             //个人中心汇总
         return new Promise((resolve, reject) => {
-            axios.get('/member/getUserData').then( response => {
+            axios.get('/member/index').then( response => {
                 let res = response.data
 
                 if (res.code==200) commit(types.SET_USERDATA, res)

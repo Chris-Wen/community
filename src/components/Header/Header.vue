@@ -13,7 +13,6 @@
 </template>
 
 <script>
-import 'font-awesome/css/font-awesome.css'
 import { mapState } from 'vuex'
 
 export default {

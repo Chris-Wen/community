@@ -12,13 +12,13 @@
         <div class="turnplate-box">
             <div style="position: relative">
                 <div :class="['turnplate', {'plate-rotate':!hasOperatePage}]">
-                    <div class="prize" ref="turnplate"></div>
+                    <div :class="['prize', prizeType==2 ? 'prize-image-2': 'prize-image-1' ]" ref="turnplate"></div>
                 </div>
                 <div class="btn-draw"  @click="startRotate"></div>
             </div>
         </div>
         
-        <div v-if="true" class="lottery-times">抽奖次数： {{lotteryTicket}}</div>
+        <div v-if="true" class="lottery-times">今日免费：{{lotteryTicket}}次</div>
         <div class="rule">
             <h1 class="rule-name">抽奖规则</h1>
             <div>
@@ -33,7 +33,9 @@
                     <p>（1）每天首次登陆，免费抽奖1次。</p>
                     <p>（2）连续签到3天，额外免费抽奖3次。</p>
                     <p>（3）可通过消耗商城积分进行抽奖，20积分每次。</p>
-                    <p>（4）抽奖次数达到30次，礼品池会刷新礼品类型。 </p>
+                    <p>（4）抽奖次数达到50次，礼品池会刷新礼品类型。 </p>
+                    <p>（5）抽中积分即刻到账；抽中虚拟物品请尽快使用，以免过期失效；抽中实物，点击【放弃】或在填写订单过程中出现关闭/返回等动作，视作放弃奖品。</p>
+                    <p>（6）抽奖活动最终解释权归本平台所有，抽奖结果以后台数据为准。</p>
                 </div>
             </div>    
         </div>
@@ -55,22 +57,23 @@ export default {
                 showIcon:   false
             },
             lotteryTicket: '',   //抽奖次数
-            prizeList: [
-                {
-                    img: '',            //奖品图片
-                    name: '奖品1',      //奖品名称
-                    isPrize: 1          //是否为奖品
-                },
-                {   img: '',  name: '奖品2',   isPrize: 1  },
-                {   img: '',  name: '奖品3',   isPrize: 1  },
-                {   img: '',  name: '奖品4',   isPrize: 1  },
-                {   img: '',  name: '奖品5',   isPrize: 1  },
-                {   img: '',  name: '未中奖',   isPrize: 0 },
-                {   img: '',  name: '未中奖',   isPrize: 0 },
-                {   img: '',  name: '未中奖',   isPrize: 0 },
-                {   img: '',  name: '未中奖',   isPrize: 0 },
-                {   img: '',  name: '未中奖',   isPrize: 0 }
-            ],
+            prizeType: 1,
+            // prizeList: [
+            //     {
+            //         img: '',            //奖品图片
+            //         name: '奖品1',      //奖品名称
+            //         isPrize: 1          //是否为奖品
+            //     },
+            //     {   img: '',  name: '奖品2',   isPrize: 1  },
+            //     {   img: '',  name: '奖品3',   isPrize: 1  },
+            //     {   img: '',  name: '奖品4',   isPrize: 1  },
+            //     {   img: '',  name: '奖品5',   isPrize: 1  },
+            //     {   img: '',  name: '未中奖',   isPrize: 0 },
+            //     {   img: '',  name: '未中奖',   isPrize: 0 },
+            //     {   img: '',  name: '未中奖',   isPrize: 0 },
+            //     {   img: '',  name: '未中奖',   isPrize: 0 },
+            //     {   img: '',  name: '未中奖',   isPrize: 0 }
+            // ],
             isRotating: false,
             toastParams: {
                 showToast: false,
@@ -94,6 +97,7 @@ export default {
                     var data = response.data
                     this.lotteryTicket = data.remain_times
                     // this.score = data.score
+                    if (data.prize_type==2) this.prizeType = 2
                 } 
             })
         } else {                    //非登录状态，使用cookie登录，cookie失效，则提示未登录
@@ -177,6 +181,9 @@ export default {
                         this.changeStatusAfterDraw(deg-1)
                         this.toastSlot.name = result.prize
                         this.toastSlot.pic = result.logo
+                        if (result.prize_table==2) {    //切换抽奖图
+                            this.prizeType = 2
+                        }
 
                         if (res.code.prize_type==3) {       //实物奖励
                             this.toastParams.canleBtn = true
@@ -239,7 +246,15 @@ export default {
         .prize {
             width: 100%;
             height: 100%;
+            // @include background-image(url('../../common/images/global/turnplate.png'));
+            // background-size: 436px 436px;
+        }
+        .prize-image-1 {
             @include background-image(url('../../common/images/global/turnplate.png'));
+            background-size: 436px 436px;
+        }
+        .prize-image-2 {
+            @include background-image(url('../../common/images/global/turnplate1.png'));
             background-size: 436px 436px;
         }
     }
