@@ -77,7 +77,7 @@ export default {
             isRotating: false,
             toastParams: {
                 showToast: false,
-                leftBtn: '存入仓库',
+                leftBtn: '放弃领奖',
                 rightBtn: '申请邮寄',
                 canleBtn: true,
             },
@@ -88,6 +88,7 @@ export default {
             hasOperatePage: false,      //正在进行抽奖操作
             noticeUser: false,          //通知用户将使用积分进行抽奖
             unaffordable: false,        //用户积分不足
+            getPrizeId: '',             //获奖记录id，用于奖励为实物或虚拟物品的后续操作
         }
     },
     created() {
@@ -162,7 +163,7 @@ export default {
 
             if (this.lotteryTicket==0  && !this.noticeUser) { 
                 this.noticeUser = true
-                return Toast({
+                Toast({
                     message: '继续抽奖将耗费20积分每次',
                     position: 'middle',
                     duration: 3000
@@ -185,8 +186,19 @@ export default {
                             this.prizeType = 2
                         }
 
-                        if (res.code.prize_type==3) {       //实物奖励
+                        if (res.data.prize_type>=3) {       //实物、虚拟物品奖励
                             this.toastParams.canleBtn = true
+                            this.getPrizeId = res.data.prize_id
+                            if (res.data.prize_type==3) {
+                                this.toastParams.leftBtn = "放弃领取"
+                                this.toastParams.rightBtn = "申请邮寄"
+                            } 
+
+                            if (res.data.prize_type==4) {
+                                this.prize_type = "丢弃物品"
+                                this.toastParams.rightBtn = "存入仓库"
+                            }
+
                         } else {
                             this.toastParams.canleBtn = false
                         }
@@ -201,12 +213,17 @@ export default {
         _handleClick(index) {
             if (index) {
                 console.log('确定操作')
+                if (this.toastParams.rightBtn=="申请邮寄") {
+                    this.$router.push({path:"/order_confirm", query:{prize_record_id: this.getPrizeId} })
+                } else if (this.toastParams.rightBtn=="存入仓库"){
+                    this.axios.get("/lottery/changePrizeState?getPrizeId="+this.getPrizeId)
+                            .then(response => {})
+                }
             } else {
-                console.log('暂存操作')
+                setTimeout(() => {
+                    this.toastParams.showToast = false
+                }, 800);
             }
-            setTimeout(() => {
-                this.toastParams.showToast = false
-            }, 800);
         }, 
     },
     mounted() {     

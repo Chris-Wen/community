@@ -47,9 +47,6 @@ export default {
         _handleClick(index) {
             this.$emit('handleClick', index)
         },
-        _cancle() {
-            this.$emit('cancle')
-        }
     }
 }
 </script>

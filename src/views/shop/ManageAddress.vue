@@ -1,5 +1,5 @@
 <template>
-    <div class="address" v-if="addressData">
+    <div class="address" >
         <ul>
             <li v-for="(item, index) in addressData" :key="index" @touchstart="touchStart" @touchend="touchEnd">
                 <slider-delete @handleDelete="deleteItem(item.aid, index)" :index="index">
@@ -24,8 +24,8 @@
                 </slider-delete>
             </li>
         </ul>
-        <div v-if="!addressData.length" class="default">
-            <img src="../../common/images/shop/hold/home.jpg" alt="">
+        <div v-if="empty" class="default">
+            <img :src="NON_ICON" >
             <p>还没有收货地址呦!</p>
         </div>
         <router-link to="/shop/new_address" class="new"> ＋ 新建地址 </router-link>
@@ -47,6 +47,7 @@ export default {
                 showBottomTab: true
             },
             addressData: '',
+            empty: false,
             sliderDeleteParams: {
                 lastTouch: '',
                 targetTouch: ''
@@ -96,7 +97,9 @@ export default {
             .then(response => {
                 if (response.code == 200 && response.msg== "succ") {
                     this.addressData = response.data;
-                } 
+                } else if (response.msg == "empty"){
+                    this.empty = true
+                }
         })
     },
     mounted() {

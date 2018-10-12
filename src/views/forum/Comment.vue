@@ -3,7 +3,7 @@
         <!-- 页面内容、帖子主题 -->
         <div class="comment">
             <div class="comment-top">
-                <div> <router-link to="/center/friend/info"> <img :src="commentList.avatar || DefaultAvatar"></router-link> </div>
+                <div> <router-link :to="{path: '/center/friend/info', query: {uid: commentList.uid}}"> <img :src="commentList.avatar || DefaultAvatar"></router-link> </div>
                 <div>
                     <p>{{commentList.nickname || commentList.username}}</p>
                     <p>{{commentList.reply_time | formatDate}}</p>
@@ -19,7 +19,7 @@
             <ul v-if="commentList">
                 <li v-for="(item, index) in commentList.reply" :key="index">
                     <div class="item">
-                        <div> <router-link to="/center/friend/info"> <img :src="item.avatar || DefaultAvatar"></router-link> </div>
+                        <div> <router-link :to="{path: '/center/friend/info', query: {uid: item.uid}}"> <img :src="item.avatar || DefaultAvatar"></router-link> </div>
                         <div>
                             <div style="font-size:12px">
                                 <p>{{item.nickname || item.username}}</p>

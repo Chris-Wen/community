@@ -1,39 +1,33 @@
 <template>
-    <div class="friend-info">
-        <div class="top">
+    <div class="friend-info" v-if="data">
+        <div class="top" >
             <div></div>
             <div class="info">
-                <img src="http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg" alt="">
-                <h1>昵称昵称昵称昵称昵称昵称昵称</h1>
+                <img :src="data.user.avatar ? (HOST + data.user.avatar) : DefaultAvatar" >
+                <h1>{{data.user.nickname || data.user.username}}</h1>
                 <div>
-                    <span>关注：{{0}} </span> <span>粉丝：{{0}}</span> <span>发帖：{{0}}</span>
+                    <span>关注：{{data.user.idol}} </span> <span>粉丝：{{data.user.fans}}</span> <span>发帖：{{data.user.posting}}</span>
                 </div>
+                <br>
+                <span @click="attention" class="attention-btn color-grad-btn">关注</span>
             </div>
         </div>   
         <div class="content">
-            <p>他的主题贴</p>
-            <div v-if="data.length" class="main">
+            <p>他的主题贴 </p>
+            <div v-if="data.post" class="main">
                 <ul>
-                    <li>
-                        <p>[分区] 内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容</p>
+                    <router-link tag="li" :to="'/forum/topic/'+item.id" v-for="(item, index) in data.post" :key="index">
+                        <p>{{item.title}}</p>
                         <div>
-                            来自<i>{{'社区活动'}}</i>板块
-                            <span><i class="self-icon-comment-o"></i> {{120}}</span>
-                            <span><i class="self-icon-eye"></i> {{111}}</span>
+                            来自<i>{{item.module == 1 ? '交流讨论' : '社区活动'}}</i>板块
+                            <span><i class="self-icon-comment-o"></i> {{item.reply_num}}</span>
+                            <!-- <span><i class="self-icon-eye"></i> {{111}}</span> -->
                         </div>
-                    </li>
-                    <li>
-                        <p>[分区] 内容内容内容内容内容内容内容内容内容内容内容内</p>
-                        <div>
-                            来自<em>{{'社区活动'}}</em>板块
-                            <span><i class="self-icon-comment-o"></i> {{120}}</span>
-                            <span><i class="self-icon-eye"></i> {{111}}</span>
-                        </div>
-                    </li>
+                    </router-link>
                 </ul>
             </div>
             <div class="none" v-else>
-                <img src="../../../../common/images/icons/none.jpg">
+                <img :src="NON_ICON">
                 <p>什么都没有</p>
             </div>
         </div> 
@@ -41,10 +35,32 @@
 </template>
 
 <script>
+import { mapMutations, mapActions } from 'vuex'
+
 export default {
     data() {
         return {
-            data: [1,2,4]
+            data: ''
+        }
+    },
+    created() {
+        var uid = this.$route.query.uid
+        if (uid) {
+            this.axios.get("/Member/friendInfo?uid="+ uid)
+                .then(response => {
+                    if (response.code==200) {
+                        this.data = response.data
+                        let username = response.data.user.nickname || response.data.user.username
+
+                        if (username) this.handleTitle({ title: username });
+                    }
+                })
+        }
+    },
+    methods: {
+        ...mapActions([ 'handleTitle']),
+        attention() {
+
         }
     }
 }
@@ -54,6 +70,7 @@ export default {
 @import "../../../../common/css/index.scss";
 
 .friend-info {
+    @include color-background;
     .top {
         text-align: center;
         >div:first-child { 
@@ -62,7 +79,8 @@ export default {
         }
         .info {
             position: relative;
-            padding: 45px 0;
+            padding-top: 45px;
+            margin-bottom: 10px;
             img { 
                 position: absolute;
                 margin: auto;
@@ -78,6 +96,10 @@ export default {
                 display: flex;
                 justify-content: center;
                 span { margin: 0 10px; }
+                margin-bottom: 30px;
+            }
+            .attention-btn {
+                padding: .2em 1em;
             }
         }
     }
@@ -86,6 +108,7 @@ export default {
             text-indent: 1em;
             border-bottom: 1px solid $border-color-d;  /*no*/
             line-height: 2em;
+            font-weight: 600;
         }
         .main {
             ul li {
@@ -111,9 +134,9 @@ export default {
             }
         }
         .none {
-            padding-top: 75px;
+            padding: 50px 0 30px;
             text-align: center;
-            color: $text-color-ll;  /*no*/
+            color: $text-color-l;  /*no*/
             img { width: 165px; }
             p { margin-top: 15px; }
         }

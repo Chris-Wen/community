@@ -1,18 +1,23 @@
 <template>
     <div class="order-confirm" v-if="data">
         <!-- 支付弹窗 -->
-        <div v-if="paymentToastShow" class="mask payment-mask" @click="canclePayment">
+        <div v-if="paymentToastShow" class="mask payment-mask" @click.self="canclePayment">
             <div class="payment-toast">
-                <div>收银台</div>
-                <div class="item-price">
-                    <i class="zd-icon-score"></i> <span>{{8888}}</span> <span>+ ￥{{888}}</span>
+                <div class="large-font-size">收银台</div>
+                <!-- 抽奖奖品信息 -->
+                <div class="item-price" v-if="$route.query.prize_record_id">
+                    <font color="red" >￥<span class="large-font-size">12</span> </font>
                 </div>
-                <ul>
-                    <li>
-                        <img src="" /> <span>支付宝支付</span> <i class="self-icon-check-o"></i>
+                <!-- 积分商品信息 -->
+                <div class="item-price" v-else>
+                    <i class="zd-icon-score"></i> <span>{{8888}}</span> <span class="large-font-size">+ ￥{{888}}</span>
+                </div>
+                <ul class="pay-method">
+                    <li class="flex-between" @click.stop="paymethod=1">
+                        <span><img src="../../common/images/shop/icons/alipay.jpg" /> 支付宝支付</span> <i :class="paymethod==1 ? 'self-icon-check-circle' : 'self-icon-circle-o'"></i>
                     </li>
-                    <li>
-                        <img src="" /> <span>微信支付</span> <i class="self-icon-check-o"></i>
+                    <li class="flex-between" @click.stop="paymethod=2">
+                        <span><img src="../../common/images/shop/icons/wechat.jpg" /> 微信支付</span> <i :class="paymethod==2 ? 'self-icon-check-circle' : 'self-icon-circle-o'"></i>
                     </li>
                 </ul>
                 <div class="payment color-grad-btn" @click="showPayment">立即付款</div>
@@ -22,22 +27,36 @@
         <div class="main">
             <div @click="selectAddress" class="top"> 选择收货地址 <i class="self-icon-angle-right"></i></div>
             <div class="address-info">
-                <ul v-if="true">
+                <ul v-if="data.address">
                     <li>
-                        <em>姓名：</em> <span>{{'王尼玛'}}</span>
+                        <em>姓名：</em> <span>{{data.address.name}}</span>
                     </li>
                     <li>
-                        <em>手机：</em><span>{{'18723456411'}}</span>
+                        <em>手机：</em><span>{{data.address.phone}}</span>
                     </li>
                     <li>
-                        <em>地址：</em> <div>浙江省杭州市滨江区 滨盛路17777号萧宏大厦19楼浙江省杭州市滨江区 滨盛路17777号萧宏大厦19楼</div>
+                        <em>地址：</em> <div>{{data.address.province + data.address.city + data.address.area + data.address.address}}</div>
                     </li>
                 </ul>
-                <div v-else>还没有地址呦！去新建</div>
+                <div style="color:#666; text-align:center" v-if="data.order && !data.address">
+                    <img :src="NON_ICON" >
+                    <p>还没有地址默认收货地址！</p> 
+                </div>
             </div>
             <div class="goods-info">
-                <ul>
-                    <li v-for="(item, key) in data.goods" :key="key">
+                <ul v-if="$route.query.prize_record_id">
+                   <li v-if="data.order">
+                        <div><img :src="HOST + data.order.logo" /></div>
+                        <div>
+                            <h2>{{data.order.prize}}</h2>
+                            <p class="refer">{{data.order.describe}}</p>
+                            <!-- <p class="refer">市场参考价：{{8888 +'元'}}</p> -->
+                            <span> x 1 </span>
+                        </div>
+                    </li>
+                </ul>
+                <ul v-if="false">
+                    <li v-for="(item, key) in data.order" :key="key">
                         <div><img :src="item.pic" /></div>
                         <div>
                             <h2>{{item.title}}</h2>
@@ -47,10 +66,10 @@
                         </div>
                     </li>
                 </ul>
-                <p>运费： <span>{{'15元'}}</span></p>
+                <p v-if="$route.query.prize_record_id">运费： <span>12元</span></p>
             </div>
         </div>
-        <div class="btn-pay color-grad-btn">立即支付</div>
+        <div class="btn-pay color-grad-btn" @click="payNow">立即支付</div>
         
     </div>
 </template>
@@ -69,25 +88,51 @@ export default {
                 showBottomTab: true
             },
             data: {
-                goods: [
-                    {id: 1, price: 123, number: 1, score: 1000 , title: '银杏叶片', pic: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg'},
-                    {id: 2, price: 9.99, number: 19, score: 2000 , title: '伊利股份', pic: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg'},
-                ]
-            },       
-            paymentToastShow: false
+                address: '',
+                order: ''
+            },      
+            paymentToastShow: true,
+            paymethod: 1,       //付款方式  1：支付宝 2：微信
         }
     },
     methods: {
         ...mapActions(['handleTitle']),
         submit() { console.log("跳转页面结算") },
         selectAddress() {           //选择地址
-
+            if (this.$route.query.prize_record_id) {         //奖品兑换通道
+                this.$router.push({
+                    path: '/shop/address_list',
+                    query: {redirect: this.$route.fullPath} 
+                })
+            }
         },
         canclePayment() {           //取消支付弹窗
             this.paymentToastShow = false
         },
         showPayment() {
             this.paymentToastShow = true
+        },
+        payNow() {          //立即支付动作  支付窗口弹窗动作
+            console.log("支付窗口弹窗动作")
+            if (!this.data.address) return Toast('无收货地址，无法提交订单') 
+            //  兑奖情况提交订单
+            if (this.$route.query.prize_record_id) {
+                
+            } else {            //积分商品付款
+
+            }
+            this.paymentToastShow = true
+        }
+    },
+    created() {
+        let prize_id = this.$route.query.prize_record_id
+        let address_id = this.$route.query.address_id
+        if (prize_id) {
+            var url = "/payment/getOrderInfo?prize_id="+ prize_id
+            url += address_id ? ('&address_id=' + address_id) : ''
+            this.axios.get(url).then( response => {
+                    this.data = response.data
+                })
         }
     },
     mounted() {
@@ -98,9 +143,6 @@ export default {
             link:   this.titleInfo.link,
             showBottomTab: this.titleInfo.showBottomTab
         })
-    },
-    watch: {
-
     }
 }
 </script>
@@ -154,7 +196,6 @@ export default {
                             @include box-sizing;
                             h2 { @include no-wrap; }
                             p {
-                                i {  }
                                 span {
                                     &:nth-of-type(1) {
                                         color: $text-color-orange;
@@ -178,6 +219,39 @@ export default {
         }
     }
     .color-grad-btn { height: 65px; margin-top: 15px; line-height: 65px; font-size: $font-size-normal; /*no*/ } 
+    .payment-toast {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background: #fff;
+        text-align: center;
+        .large-font-size { font-size: 1.45em; font-weight: 800;}
+        >div {
+            &:first-child { height: 75px; font-weight: 800; line-height: 75px;}
+            &.item-price {
+                height: 125px;
+                line-height: 125px;
+                border-top: 1px solid $text-color-ll;  /*no*/
+            }
+        }
+        .pay-method {
+            border-top: 8px solid $text-color-ll;        /*no*/
+            border-bottom: 8px solid $text-color-ll;        /*no*/
+            img { width: 66px; margin-right: 1.5em; }
+            li {
+                padding: 0 60px;
+                height: 100px;
+                line-height: 100px;
+                &:first-child { border-bottom: 1px solid $text-color-ll; /*no*/}
+            }
+            i {
+                font-size: 1.35em;
+                color: $text-color-ll;
+                &.self-icon-check-circle { color: orange; }
+            }
+        }
+        .payment { margin: 0; }
+    }
 }
 </style>
 

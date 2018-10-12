@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import Draw from '@/views/common/Draw'
-import Center from '@/views/common/Center'
-import Login from '@/views/common/Login'
-import Register from '@/views/common/Register'
+// import Draw from '@/views/common/Draw'
+// import Center from '@/views/common/Center'
+// import Login from '@/views/common/Login'
+// import Register from '@/views/common/Register'
 // import Test from '@/views/common/test'
 
 import { shopRoutes } from './shopRoutes.js'
@@ -28,19 +28,19 @@ const routes = [
   // },
   {
     path: '/draw',
-    component: Draw
+    component: () => import('@/views/common/Draw')
   },
   {
     path: '/center',
-    component: Center
+    component: () => import('@/views/common/Center')
   },
   {
     path: '/login',
-    component: Login
+    component: () => import('@/views/common/Login')
   },
   {
     path: '/register',
-    component: Register
+    component: () => import('@/views/common/Register')
   },
   {
     path: '/editor',

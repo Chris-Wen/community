@@ -18,7 +18,7 @@
             <div class="theme" v-if="topic">
                 <h1> {{topic.title}} </h1>
                 <div class="theme-top">
-                    <router-link to="/center/friend/info" tag="div"> 
+                    <router-link :to="{path: '/center/friend/info', query: {uid: topic.uid}}" tag="div"> 
                         <img :src="topic.avatar || DefaultAvatar" />
                     </router-link>
                     <div>
@@ -49,7 +49,7 @@
                 <ul>
                     <li v-for="(item, index) in commentList" :key="index">
                         <div class="item">
-                            <div> <router-link :to="'/center/friend/info/'+ item.uid"> <img :src="item.avatar || DefaultAvatar"></router-link> </div>
+                            <div> <router-link :to="{path: '/center/friend/info', query: {uid: item.uid}} "> <img :src="item.avatar || DefaultAvatar"></router-link> </div>
                             <div>
                                 <div>
                                     <div class="more" @click="showMenu(index)">
@@ -69,7 +69,7 @@
                                         <!-- 二级评论 -->
                                         <ul class="reply" v-if="item.reply_num>0">
                                             <li v-for="(val, key) in item.second_reply_data" :key="key" @click.stop.capture="replyComment(item.rid, val.uid, val.nickname || val.username)">
-                                                <router-link :to="'/center/friend/info/'+val.uid"><font color="lightblue">{{val.nickname || val.username}}</font></router-link>:
+                                                <router-link :to="{path: '/center/friend/info', query: {uid: val.uid}}"><font color="lightblue">{{val.nickname || val.username}}</font></router-link>:
                                                 <span >回复<a v-if="val.target_uid !== item.uid" href="javascript:;"> {{val.target_uname}}</a>：</span>
                                                 <span class="article-content" v-html="transfromEmoji(val.content)"></span> 
                                             </li>

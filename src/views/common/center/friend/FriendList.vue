@@ -5,7 +5,7 @@
         </div>
         <ul class="list">
             <li>
-                <img src="http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg" alt="">
+                <img :src="DefaultAvatar" alt="">
                 <div class="content">
                     <router-link tag="div" to="/center/friend/info">
                         <h1>{{'昵称昵称昵称昵称昵称昵称昵称'}}</h1>
@@ -17,7 +17,7 @@
                 </div>
             </li>
             <li>
-                <img src="http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg" alt="">
+                <img :src="DefaultAvatar" alt="">
                 <div class="content">
                     <router-link tag="div" to="/center/friend/info">
                         <h1>{{'昵称昵称昵称昵称昵称昵称昵称'}}</h1>
@@ -29,7 +29,7 @@
                 </div>
             </li>
             <li>
-                <img src="http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172657362.jpg" alt="">
+                <img :src="DefaultAvatar" alt="">
                 <div class="content">
                     <router-link tag="div" to="/center/friend/info">
                         <h1>{{'昵称昵称昵称昵称昵称昵称昵称'}}</h1>
@@ -45,8 +45,30 @@
 </template>
 
 <script>
+import { mapMutations, mapActions } from 'vuex'
 export default {
-    
+    data() {
+        return {
+            titleInfo: {
+                title: '我的好友',
+                showBottomTab: true
+                // showIcon: false,
+                // icon: 'self-icon-headphones fa-lg',
+                // link: '/',
+            },
+        }
+    },
+    methods: {
+        ...mapActions(['handleTitle']),
+    },
+    mounted() {
+        this.$nextTick().then(()=>{
+            this.handleTitle({
+                title: this.titleInfo.title,
+                showBottomTab: this.titleInfo.showBottomTab
+            })
+        })
+    }
 }
 </script>
 
