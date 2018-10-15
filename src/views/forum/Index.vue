@@ -1,10 +1,10 @@
 <template>
     <div class="forum-index">
         <div class="top-tab" id="forumTab">
-            <p :class="{ active: showIndex=='index' }" > <router-link to="/forum">交流讨论</router-link> </p>
-            <p :class="{ active: showIndex=='activity' }" ><router-link to="/forum/activity">社区活动</router-link></p>
-            <p :class="{ active: showIndex=='news' }" ><router-link to="/forum/news">掌动爆料站</router-link> </p>
-            <p :class="{ active: showIndex=='game' }" ><router-link to="/forum/game">新游推荐</router-link></p>
+            <p :class="{ 'active': showIndex=='index' }" > <router-link to="/forum">交流讨论</router-link> </p>
+            <p :class="{ 'active': showIndex=='activity' }" ><router-link to="/forum/activity">社区活动</router-link></p>
+            <p :class="{ 'active': showIndex=='news' }" ><router-link to="/forum/news">掌动爆料站</router-link> </p>
+            <p :class="{ 'active': showIndex=='game' }" ><router-link to="/forum/game">新游推荐</router-link></p>
         </div>
         <!-- <scroll class="view" :data="datalist"> -->
             <transition name="slide-fade">
@@ -38,16 +38,16 @@ export default {
     methods: {
         ...mapActions([ 'handleTitle']),
         _initTabStatus () {
-                let url = window.location.href,  page, showEditIcon=true;
+                let url = this.$route.fullPath,  page, showEditIcon=true;
 
                 switch(true) {
-                    case /\/#\/forum\/activity/.test(url):    page = 'activity';
+                    case /forum\/activity/.test(url):    page = 'activity';
                         break;
-                    case /\/#\/forum\/news/.test(url):    page = 'news';  showEditIcon = false;
+                    case /forum\/news/.test(url):    page = 'news';  showEditIcon = false;
                         break;
-                    case /\/#\/forum\/game/.test(url):    page = 'game';  showEditIcon = false;
+                    case /forum\/game/.test(url):    page = 'game';  showEditIcon = false;
                         break;
-                    case /\/#\/forum/.test(url):   page = 'index';  
+                    case /forum/.test(url):   page = 'index';  
                         break;
                 }
                 if (page) this.showIndex = page
@@ -98,7 +98,7 @@ export default {
             font-weight: 500;
             a, a:visited { color: black }
             &.active {
-                a { color: $text-color-orange; }
+                a { color: $text-color-orange !important; }
                 font-weight: 800;
             }
         }

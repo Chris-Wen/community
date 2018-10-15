@@ -18,9 +18,12 @@
             <div class="theme" v-if="topic">
                 <h1> {{topic.title}} </h1>
                 <div class="theme-top">
-                    <router-link :to="{path: '/center/friend/info', query: {uid: topic.uid}}" tag="div"> 
+                    <router-link v-if="userInfo.uid !== topic.uid" :to="{path: '/center/friend/info', query: {uid: topic.uid}}" tag="div"> 
                         <img :src="topic.avatar || DefaultAvatar" />
                     </router-link>
+                    <div v-else> 
+                        <img :src="topic.avatar || DefaultAvatar" />
+                    </div>
                     <div>
                         <div class="more" @click=" showTopDrop = !showTopDrop ">
                             <i class="self-icon-more_horiz fa-lg"></i>
@@ -49,7 +52,10 @@
                 <ul>
                     <li v-for="(item, index) in commentList" :key="index">
                         <div class="item">
-                            <div> <router-link :to="{path: '/center/friend/info', query: {uid: item.uid}} "> <img :src="item.avatar || DefaultAvatar"></router-link> </div>
+                            <div> 
+                                <router-link v-if="userInfo.uid !== item.uid" :to="{path: '/center/friend/info', query: {uid: item.uid}} "> <img :src="item.avatar || DefaultAvatar"></router-link> 
+                                <a v-else> <img :src="item.avatar || DefaultAvatar"></a> 
+                            </div>
                             <div>
                                 <div>
                                     <div class="more" @click="showMenu(index)">
@@ -69,7 +75,11 @@
                                         <!-- 二级评论 -->
                                         <ul class="reply" v-if="item.reply_num>0">
                                             <li v-for="(val, key) in item.second_reply_data" :key="key" @click.stop.capture="replyComment(item.rid, val.uid, val.nickname || val.username)">
-                                                <router-link :to="{path: '/center/friend/info', query: {uid: val.uid}}"><font color="lightblue">{{val.nickname || val.username}}</font></router-link>:
+                                                <router-link v-if="userInfo.uid !== val.uid" :to="{path: '/center/friend/info', query: {uid: val.uid}}">
+                                                    <font color="lightblue">{{val.nickname || val.username}}</font>
+                                                </router-link>
+                                                <a v-else><font color="lightblue">{{val.nickname || val.username}}</font></a>
+                                                :
                                                 <span >回复<a v-if="val.target_uid !== item.uid" href="javascript:;"> {{val.target_uname}}</a>：</span>
                                                 <span class="article-content" v-html="transfromEmoji(val.content)"></span> 
                                             </li>
@@ -129,9 +139,6 @@ export default {
             } else {
                 console.log('未收藏，执行收藏操作')
             }
-        },
-        _reply(itemId) {
-            console.log('弹出填写页面，进行编辑')
         },
         replyComment(commentId, replyUserid, uname) {         //回复评论
             this.$router.push({ name: 'editor', params: { type: 'reply', commentId, replyUserid, uname } })

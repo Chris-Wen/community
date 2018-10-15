@@ -58,19 +58,19 @@ export default {
             this.topTabFixed = scrollTop > dom.offsetTop 
         },
         initTabStatus () {
-            let url = window.location.href,  page;
+            let url = this.$route.fullPath,  page;
 
             switch(true) {
-                case /\/#\/fiction\/relative/.test(url):    
+                case /fiction\/relative/.test(url):    
                         page = 'relative';
                     break;
-                case /\/#\/fiction\/complete/.test(url):    
+                case /fiction\/complete/.test(url):    
                         page = 'complete';
                     break;
-                case /\/#\/fiction\/rank/.test(url):    
+                case /fiction\/rank/.test(url):    
                         page = 'rank';
                     break;
-                case /\/#\/fiction$/.test(url):   
+                case /fiction$/.test(url):   
                         page = 'original';
                     break;
             }

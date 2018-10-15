@@ -1,8 +1,9 @@
 <template>
     <div class="prize-record" >
         <ul class="user-prize">
-            <li v-for="(item, index) in userPrize" :key="index" @touchstart="touchStart" @touchend="touchEnd">
-                <slider-delete @handleDelete="deleteItem(index)">
+            <!-- <li v-for="(item, index) in userPrize" :key="index" @touchstart="touchStart" @touchend="touchEnd"> -->
+            <li v-for="(item, index) in userPrize" :key="index">
+                <!-- <slider-delete @handleDelete="deleteItem(index)"> -->
                     <div class="prize-item">
                         <div class="img">
                             <img v-lazy="HOST + item.logo"/>
@@ -12,7 +13,7 @@
                             <p>{{item.win_time | transformDate}}</p>
                         </div>
                     </div>
-                </slider-delete>
+                <!-- </slider-delete> -->
             </li>
         </ul>
 
@@ -28,12 +29,12 @@
 
 <script>
 import { mapMutations, mapActions } from 'vuex'
-import SliderDelete from 'base/SliderDelete/SliderDelete'
+// import SliderDelete from 'base/SliderDelete/SliderDelete'
 import { removeClass } from 'common/js/dom'
 import { formatDate } from 'common/js/tools'
 
 export default {
-    components: { SliderDelete },
+    // components: { SliderDelete },
     data() {
         return {
             titleInfo: {
@@ -55,21 +56,21 @@ export default {
     },
     methods: {
         ...mapActions([ 'handleTitle']),
-        touchStart(ev) {
-            ev = ev || event;
-            this.sliderDeleteParams.lastTouch = this.sliderDeleteParams.targetTouch;
-            this.sliderDeleteParams.targetTouch = ev.currentTarget;
-        },
-        touchEnd(ev) {
-            ev = ev || event;
-            //若上一个左滑项与当前触摸项不是同一个。上一个左滑项右滑，不再显示删除按钮
-            if ( this.sliderDeleteParams.lastTouch && (this.sliderDeleteParams.lastTouch !== this.sliderDeleteParams.targetTouch)) { 
-                removeClass(this.sliderDeleteParams.lastTouch.children[0].children[0], 'left-slider')
-            }   
-        },
-        deleteItem(index) {
-            this.userPrize.splice(index, 1)
-        },
+        // touchStart(ev) {
+        //     ev = ev || event;
+        //     this.sliderDeleteParams.lastTouch = this.sliderDeleteParams.targetTouch;
+        //     this.sliderDeleteParams.targetTouch = ev.currentTarget;
+        // },
+        // touchEnd(ev) {
+        //     ev = ev || event;
+        //     //若上一个左滑项与当前触摸项不是同一个。上一个左滑项右滑，不再显示删除按钮
+        //     if ( this.sliderDeleteParams.lastTouch && (this.sliderDeleteParams.lastTouch !== this.sliderDeleteParams.targetTouch)) { 
+        //         removeClass(this.sliderDeleteParams.lastTouch.children[0].children[0], 'left-slider')
+        //     }   
+        // },
+        // deleteItem(index) {
+        //     this.userPrize.splice(index, 1)
+        // },
         initRollList() {
             if (this.list.length == 10) this.$refs.wrapper.className = 'animate'
         }

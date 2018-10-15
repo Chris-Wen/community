@@ -2,7 +2,7 @@
     <div class="record-page">
         <div class="calendar-block">
             <div class="user-info">
-                <img :src="DefaultAvatar" /> 
+                <img :src="userInfo.avatar ? (HOST + userInfo.avatar) : DefaultAvatar" /> 
                 {{userInfo.uname}}
                 <div class="record-date" v-if="serialCount">已连续签到<span>{{serialCount}}</span>天</div>
             </div>

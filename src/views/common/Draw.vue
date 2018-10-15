@@ -58,22 +58,6 @@ export default {
             },
             lotteryTicket: '',   //抽奖次数
             prizeType: 1,
-            // prizeList: [
-            //     {
-            //         img: '',            //奖品图片
-            //         name: '奖品1',      //奖品名称
-            //         isPrize: 1          //是否为奖品
-            //     },
-            //     {   img: '',  name: '奖品2',   isPrize: 1  },
-            //     {   img: '',  name: '奖品3',   isPrize: 1  },
-            //     {   img: '',  name: '奖品4',   isPrize: 1  },
-            //     {   img: '',  name: '奖品5',   isPrize: 1  },
-            //     {   img: '',  name: '未中奖',   isPrize: 0 },
-            //     {   img: '',  name: '未中奖',   isPrize: 0 },
-            //     {   img: '',  name: '未中奖',   isPrize: 0 },
-            //     {   img: '',  name: '未中奖',   isPrize: 0 },
-            //     {   img: '',  name: '未中奖',   isPrize: 0 }
-            // ],
             isRotating: false,
             toastParams: {
                 showToast: false,
@@ -112,7 +96,7 @@ export default {
                     sessionStorage.setItem('checkUserLogin', true) 
                 })
             }
-            this.lotteryTicket = 5
+            this.lotteryTicket = 1
         }
     },
     computed: {

@@ -58,7 +58,7 @@ const routes = [
 
 const router = new Router({
   routes,
-  linkActiveClass: 'linkClickStyle',
+  // linkActiveClass: 'linkClickStyle',
   scrollBehavior(to, from, savedPosition) {   
     if (savedPosition) {
       return savedPosition

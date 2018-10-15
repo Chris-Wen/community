@@ -1,5 +1,5 @@
 <template>
-    <div class="friend-info" v-if="data">
+    <div class="friend-info" >
         <div class="top" >
             <div></div>
             <div class="info">
@@ -8,8 +8,11 @@
                 <div>
                     <span>关注：{{data.user.idol}} </span> <span>粉丝：{{data.user.fans}}</span> <span>发帖：{{data.user.posting}}</span>
                 </div>
-                <br>
-                <span @click="attention" class="attention-btn color-grad-btn">关注</span>
+                <p class="signature">{{data.user.signature || '这个人很懒，什么也没有留下'}}</p>
+                <br>    
+                <br>    
+                <span @click="attention" v-if="(!data.relationship && $route.query.uid !== userInfo.uid) || (data.relationship.type==1 && data.relationship.target_uid == userInfo.uid)" class="attention-btn color-grad-btn">关注</span>
+                <span v-if="data.relationship.type==2 || data.relationship.uid==userInfo.uid" class="attention-btn color-grad-btn">已关注</span>
             </div>
         </div>   
         <div class="content">
@@ -35,7 +38,7 @@
 </template>
 
 <script>
-import { mapMutations, mapActions } from 'vuex'
+import { mapMutations, mapActions, mapGetters } from 'vuex'
 
 export default {
     data() {
@@ -60,8 +63,16 @@ export default {
     methods: {
         ...mapActions([ 'handleTitle']),
         attention() {
-
+            if (!this.userInfo.uid) this.$router.push("/login");
+            var uid = this.$route.query.uid
+            this.axios.get("/member/attention?uid="+ uid)
+                .then(response => {
+                    if (response.code==200) { this.data.relationship.type }
+                })
         }
+    },
+    computed: {
+        ...mapGetters(['userInfo'])
     }
 }
 </script>
@@ -81,6 +92,7 @@ export default {
             position: relative;
             padding-top: 45px;
             margin-bottom: 10px;
+            .signature { padding: 0 60px; }
             img { 
                 position: absolute;
                 margin: auto;
@@ -96,7 +108,7 @@ export default {
                 display: flex;
                 justify-content: center;
                 span { margin: 0 10px; }
-                margin-bottom: 30px;
+                margin-bottom: 10px;
             }
             .attention-btn {
                 padding: .2em 1em;
