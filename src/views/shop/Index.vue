@@ -4,8 +4,8 @@
         <div v-if="recommends.length" class="banner">
             <slider>
                 <div v-for="(item, index) in recommends" :key="index">
-                    <a :href="item.linkUrl">
-                        <img class="needsclick" @load="loadImage" :src="item.picUrl">
+                    <a :href="item.link">
+                        <img class="needsclick" :src="HOST + item.img">
                     </a>
                 </div>
             </slider>
@@ -14,7 +14,7 @@
         <div class="score">
             <div class="title">
                 <p class="dotted">{{'······'.repeat(30)}}</p>
-                <p> <span>我的积分</span> <i>{{this.$store.state.userInfo.score || '***'}}</i></p>  
+                <p> <span>我的积分</span> <i>{{score || '***'}}</i></p>  
             </div>
             <ul class="score-bar">
                 <router-link tag="li" to="/shop/strategy">  <i></i>  <p>赚积分</p>    </router-link >
@@ -31,7 +31,7 @@
                     <slider :autoPlay="true" :showDots="false" :isFullScreenSlider="false" >
                         <router-link tag="div" to="/"  v-for="(item, index) in hotSales" :key="index" >
                             <div class="item">
-                                <div><img :src="preSrc + item.logo " /> </div>
+                                <div><img src="../../common/images/shop/14.jpg" /> </div>
                                 <div>
                                     <p>{{item.sname}}</p>
                                     <p class="recom_price">市场参考价：{{item.price}}元</p>
@@ -118,7 +118,7 @@
 </template>
 
 <script>
-import { mapMutations, mapActions } from 'vuex'
+import { mapMutations, mapActions, mapGetters } from 'vuex'
 import Slider from '../../base/Slider/Slider'
 
 export default {
@@ -130,27 +130,34 @@ export default {
                 showIcon: false,
             },
             recommends: [
-                {linkUrl: '#1', picUrl: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109173040544.jpg'},
-                {linkUrl: '#2', picUrl: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109173040544.jpg'},
-                {linkUrl: '#2', picUrl: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109173040544.jpg'},
+                // {linkUrl: '#1', picUrl: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109173040544.jpg'},
+                // {linkUrl: '#2', picUrl: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109173040544.jpg'},
+                // {linkUrl: '#2', picUrl: 'http://221.123.178.232/smallgamesdk/Public/Uploads/20180109173040544.jpg'},
             ],
             hotSales: [
-                {id: "4", sname: "戴尔台式  一体机电脑", logo: "20180109172657362.jpg", price: "8999", score: "8888"},
-                {id: "3", sname: "神舟游戏本笔记本电脑", logo: "20180109172503958.jpg", price: "5000", score: "8888"},
-                {id: "2", sname: "宏基台式一体机电脑", logo: "20180109172324641.jpg", price: "6999", score: "8888"},
-                {id: "3", sname: "神舟游戏本笔记本电脑", logo: "20180109172503958.jpg", price: "5000", score: "8888"}
+                {id: "4", sname: "戴尔台式  一体机电脑", logo: "", price: "8999", score: "8888"},
+                {id: "3", sname: "神舟游戏本笔记本电脑", logo: "", price: "5000", score: "8888"},
+                {id: "2", sname: "宏基台式一体机电脑", logo: "", price: "6999", score: "8888"},
+                {id: "3", sname: "神舟游戏本笔记本电脑", logo: "", price: "5000", score: "8888"}
             ]
         }
     },
     components:{ Slider },
     methods: {
         ...mapActions([ 'handleTitle']),
-        loadImage() {
+        // loadImage() {
             // if (!this.checkloaded) {
             //     this.checkloaded = true
             //     this.$refs.scroll.refresh()
             // }
-        }
+        // }
+    },
+    created() {
+        this.axios.get("/mall/index").then(response => {
+            if (response.code == 200) {
+                this.recommends = response.data.banner
+            }
+        })
     },
     mounted() {
         this.handleTitle({
@@ -158,6 +165,9 @@ export default {
             hideReturnIcon: this.titleInfo.hideReturnIcon,
             showIcon: this.titleInfo.showIcon,
         });
+    },
+    computed: {
+        ...mapGetters(['score'])
     }
 }
 </script>

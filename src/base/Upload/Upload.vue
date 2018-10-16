@@ -64,9 +64,6 @@ export default {
                 reader.onloadend = function () {  
                     let result = this.result;  
                     self.previewImgArray.push(result)
-                    // console.log(self.previewImgArray)
-                    // let img = new Image();  
-                    // img.src = result;  
 
                     //判断图片是否大于100K,是就直接上传，反之压缩图片  
                     // if (this.result.length <= (100 * 1024)) {  

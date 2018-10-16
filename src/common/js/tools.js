@@ -106,7 +106,7 @@ export function postTime(time) {
 //表情转换
 export function formateEmoji(html) {
     if (html) {
-        return html.replace(/:[a-z]+:/g, function (word) {
+        return html.replace(/:[a-zA-Z_]+:/g, function (word) {
             let src = EMOJI_RULE[word]
             if (src) {
                 return `<img class="tiny-emoji" src="${HOST}/static/emoji/${src}"/>`

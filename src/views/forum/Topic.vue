@@ -117,7 +117,6 @@ export default {
             userId: 123,
             showEditor: true,
             editorType: '',
-            // DefaultAvatar: require('../../common/images/global/user.jpg'),
             navDropDown: false,
             showTopDrop: false,
             indexShow: -1,
@@ -166,7 +165,9 @@ export default {
                 })
             }
         },
-        transfromEmoji(html) { return formateEmoji(html) },
+        transfromEmoji(html) { 
+            return formateEmoji(html) 
+        },
     },
     created() {
         this.getReply();

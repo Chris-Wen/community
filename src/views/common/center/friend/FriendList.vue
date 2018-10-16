@@ -1,5 +1,5 @@
 <template>
-    <div class="friend-list">
+    <div class="friend-list" v-if="data">
         <!-- <div class="search">
             <i class="self-icon-search"></i> <input type="text" placeholder="搜索：关注的人">
         </div> -->
@@ -34,7 +34,7 @@ export default {
                 title: '我的关注/粉丝/好友',
                 showBottomTab: true
             },
-            data: [],
+            data: '',
         }
     },
     methods: {

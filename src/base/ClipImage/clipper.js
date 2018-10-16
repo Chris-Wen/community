@@ -1,5 +1,4 @@
 import Cropper from 'cropperjs'
-import * as axios from 'api/api'
 
 export default {
   install( Vue ){
@@ -195,7 +194,7 @@ export default {
       //这边写图片的上传
       let self = this;
       // self.destoried();
-      console.log(imageData)
+      // console.log(imageData)
       window.setTimeout( function () {
         document.querySelector('.crop_loading').style.display = 'none';
         document.querySelector('.crop_success').style.display = 'block';

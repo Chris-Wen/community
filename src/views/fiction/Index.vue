@@ -55,7 +55,7 @@ export default {
             let dom = this.$refs.tab
 
             if (!dom) { return;  }
-            this.topTabFixed = scrollTop > dom.offsetTop 
+            this.topTabFixed = scrollTop >= dom.offsetTop 
         },
         initTabStatus () {
             let url = this.$route.fullPath,  page;
@@ -98,6 +98,9 @@ export default {
     },
     watch: {
         '$route': 'initTabStatus'
+    },
+    destroyed () {
+        window.removeEventListener('scroll', this.handleScroll); // 离开页面 关闭监听 不然会报错
     }
 }
 </script>
