@@ -116,7 +116,14 @@ export default {
             let total_rotate_deg = 360*6 + final_rotate_deg;
 
             setTimeout(()=>{              
-                this.$refs.turnplate.style = `transform: rotate(${total_rotate_deg}deg); transition: all 5s ease`
+                this.$refs.turnplate.style = `
+                                                -webkit-transform:rotate(${total_rotate_deg}deg); 
+
+                                                transition: all 5s ease;
+                                                -ms-transition: all 5s ease; 	
+                                                -moz-transition: all 5s ease; 	
+                                                -webkit-transition: all 5s ease; 
+                                                -o-transition: all 5s ease;color:red;`
             }, 30);
             setTimeout(() => {
                 this.isRotating = false;

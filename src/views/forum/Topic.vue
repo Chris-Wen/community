@@ -165,9 +165,7 @@ export default {
                 })
             }
         },
-        transfromEmoji(html) { 
-            return formateEmoji(html) 
-        },
+        transfromEmoji(html) { return formateEmoji(html) },
     },
     created() {
         this.getReply();
@@ -267,9 +265,6 @@ export default {
         >div:last-child {
             position: relative;
             line-height: 1.4em;
-            // .content {
-            //     img { margin-top: 15px auto; width: auto; max-width: 95% }
-            // }
         }
     }
     .list {
@@ -322,9 +317,7 @@ export default {
                             }
                         }
                     }
-                    i { 
-                        color: $text-color-l; 
-                    }
+                    i { color: $text-color-l; }
                 }
             }
         }

@@ -40,8 +40,10 @@ exports.cssLoaders = function (options) {
 
   const px2remLoader = {
     loader: 'px2rem-loader',
+    // loader: 'postcss-px2rem-exclude',
     options: {
-      remUnit: 64         //设计稿宽度/10
+      remUnit: 64,         //设计稿宽度/10
+      exclude: /node_modules/i    //postcss-px2rem-exclude  排除第三方ui
     }
   };
 

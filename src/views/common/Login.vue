@@ -19,7 +19,8 @@
         </form>
         <ul>
             <router-link tag="li" to="/register">注册账号</router-link>
-            <router-link tag="li" to="/">忘记密码</router-link>
+            <!-- <router-link tag="li" to="/">忘记密码</router-link> -->
+            <li @click="notAllow">忘记密码</li>
         </ul>
         <div class="others">
             <div class="part">
@@ -27,7 +28,7 @@
                 <p> 快捷登录 </p>
             </div>
             <div>
-                <i></i> <i></i>
+                <i @click="qqLogin"></i> <i @click="wxLogin"></i>
             </div>
         </div>
         <p class="state">登录即表示同意用户协议</p>
@@ -112,6 +113,15 @@ export default {
             ev = ev || event
 			let target = event.currentTarget
 			target.src += Math.floor(Math.random()*10 + 1)
+        },
+        wxLogin() {
+            this.notAllow()
+        },
+        qqLogin() {
+            this.notAllow()
+        },
+        notAllow() {
+            Toast("暂不支持该功能")
         }
     },
     mounted() {

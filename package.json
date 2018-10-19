@@ -49,6 +49,7 @@
     "portfinder": "^1.0.13",
     "postcss-import": "^11.0.0",
     "postcss-loader": "^2.0.8",
+    "postcss-px2rem-exclude": "0.0.6",
     "postcss-url": "^7.2.1",
     "px2rem-loader": "^0.1.9",
     "rimraf": "^2.6.0",
@@ -73,7 +74,7 @@
   },
   "browserslist": [
     "> 1%",
-    "last 2 versions",
+    "last 5 versions",
     "not ie <= 8"
   ]
 }
