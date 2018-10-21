@@ -29,7 +29,7 @@ Vue.use(Vuex)
 
 import './common/css/self-icons.css'
 import './common/css/reset.css'
-import './common/css/global.css'
+
 fastclick.attach(document.body)
 
 import { Indicator,Toast } from 'mint-ui'

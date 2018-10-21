@@ -23,6 +23,7 @@ export default {
 </script>
 
 <style>
+@import './common/css/global.css';
 #app {
   /* font-size: 14px;  no */
   position: relative;
