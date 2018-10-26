@@ -8,7 +8,7 @@
                     <em>账 号：</em><input v-model.trim="loginParams.login_user" type="text" placeholder="手机号/邮箱/掌动通行证/普通" autofocus/>
                 </li>
                 <li>
-                    <em>密 码：</em><input v-model.trim="loginParams.login_pwd" type="password" placeholder="请输入密码" />
+                    <em>密 码：</em><input v-model.trim="loginParams.login_pwd" maxlength="12" type="password" placeholder="请输入密码" />
                 </li>
             </ul>
             <div v-if="isCodeShow" class="code">
@@ -121,7 +121,7 @@ export default {
             this.notAllow()
         },
         notAllow() {
-            Toast("暂不支持该功能")
+            Toast({message:"暂不支持该功能",duration: 1000})
         }
     },
     mounted() {

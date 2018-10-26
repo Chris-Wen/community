@@ -45,10 +45,14 @@
                     <img  class="spe-icon"  src="../../common/images/icons/icon-draw.png" /> 
                     <p>我的抽奖</p>
             </router-link>
-            <router-link  tag="li" to="/center/account"> 
+            <!-- <router-link  tag="li" to="/center/account"> 
                     <img   class="spe-icon"  src="../../common/images/icons/icon-change.png" /> 
                     <p>切换账号</p>
-            </router-link>
+            </router-link> -->
+            <li @click="nonSupport"> 
+                    <img   class="spe-icon"  src="../../common/images/icons/icon-change.png" /> 
+                    <p>切换账号</p>
+            </li>
         </ul>
 
         <div class="personal">
@@ -99,6 +103,12 @@ export default {
             if (!this.token) {
                 this.$router.push("/login")
             }
+        },
+        nonSupport() {
+           Toast({
+               message :'暂不支持',
+               duration: 1000
+           }) 
         } 
     },
     mounted() {

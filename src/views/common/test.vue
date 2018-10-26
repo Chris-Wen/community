@@ -51,9 +51,6 @@ export default {
   .container {
     padding: 50px;
     input  { border: 1px solid #ccc; height: 2em; margin: .5em }
-    form {
-      // padding: 0 50px;
-    }
     .btn {
       background:#ff8800;
       padding: .3em .8em;

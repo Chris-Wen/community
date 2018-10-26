@@ -108,22 +108,19 @@ export default {
             //抽奖后状态改变
             if (this.lotteryTicket > 0) this.lotteryTicket --;
             this.isRotating = true;
-            this.$refs.turnplate.style = "";
+            let ele = this.$refs.turnplate;
+            //ios webkit 低版本不允许直接使用以下方式直接设置style，会直接阻断进程
+            // this.$refs.turnplate.style = `transform: rotate(0deg); -webkit-transform: rotate(0deg);`;
 
+            ele.setAttribute('style',  `transform: rotate(0deg); -webkit-transform: rotate(0deg);`);
             // let final_rotate_deg = 360/this.prizeList.length * index;      //指针最终停止角度（奖品栏正中位置）
             let final_rotate_deg = 360/10 * index;      //指针最终停止角度（奖品栏正中位置）
             //转动6个整圈后 停在最终位置
             let total_rotate_deg = 360*6 + final_rotate_deg;
-
             setTimeout(()=>{              
-                this.$refs.turnplate.style = `
-                                                -webkit-transform:rotate(${total_rotate_deg}deg); 
-
-                                                transition: all 5s ease;
-                                                -ms-transition: all 5s ease; 	
-                                                -moz-transition: all 5s ease; 	
-                                                -webkit-transition: all 5s ease; 
-                                                -o-transition: all 5s ease;color:red;`
+                // console.log(ele.style)
+                // ele.setAttribute('style', ele.style.cssText +  `transform: rotate(${total_rotate_deg}deg); -webkit-transform: rotate(${total_rotate_deg}deg); `);
+                ele.setAttribute('style',  `transform: rotate(${total_rotate_deg}deg); -webkit-transform: rotate(${total_rotate_deg}deg); transition: -webkit-transform 5s ease;transition: transform 5s ease;transition: transform 5s ease, -webkit-transform 5s ease`);
             }, 30);
             setTimeout(() => {
                 this.isRotating = false;
@@ -132,7 +129,7 @@ export default {
                     Toast('您还未登录')
                     setTimeout(() => {
                         this.$router.push('/login')
-                    }, 3000);
+                    }, 1500);
                     return;
                 }
                 this.toastParams.showToast = true
@@ -151,20 +148,19 @@ export default {
                 })  
             }
             if (this.unaffordable) return Toast('您的积分不足');
-
             if (this.lotteryTicket==0  && !this.noticeUser) { 
                 this.noticeUser = true
                 Toast({
                     message: '继续抽奖将耗费20积分每次',
                     position: 'middle',
-                    duration: 3000
+                    duration: 1500
                 }) 
             }
             let deg;
-            
             if (!this.token) {      //未登录，模拟抽奖结果
                 this.changeStatusAfterDraw();   //随机抽奖结果
             } else {                //后端获取抽奖结果
+                // return;
                 this.axios.get('/lottery/getAwards', undefined, true).then( res => {
                     if (res.code==200) {
                         let result = res.data
@@ -254,6 +250,8 @@ export default {
         .prize {
             width: 100%;
             height: 100%;
+            // transform: rotate(0deg);
+            // transition: transform 5s ease;
             // @include background-image(url('../../common/images/global/turnplate.png'));
             // background-size: 436px 436px;
         }

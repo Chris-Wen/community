@@ -9,7 +9,8 @@ import VueLazyload from 'vue-lazyload'
 import * as axios from 'api/api'
 Vue.prototype.axios = axios
 
-
+// import VConsole from 'vconsole/dist/vconsole.min.js' //import vconsole  微信开发工具
+// let vConsole = new VConsole() //
 
 const DefaultLogo = require('common/images/icons/LOGO(1).png')
 Vue.prototype.DefaultLogo = DefaultLogo
