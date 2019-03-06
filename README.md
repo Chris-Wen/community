@@ -99,9 +99,9 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 ***
 ### 移动端适配方案
 
-使用淘宝rem适配方案 [lib-flexible] (https://github.com/amfe/lib-flexible)
+使用淘宝rem适配方案 [lib-flexible](https://github.com/amfe/lib-flexible)
 
-[相关阅读] (https://mp.weixin.qq.com/s?__biz=MzAwNjI5MTYyMw==&mid=2651493324&idx=1&sn=126efc9f0dd3a30169728a2f20527bab&chksm=80f19a04b7861312545429c4a77e18d8de3c0b07e2bc09b1ae54216806c37b33028c1f4ee803&mpshare=1&scene=1&srcid=1026OYYw6W1zURzKfTMC3i7e#rd )
+[相关阅读](https://mp.weixin.qq.com/s?__biz=MzAwNjI5MTYyMw==&mid=2651493324&idx=1&sn=126efc9f0dd3a30169728a2f20527bab&chksm=80f19a04b7861312545429c4a77e18d8de3c0b07e2bc09b1ae54216806c37b33028c1f4ee803&mpshare=1&scene=1&srcid=1026OYYw6W1zURzKfTMC3i7e#rd )
 
 [vw实现移动端适配] (https://www.w3cplus.com/mobile/vw-layout-in-vue.html)
 
