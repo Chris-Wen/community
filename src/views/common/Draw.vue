@@ -84,7 +84,7 @@ export default {
                     // this.score = data.score
                     if (data.prize_type==2) this.prizeType = 2
                 } 
-            })
+            }).catch(err => { console.log(err) })
         } else {                    //非登录状态，使用cookie登录，cookie失效，则提示未登录
             if (!sessionStorage.getItem('checkUserLogin')) {
                 this.cookieLogin().then( res => {
@@ -94,7 +94,7 @@ export default {
                         Toast(res.msg)
                     }
                     sessionStorage.setItem('checkUserLogin', true) 
-                })
+                }).catch(err => { console.log(err) })
             }
             this.lotteryTicket = 1
         }

@@ -22,10 +22,6 @@ const routes = [
     path: '/',
     redirect: '/draw'
   },
-  // {
-  //   path: '/test',
-  //   component: Test,
-  // },
   {
     path: '/draw',
     component: () => import('@/views/common/Draw')

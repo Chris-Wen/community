@@ -61,7 +61,7 @@ export default {
         toggleStatus(index) {
             if (index== 'coin' || index == 'score') {
                 this.params.type = index
-            } else if (typeof(index) == 'number') {
+            } else if (typeof index === 'number') {
                 this.params.amount = index
             } else {
                 this.params.method = index

@@ -63,7 +63,7 @@ export default {
                 // console.log(self.cropper.rotate(90))
                 if( opt.aspectRatio == 'Free' ){
                     let cropBox = self.cropper.cropBox;
-                    cropBox.querySelector('span.cropper-view-box').style.outline = 'none';
+                    cropBox.querySelector('span.cropper-view-box').setAttribute("style", "outline: none");
                     self.cropper.disable();
                 }
                 }
@@ -158,7 +158,7 @@ export default {
             let roundedCanvas;
 
             // Crop
-            document.querySelector('.crop_loading').style.display = 'block';
+            document.querySelector('.crop_loading').setAttribute("style", "display: block");
 
             setTimeout(function () {
                 croppedCanvas = self.cropper.getCroppedCanvas();
@@ -226,8 +226,8 @@ export default {
             // self.destoried();
             self.axios.post("/member/saveAvatar", {image: imageData}).then(response=>{
                 // console.log(response)
-                document.querySelector('.crop_loading').style.display = 'none';
-                document.querySelector('.crop_success').style.display = 'block';
+                document.querySelector('.crop_loading').setAttribute("style", "display: none")
+                document.querySelector('.crop_success').setAttribute("style", "display: block")
                 //裁剪完后摧毁对象
                 self.destoried();
 
@@ -356,8 +356,8 @@ export default {
 
             //图片压缩后仍 > 200kb
             if (ndata.length > 1024*200) {
-                document.querySelector('.crop_loading').style.display = 'none';
-                document.querySelector('.crop_success').style.display = 'block';
+                document.querySelector('.crop_loading').setAttribute("style", "display: none")
+                document.querySelector('.crop_success').setAttribute("style", "display: block") 
                 //裁剪完后摧毁对象
                 this.destoried();
 
@@ -389,8 +389,8 @@ export default {
   
     },
     beforeDestroy() {
-        document.querySelector('.crop_loading').style.display = 'none';
-        document.querySelector('.crop_success').style.display = 'block';
+        document.querySelector('.crop_loading').setAttribute("style", "display: none") 
+        document.querySelector('.crop_success').setAttribute("style", "display: block") 
         //裁剪完后摧毁对象
         this.destoried();
     }

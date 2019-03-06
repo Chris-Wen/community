@@ -29,7 +29,7 @@ export default {
             },
             editorType: '',
             themeTitle: '',
-            textInput: 'https://blog.csdn.net/qq_32786873/article/details/75125737    https://segmentfault.com/a/1190000010034177   https://github.com/xiangpaopao/blog/issues/7',
+            textInput: '',
         }
     },
     methods: {

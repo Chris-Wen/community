@@ -115,7 +115,7 @@ export default {
                 }
                 calendarTable[j].push(dateObject)
             }
-            this.calendar = calendarTable.slice()       //深拷贝
+            this.calendar = calendarTable.slice()       //拷贝
         },
         handleHasSigned() {             //处理已签到样式calendar
             this.calendar.forEach(array => {
