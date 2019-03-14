@@ -11,16 +11,6 @@ npm install
 # serve with hot reload at localhost:8080
 npm run dev
 
-npm install sass-loader node-sass -D
-webpack.base.config.js在loaders里面加上
-
-{
-    test: /\.scss$/,
-    loaders: ["style", "css", "sass"]
-},
-
-
-npm install vuex -S
 
 # build for production with minification
 npm run build
@@ -103,11 +93,13 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 
 [相关阅读](https://mp.weixin.qq.com/s?__biz=MzAwNjI5MTYyMw==&mid=2651493324&idx=1&sn=126efc9f0dd3a30169728a2f20527bab&chksm=80f19a04b7861312545429c4a77e18d8de3c0b07e2bc09b1ae54216806c37b33028c1f4ee803&mpshare=1&scene=1&srcid=1026OYYw6W1zURzKfTMC3i7e#rd )
 
-[vw实现移动端适配] (https://www.w3cplus.com/mobile/vw-layout-in-vue.html)
+[vw实现移动端适配](https://www.w3cplus.com/mobile/vw-layout-in-vue.html)
 
 使用px2rem-loader做rem转换，在页面中只需要写px单位，  px2rem配置问题，网上可查
-font-size不使用rem， 使用px单位时，必须加上 "/*no*/" 才不会在编译时转换成rem单位
+font-size不使用rem， 使用px单位时，必须加上 /\*no\*/注释，才不会在编译时转换成rem单位
 ***
 ####    mock  api接口数据为本地虚拟服务器数据，本地使用wampServer + thinkphp 开发后台，直接接入数据库数据。当前只上传前端项目，无法演示
 
 ***
+>版本1.0 暂定完成阶段， 后续版本将使用mock数据完全替代真实接口数据
+>使用react重构
