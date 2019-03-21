@@ -9,12 +9,12 @@
                             <p><i>[置顶]</i> {{item.title}} </p>
                             <!-- <div class="flex-img post-img-show" v-if="item.upload_image_num>1">
                                 <div v-for="(image, i) in item.post_images" :key="i" >
-                                    <img :src="HOST + image" />
+                                    <img :src="image" />
                                 </div>
                             </div>
                             <div v-if="item.upload_image_num == 1" class="post-img-show">
                                 <div class="post-index-image">
-                                    <img :src="HOST + item.post_images[0]" />
+                                    <img :src="item.post_images[0]" />
                                 </div>
                             </div> -->
                         </div>
@@ -32,12 +32,12 @@
                             <p> {{item.title}} </p>
                             <div class="flex-img post-img-show" v-if="item.upload_image_num>1">
                                 <div v-for="(image, i) in item.post_images" :key="i" >
-                                    <img :src="HOST + image" />
+                                    <img :src="image" />
                                 </div>
                             </div>
                             <div v-if="item.upload_image_num == 1" class="post-img-show">
                                 <div class="post-index-image">
-                                    <img :src="HOST + item.post_images[0]" />
+                                    <img :src="item.post_images[0]" />
                                 </div>
                             </div>
                         </div>
@@ -108,6 +108,7 @@ export default {
         },
         getPostList(page=0) {
             api.get('/forum/index', { params:{page} }).then( res => {
+                console.log(res)
                 if (res.code==200) {
                     if (this.page>0) {          //分页加载操作
                         this.datalist.post.push(res.data.post)

@@ -7,6 +7,7 @@ import router from './router'
 import store from './store/index'
 import VueLazyload from 'vue-lazyload'
 import * as axios from 'api/api'
+require('./mock/')
 Vue.prototype.axios = axios
 
 // import VConsole from 'vconsole/dist/vconsole.min.js' //import vconsole  微信开发工具

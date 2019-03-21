@@ -1,6 +1,6 @@
 // Mutation 存在必须同步执行这个限制      所以采用 action，在action内部执行异步操作
 import axios from 'axios'
-axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? '/mook' : '/index.php/home'
+axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? '/mock' : '/index.php/home'
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
 axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest'
 import qs from 'qs'
@@ -14,6 +14,7 @@ export default {
         return new Promise((resolve, reject) => {    
             axios.post('/login/login', qs.stringify(payload) ).then( response => {
                 let res = response.data
+                console.log(res, res.code == 200)
                 if (res.code == 200) commit( types.SET_USERINFO, res)
                 
                 resolve(res) 

@@ -38,14 +38,14 @@ const routes = [
     path: '/register',
     component: () => import('@/views/common/Register')
   },
-  {
-    path: '/editor',
-    name: 'editor',
-    meta: {
-      requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
-    },
-    component: () => import('@/components/Editor/Editor'),    //异步加载组件，分割代码，提高首屏加载速度
-  },
+  // {
+  //   path: '/editor',
+  //   name: 'editor',
+  //   meta: {
+  //     requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
+  //   },
+  //   component: () => import('@/components/Editor/Editor'),    //异步加载组件，分割代码，提高首屏加载速度
+  // },
   ...shopRoutes,
   ...fictionRoutes,
   ...forumRoutes,

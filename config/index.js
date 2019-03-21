@@ -11,11 +11,11 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/mook': {
+      '/mock': {
         target: 'http://localhost/shop.73776.com/index.php/home',
         changeOrigin: true,
         pathRewrite: {
-          '^/mook': ''
+          '^/mock': ''
         }
       }
     },

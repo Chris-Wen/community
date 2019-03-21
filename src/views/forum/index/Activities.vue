@@ -17,12 +17,12 @@
                         <p> {{item.title}} </p>
                         <div class="flex-img post-img-show" v-if="item.upload_image_num>1">
                             <div v-for="(image, i) in item.post_images" :key="i" >
-                                <img :src="HOST + image" />
+                                <img :src="image" />
                             </div>
                         </div>
                         <div v-if="item.upload_image_num == 1" class="post-img-show">
                             <div class="post-index-image">
-                                <img :src="HOST + item.post_images[0]" />
+                                <img :src="item.post_images[0]" />
                             </div>
                         </div>
                     </div>

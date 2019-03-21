@@ -2,7 +2,7 @@
     <div class="record-page">
         <div class="calendar-block">
             <div class="user-info">
-                <img :src="userInfo.avatar ? (HOST + userInfo.avatar) : DefaultAvatar" /> 
+                <img :src="userInfo.avatar || DefaultAvatar" /> 
                 {{userInfo.uname}}
                 <div class="record-date" v-if="serialCount">已连续签到<span>{{serialCount}}</span>天</div>
             </div>
@@ -131,6 +131,7 @@ export default {
         dailySign() {           //签到
             if (!this.isSigned) {
                 api.get("/member/dailySign").then( res =>{
+                    console.log(res)
                     if (res.code==200) {
                         this.isSigned = true
                         this.serialCount = res.serial_count
@@ -153,6 +154,7 @@ export default {
     },
     created() {
         api.get("/member/dailySignShow").then(res => {
+            console.log(res)
             if (res.code==200) {
                 let data = res.data
                 this.isSigned = data.sign_status == 1

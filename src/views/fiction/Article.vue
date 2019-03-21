@@ -21,7 +21,7 @@
             <ul class="comment-list">
                 <li>
                     <div class="avatar">
-                        <img :src="preSrc + '20180109172657362.jpg'" alt="">
+                        <img src="" alt="">
                     </div>
                     <div class="item">
                         <span>{{'2018-05-28 17:12'}}</span>
@@ -35,7 +35,7 @@
                 </li>
                 <li>
                     <div class="avatar">
-                        <img :src="preSrc + '20180109172657362.jpg'" alt="">
+                        <img src="" alt="">
                     </div>
                     <div class="item">
                         <span>{{'2018-05-28 17:12'}}</span>
@@ -70,7 +70,6 @@ export default {
             html: ` <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro optio sequi cumque neque placeat maiores, nam, rerum possimus quis, officiis consectetur! Eveniet, rerum quod modi quis ullam amet illo voluptas.</p>
                     <br>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, itaque pariatur odio maiores saepe cupiditate ut ipsam eius voluptatem voluptates expedita explicabo perferendis, dolorum aspernatur corporis mollitia nisi neque temporibus.</p>
-                    <img src="http://221.123.178.232/smallgamesdk/Public/Uploads/20180109173040544.jpg" alt="">
                     <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus sit iste quam explicabo, itaque corrupti porro. Magni ad velit quia perferendis quas voluptate quam, veniam rem accusantium ea voluptates quasi.</p>`,
             isThumbs: false,
             thumbsNum: 12334,

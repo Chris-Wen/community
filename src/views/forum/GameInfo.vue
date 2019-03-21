@@ -1,7 +1,7 @@
 <template>
     <div class="game-info">
         <div class="top">
-            <img src="http://221.123.178.232/smallgamesdk/Public/Uploads/20180109172503958.jpg" alt="">
+            <img src="" alt="">
             <h1>游戏名称</h1>
             <p class="grade"><i>★★★★★</i>5.5</p>
             <div class="intro">

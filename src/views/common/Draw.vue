@@ -7,7 +7,7 @@
             @handleClick="_handleClick" >
             <!-- 插槽奖品内容 -->
             <p>{{toastSlot.name}}</p>
-            <img :src="HOST + toastSlot.pic">
+            <img :src="toastSlot.pic">
         </draw-popup>
         <div class="turnplate-box">
             <div style="position: relative">
@@ -122,6 +122,7 @@ export default {
                 // ele.setAttribute('style', ele.style.cssText +  `transform: rotate(${total_rotate_deg}deg); -webkit-transform: rotate(${total_rotate_deg}deg); `);
                 ele.setAttribute('style',  `transform: rotate(${total_rotate_deg}deg); -webkit-transform: rotate(${total_rotate_deg}deg); transition: -webkit-transform 5s ease;transition: transform 5s ease;transition: transform 5s ease, -webkit-transform 5s ease`);
             }, 30);
+
             setTimeout(() => {
                 this.isRotating = false;
                 // this.toastParams.toast = true

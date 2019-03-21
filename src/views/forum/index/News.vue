@@ -13,7 +13,7 @@
                                 <p>{{spec.creattime | transformTime}}   <span> <i class="self-icon-eye"></i> {{spec.views | exchangeNumber }}</span> </p>
                             </div>
                         </div>
-                        <div class="img" v-if="spec.cover"><img :src="HOST + spec.cover" /></div>
+                        <div class="img" v-if="spec.cover"><img :src="spec.cover" /></div>
                     </router-link>
                 </ul>
             </div>
@@ -29,7 +29,7 @@
                                 <p>{{item.creattime | transformTime}}   <span> <i class="self-icon-eye"></i> {{item.views | exchangeNumber }}</span> </p>
                             </div>
                         </div>
-                        <div class="img" v-if="item.cover"><img :src="HOST + item.cover" /></div>
+                        <div class="img" v-if="item.cover"><img :src="item.cover" /></div>
                     </router-link>     
                 </ul>
             </div>

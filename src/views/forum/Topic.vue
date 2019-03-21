@@ -42,7 +42,7 @@
                     <div class="article-content" >
                         <div v-html="transfromEmoji(topic.content)"></div>
                         <div v-for="(img, i) in topic.images" :key="i">
-                            <img class="image" v-lazy="HOST+img" />
+                            <img class="image" v-lazy="img" />
                         </div>
                     </div>
                 </div>
@@ -157,6 +157,7 @@ export default {
             let id = this.$route.params.id
             if (id) {
                 api.get('/forum/getPostInfo', {params: {id, page}}).then( data => {
+                    console.log(data)
                     if (data.code==200) {
                         let list = data.data
                         if (list.info) this.topic = list.info;
